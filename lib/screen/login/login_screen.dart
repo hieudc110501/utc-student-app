@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:utc_student_app/screen/main_screen.dart';
 import 'package:utc_student_app/utils/asset.dart';
 import 'package:utc_student_app/utils/color.dart';
 import 'package:utc_student_app/utils/size.dart';
@@ -28,6 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [
@@ -92,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
                 child: SampleButton(
                   text: 'Đăng nhập',
-                  routeName: '',
+                  routeName: MainScreen.routeName,
                   fixedSize: MaterialStatePropertyAll(
                     Size(
                       screenSize.width * 0.9,

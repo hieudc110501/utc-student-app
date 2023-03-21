@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:utc_student_app/model/student.dart';
 import 'package:utc_student_app/request/student_request.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class Testcreen extends StatefulWidget {
+  const Testcreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<Testcreen> createState() => _TestcreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _TestcreenState extends State<Testcreen> {
   late Future<Student> futureStudent;
   @override
   void initState() {
