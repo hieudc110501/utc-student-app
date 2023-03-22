@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
               flex: 1,
               child: Align(
                 alignment: Alignment.center,
-                child: SmapleText(
+                child: SampleText(
                   text: 'ĐĂNG NHẬP',
                   fontWeight: FontWeight.w700,
                   size: 24,
@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const Expanded(
               flex: 1,
-              child: SmapleText(
+              child: SampleText(
                 text: '*Bạn đã nhập sai mật khẩu',
                 fontWeight: FontWeight.w500,
                 size: 14,
@@ -115,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
               flex: 1,
               child: Align(
                 alignment: Alignment.bottomCenter,
-                child: SmapleText(
+                child: SampleText(
                   text: 'Copyright by Trương Hiếu',
                   fontWeight: FontWeight.w500,
                   size: 14,

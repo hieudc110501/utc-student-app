@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class SmapleText extends StatelessWidget {
+class SampleText extends StatelessWidget {
   final String text;
   final FontWeight fontWeight;
   final double size;
   final Color color;
-  const SmapleText({
+  const SampleText({
     super.key,
     required this.text,
     required this.fontWeight,

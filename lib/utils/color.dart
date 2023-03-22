@@ -39,10 +39,15 @@ const blue900 = Color(0xFF194185);
 const blue800 = Color(0xFF1849A9);
 const blue700 = Color(0xFF175CD3);
 const blue600 = Color(0xFF1570EF);
-
 const blue500 = Color(0xFF2E90FA);
+const blue400 = Color(0xFF53B1FD);
 const blue300 = Color(0xFF84CAFF);
+const blue200 = Color(0xFFB2DDFF);
 const blue100 = Color(0xFFD1E9FF);
+const blue50 = Color(0xFFEFF8FF);
+const blue25 = Color(0xFFF5FAFF);
+
+
 
 const green300 = Color(0xFF4FD0C8);
 const green500 = Color(0xFF0091B0);

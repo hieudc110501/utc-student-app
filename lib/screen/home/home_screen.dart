@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
 import 'package:utc_student_app/utils/color.dart';
 import 'package:utc_student_app/widgets/sample_text.dart';
 
@@ -11,7 +12,7 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Align(
           alignment: Alignment.centerLeft,
-          child: SmapleText(
+          child: SampleText(
             text: 'Trang Chủ',
             fontWeight: FontWeight.w600,
             size: 18,
@@ -34,10 +35,8 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: const SafeArea(
-        child: Center(
-          child: Text('home'),
-        ),
+      body: SafeArea(
+        child: Text('Home')
       ),
     );
   }

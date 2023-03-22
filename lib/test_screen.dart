@@ -26,7 +26,7 @@ class _TestcreenState extends State<Testcreen> {
           future: futureStudent,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return Text(snapshot.data!.firstName.toString());
+              return Text(snapshot.data!.fullName.toString());
             } else if (snapshot.hasError) {
               return Center(child: Text('${snapshot.error}'));
             }

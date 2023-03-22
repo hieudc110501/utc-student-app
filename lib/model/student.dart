@@ -2,8 +2,7 @@ import 'dart:convert';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class Student {
-  final String firstName;
-  final String lastName;
+  final String fullName;
   final String gender;
   final String studentId;
   final String studentBankAccount;
@@ -12,24 +11,22 @@ class Student {
   final String bornIn;
   final String tel;
   final String email;
-  Student({
-    required this.firstName,
-    required this.lastName,
-    required this.gender,
-    required this.studentId,
-    required this.studentBankAccount,
-    required this.identityCard,
-    required this.birth,
-    required this.bornIn,
-    required this.tel,
-    required this.email,
-  });
-  
+
+  Student(
+    this.fullName,
+    this.gender,
+    this.studentId,
+    this.studentBankAccount,
+    this.identityCard,
+    this.birth,
+    this.bornIn,
+    this.tel,
+    this.email,
+  );
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'firstName': firstName,
-      'lastName': lastName,
+      'fullName': fullName,
       'gender': gender,
       'studentId': studentId,
       'studentBankAccount': studentBankAccount,
@@ -43,16 +40,15 @@ class Student {
 
   factory Student.fromMap(Map<String, dynamic> map) {
     return Student(
-      firstName: map['firstName'] as String,
-      lastName: map['lastName'] as String,
-      gender: map['gender'] as String,
-      studentId: map['studentId'] as String,
-      studentBankAccount: map['studentBankAccount'] as String,
-      identityCard: map['identityCard'] as String,
-      birth: map['birth'] as String,
-      bornIn: map['bornIn'] as String,
-      tel: map['tel'] as String,
-      email: map['email'] as String,
+      map['fullName'] as String,
+      map['gender'] as String,
+      map['studentId'] as String,
+      map['studentBankAccount'] as String,
+      map['identityCard'] as String,
+      map['birth'] as String,
+      map['bornIn'] as String,
+      map['tel'] as String,
+      map['email'] as String,
     );
   }
 
