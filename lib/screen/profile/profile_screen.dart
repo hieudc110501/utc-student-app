@@ -19,7 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late Future<Student> futureStudent;
   @override
   void initState() {
-    futureStudent = fecthStudent();
+    futureStudent = fecthStudent('191203659', 'datcuu99');
     super.initState();
   }
 
@@ -88,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         ProfileItem(
                           title: 'Họ Và Tên',
-                          content: snapshot.data!.fullName,
+                          content: snapshot.data!.studentName,
                         ),
                         const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 24),
@@ -120,7 +120,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         ProfileItem(
                           title: 'Căn Cước Công Dân',
-                          content: snapshot.data!.identityCard,
+                          content: snapshot.data!.identity,
                         ),
                         const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 24),
@@ -136,7 +136,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         ProfileItem(
                           title: 'Số Tài Khoản',
-                          content: snapshot.data!.studentBankAccount,
+                          content: snapshot.data!.bankAccount,
                         ),
                         const SizedBox(
                           height: 20,

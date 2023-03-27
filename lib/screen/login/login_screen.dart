@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:utc_student_app/request/student_request.dart';
 import 'package:utc_student_app/screen/main_screen.dart';
 import 'package:utc_student_app/utils/asset.dart';
 import 'package:utc_student_app/utils/color.dart';
@@ -92,21 +93,45 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-                child: SampleButton(
-                  text: 'Đăng nhập',
-                  routeName: MainScreen.routeName,
-                  fixedSize: MaterialStatePropertyAll(
-                    Size(
-                      screenSize.width * 0.9,
-                      screenSize.height * 0.075,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [
+                        indigo900,
+                        indigo600,
+                      ],
                     ),
+                    borderRadius: BorderRadius.circular(38),
                   ),
-                  textStyle: const MaterialStatePropertyAll(
-                    TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                  child: ElevatedButton(
+                    onPressed: () => login(controller1.text, controller2.text),
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.transparent),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(38),
+                        ),
+                      ),
+                      elevation: MaterialStateProperty.all(0),
+                      fixedSize: MaterialStatePropertyAll(
+                        Size(
+                          screenSize.width * 0.9,
+                          screenSize.height * 0.075,
+                        ),
+                      ),
+                      //foregroundColor: MaterialStateProperty.all(primaryColorRoseTitleText),
+                      textStyle: const MaterialStatePropertyAll(
+                        TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
+                    child: const Text('Đăng nhập'),
                   ),
                 ),
               ),

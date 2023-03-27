@@ -13,7 +13,7 @@ class _TestcreenState extends State<Testcreen> {
   late Future<Student> futureStudent;
   @override
   void initState() {
-    futureStudent = fecthStudent();
+    futureStudent = fecthStudent('191203659', 'datcuu99');
     super.initState();
   }
 
@@ -26,7 +26,7 @@ class _TestcreenState extends State<Testcreen> {
           future: futureStudent,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return Text(snapshot.data!.fullName.toString());
+              return Text(snapshot.data!.studentName.toString());
             } else if (snapshot.hasError) {
               return Center(child: Text('${snapshot.error}'));
             }
