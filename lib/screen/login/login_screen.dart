@@ -5,7 +5,7 @@ import 'package:utc_student_app/utils/asset.dart';
 import 'package:utc_student_app/utils/color.dart';
 import 'package:utc_student_app/utils/size.dart';
 import 'package:utc_student_app/widgets/input_filed.dart';
-import 'package:utc_student_app/widgets/sample_button.dart';
+import 'package:utc_student_app/widgets/loading/loading_dialog.dart';
 import 'package:utc_student_app/widgets/sample_text.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -25,6 +25,19 @@ class _LoginScreenState extends State<LoginScreen> {
     controller1.dispose();
     controller2.dispose();
     super.dispose();
+  }
+
+  void loginAuth(BuildContext context, username, password) async {
+    bool statusCode = false;
+    loadingDialog(context);
+    statusCode = await login(username, password);
+    if (statusCode) {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        MainScreen.routeName,
+        (route) => false,
+      );
+    } 
   }
 
   @override
@@ -106,7 +119,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.circular(38),
                   ),
                   child: ElevatedButton(
-                    onPressed: () => login(controller1.text, controller2.text),
+                    onPressed: () => loginAuth(
+                      context,
+                      controller1.text,
+                      controller2.text,
+                    ),
                     style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all(Colors.transparent),

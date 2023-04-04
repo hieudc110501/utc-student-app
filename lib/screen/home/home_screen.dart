@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:utc_student_app/utils/color.dart';
 import 'package:utc_student_app/widgets/sample_text.dart';
 
@@ -35,7 +34,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: SafeArea(
+      body: const SafeArea(
         child: Text('Home')
       ),
     );

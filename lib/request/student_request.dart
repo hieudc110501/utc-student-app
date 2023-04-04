@@ -12,10 +12,10 @@ Future<bool> login(String username, String password) async {
   }
 }
 
-
+// lấy thông tin sinh viên
 Future<Student> fecthStudent(String username, String password) async {
   final dio =  Dio();
-  final response = await dio.get("http://192.168.10.47/checkLogged?username=191203659&password=datcuu99");
+  final response = await dio.get("http://192.168.10.47/checkLogged?username=$username&password=$password");
   if (response.statusCode == 200) {
     return Student.fromJson(jsonEncode(response.data));
   } else {

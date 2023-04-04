@@ -1,10 +1,8 @@
 import 'package:device_preview/device_preview.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:utc_student_app/route/router.dart';
 import 'package:utc_student_app/screen/login/login_screen.dart';
-import 'package:utc_student_app/screen/main_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +40,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       onGenerateRoute: (settings) => generateRoute(settings),
-      home: const MainScreen(),
+      home: const LoginScreen(),
     );
   }
 }
