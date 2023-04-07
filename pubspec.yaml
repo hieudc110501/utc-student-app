@@ -42,6 +42,9 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   syncfusion_flutter_charts: ^20.4.54
+  equatable: ^2.0.5
+  bloc: ^8.1.1
+  flutter_bloc: ^8.1.2
 
 dev_dependencies:
   flutter_test:

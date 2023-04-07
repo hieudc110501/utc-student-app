@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:utc_student_app/model/student.dart';
+import 'package:utc_student_app/data/model/student.dart';
 
 Future<bool> login(String username, String password) async {
   final dio =  Dio();

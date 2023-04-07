@@ -1,12 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:utc_student_app/model/student.dart';
-import 'package:utc_student_app/request/student_request.dart';
-import 'package:utc_student_app/screen/profile/widgets/profile_item.dart';
+import 'package:utc_student_app/data/model/student.dart';
+import 'package:utc_student_app/logic/request/student_request.dart';
+import 'package:utc_student_app/presentation/screen/profile/widgets/profile_item.dart';
 
 import 'package:utc_student_app/utils/color.dart';
 import 'package:utc_student_app/utils/size.dart';
-import 'package:utc_student_app/widgets/sample_text.dart';
+import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

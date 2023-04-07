@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:utc_student_app/utils/color.dart';
-import 'package:utc_student_app/widgets/sample_text.dart';
+import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 
 class ScheduleScreen extends StatelessWidget {
   const ScheduleScreen({super.key});

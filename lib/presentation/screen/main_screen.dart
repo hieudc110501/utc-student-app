@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:utc_student_app/screen/home/home_screen.dart';
-import 'package:utc_student_app/screen/mark/mark_screen.dart';
-import 'package:utc_student_app/screen/profile/profile_screen.dart';
-import 'package:utc_student_app/screen/schedule/schedule_screen.dart';
+import 'package:utc_student_app/presentation/screen/home/home_screen.dart';
+import 'package:utc_student_app/presentation/screen/mark/mark_screen.dart';
+import 'package:utc_student_app/presentation/screen/profile/profile_screen.dart';
+import 'package:utc_student_app/presentation/screen/schedule/schedule_screen.dart';
 import 'package:utc_student_app/utils/color.dart';
-import 'package:utc_student_app/widgets/cupertino_tabbar.dart';
+import 'package:utc_student_app/presentation/widgets/cupertino_tabbar.dart';
 
 class MainScreen extends StatefulWidget {
   static const routeName = 'main-screen';
@@ -41,3 +41,4 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 }
+

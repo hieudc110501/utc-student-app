@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:utc_student_app/utils/color.dart';
-import 'package:utc_student_app/widgets/sample_text.dart';
+import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 
 class ProfileItem extends StatelessWidget {
   final String title;

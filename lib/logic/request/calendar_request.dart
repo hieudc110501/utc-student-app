@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:utc_student_app/model/calendar.dart';
+import 'package:utc_student_app/data/model/calendar.dart';
 
 
 //lấy lịch của sinh viên
