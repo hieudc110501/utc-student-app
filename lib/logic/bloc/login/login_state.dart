@@ -1,26 +1,46 @@
 import 'package:equatable/equatable.dart';
 
 abstract class LoginState extends Equatable {
-  const LoginState();
+  final bool isLoading;
+  final String? message;
+  const LoginState(
+    this.isLoading,
+    this.message,
+  );
 
   @override
   List<Object> get props => [];
 }
 
-class LoginStateInitial extends LoginState {}
+class LoginStateInitial extends LoginState {
+  const LoginStateInitial(
+    super.isLoading,
+    super.message,
+  );
+}
 
-class LoginStateLoading extends LoginState {}
+class LoginStateLoading extends LoginState {
+  const LoginStateLoading(
+    super.isLoading,
+    super.message,
+  );
+}
 
-class LoginStateSuccess extends LoginState {}
+class LoginStateSuccess extends LoginState {
+  const LoginStateSuccess(
+    super.isLoading,
+    super.message,
+  );
+}
 
 class LoginStateFailure extends LoginState {
   final String error;
 
-  const LoginStateFailure(this.error);
+  const LoginStateFailure(this.error) : super(false, 'Đăng nhập thất bại');
 
   @override
   List<Object> get props => [];
 
   @override
-  String toString()  => 'Đăng nhập thất bại {$error}';
+  String toString() => 'Đăng nhập thất bại {$error}';
 }

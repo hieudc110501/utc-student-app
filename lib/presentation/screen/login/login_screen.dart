@@ -4,6 +4,7 @@ import 'package:utc_student_app/logic/bloc/login/login_bloc.dart';
 import 'package:utc_student_app/logic/bloc/login/login_event.dart';
 import 'package:utc_student_app/logic/bloc/login/login_state.dart';
 import 'package:utc_student_app/presentation/screen/error/error_screen.dart';
+import 'package:utc_student_app/presentation/screen/loading/loading_screen.dart';
 import 'package:utc_student_app/presentation/screen/main_screen.dart';
 import 'package:utc_student_app/presentation/widgets/loading/loading_dialog.dart';
 import 'package:utc_student_app/utils/asset.dart';
@@ -36,10 +37,12 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state is LoginStateFailure) {
-          Navigator.pushNamed(context, ErrorScreen.routeName);
+          LoadingScreen.instance().hide();
+          loadingDialog(context, state.message!);
         } else if (state is LoginStateLoading) {
-          loadingDialog(context);
+          LoadingScreen.instance().show(context: context, text: state.message!);
         } else if (state is LoginStateSuccess) {
+          LoadingScreen.instance().hide();
           Navigator.pushNamed(context, MainScreen.routeName);
         }
       },
@@ -95,12 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const Expanded(
                 flex: 1,
-                child: SampleText(
-                  text: '*Bạn đã nhập sai mật khẩu',
-                  fontWeight: FontWeight.w500,
-                  size: 14,
-                  color: rose500,
-                ),
+                child: SizedBox(),
               ),
               Flexible(
                 flex: 2,

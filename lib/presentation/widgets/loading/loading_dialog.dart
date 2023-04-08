@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:utc_student_app/utils/color.dart';
 import 'package:utc_student_app/utils/size.dart';
-import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 
-Future<void> loadingDialog(BuildContext context) {
+Future<void> loadingDialog(
+    BuildContext context, String message) {
   return showDialog<void>(
     context: context,
     builder: (BuildContext context) {
@@ -25,20 +24,34 @@ Future<void> loadingDialog(BuildContext context) {
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               Expanded(
                 flex: 2,
                 child: Center(
-                  child: CircularProgressIndicator(),
+                  child: Text(
+                    message,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
               ),
               Expanded(
                 flex: 1,
-                child: SampleText(
-                  text: 'Đang đồng bộ dữ liệu...',
-                  fontWeight: FontWeight.w500,
-                  size: 14,
-                  color: grey700,
+                child: TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(Colors.amber),
+                  ),
+                  child: const Text(
+                    'Xác nhận',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ),
               ),
             ],
