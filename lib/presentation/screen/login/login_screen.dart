@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utc_student_app/logic/bloc/login/login_bloc.dart';
 import 'package:utc_student_app/logic/bloc/login/login_event.dart';
 import 'package:utc_student_app/logic/bloc/login/login_state.dart';
-import 'package:utc_student_app/presentation/screen/error/error_screen.dart';
 import 'package:utc_student_app/presentation/screen/loading/loading_screen.dart';
 import 'package:utc_student_app/presentation/screen/main_screen.dart';
 import 'package:utc_student_app/presentation/widgets/loading/loading_dialog.dart';
@@ -27,9 +27,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    controller1.dispose();
-    controller2.dispose();
     super.dispose();
+  }
+
+  void saveUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('username', controller1.text);
+    await prefs.setString('password', controller2.text);
   }
 
   @override
@@ -43,6 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
           LoadingScreen.instance().show(context: context, text: state.message!);
         } else if (state is LoginStateSuccess) {
           LoadingScreen.instance().hide();
+          saveUser();
           Navigator.pushNamed(context, MainScreen.routeName);
         }
       },

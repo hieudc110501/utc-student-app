@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:utc_student_app/logic/repositories/student_repository.dart';
 import 'package:utc_student_app/presentation/screen/home/home_screen.dart';
 import 'package:utc_student_app/presentation/screen/mark/mark_screen.dart';
 import 'package:utc_student_app/presentation/screen/profile/profile_screen.dart';
@@ -17,6 +19,15 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int currentTab = 0;
   int index = 0;
+  late Future<bool> fetchData;
+  late final SharedPreferences prefs;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData = syncData('191203659', 'datcuu99');
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> screens = [
@@ -27,7 +38,17 @@ class _MainScreenState extends State<MainScreen> {
     ];
     return Scaffold(
       backgroundColor: whiteText,
-      body: screens[index],
+      body: FutureBuilder<bool>(
+        future: fetchData,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return screens[index];
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      ),
       bottomNavigationBar: CupertinoTabbarWidget(
         index: index,
         onChangedTab: onChangedTab,
@@ -41,4 +62,3 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 }
-
