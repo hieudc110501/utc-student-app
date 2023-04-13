@@ -13,7 +13,7 @@ Future<bool> login(String username, String password) async {
 }
 
 // lấy thông tin sinh viên
-Future<Student> fecthStudent(String username, String password) async {
+Future<Student> fecthStudent(String username) async {
   final dio =  Dio();
   final response = await dio.get("http://192.168.10.47/getStudentByUsername/$username");
   if (response.statusCode == 200) {

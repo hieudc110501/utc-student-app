@@ -1,9 +1,12 @@
 import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:utc_student_app/logic/bloc/login/login_bloc.dart';
 import 'package:utc_student_app/logic/repositories/student_repository.dart';
+import 'package:utc_student_app/presentation/screen/mark/mark_screen.dart';
+import 'package:utc_student_app/presentation/screen/schedule/schedule_screen.dart';
 import 'package:utc_student_app/route/router.dart';
 import 'package:utc_student_app/presentation/screen/login/login_screen.dart';
 
@@ -46,7 +49,7 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: (settings) => generateRoute(settings),
       home: BlocProvider<LoginBloc>(
         create: (context) => LoginBloc(studentRepository),
-        child: const LoginScreen(),
+        child: const MarkScreen(),
       ),
     );
   }

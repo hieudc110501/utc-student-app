@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:utc_student_app/data/model/mark.dart';
+import 'package:utc_student_app/logic/request/mark_request.dart';
+import 'package:utc_student_app/presentation/screen/mark/widgets/mark_item.dart';
 import 'package:utc_student_app/utils/color.dart';
 import 'package:utc_student_app/utils/size.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 
-class MarkScreen extends StatelessWidget {
+class MarkScreen extends StatefulWidget {
   const MarkScreen({super.key});
+
+  @override
+  State<MarkScreen> createState() => _MarkScreenState();
+}
+
+class _MarkScreenState extends State<MarkScreen> {
+  late Future<List<Mark>> listMark;
+  @override
+  void initState() {
+    listMark = fecthMark('191203659');
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -276,6 +291,95 @@ class MarkScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              SizedBox(
+                height: 35,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: blue400,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: const Center(
+                          child: SampleText(
+                            text: 'MÔN',
+                            fontWeight: FontWeight.w600,
+                            size: 14,
+                            color: whiteText,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Expanded(
+                      child: Center(
+                        child: SampleText(
+                          text: 'DQT',
+                          fontWeight: FontWeight.w600,
+                          size: 14,
+                          color: grey700,
+                        ),
+                      ),
+                    ),
+                    const Expanded(
+                      child: Center(
+                        child: SampleText(
+                          text: 'THI',
+                          fontWeight: FontWeight.w600,
+                          size: 14,
+                          color: grey700,
+                        ),
+                      ),
+                    ),
+                    const Expanded(
+                      child: Center(
+                        child: SampleText(
+                          text: 'TKHP',
+                          fontWeight: FontWeight.w600,
+                          size: 14,
+                          color: grey700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                color: whiteText,
+                height: 200,
+                child: ListView.builder(
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return MarkItem(mon: 'a', dqt: '1', thi: '1', tkhp: '1');
+                  },
+                ),
+              ),
+              FutureBuilder(
+                future: listMark,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    print(snapshot.data!.first.dqt);
+                    print(snapshot.data!.first.moduleCredit);
+
+                    print(snapshot.data!.first.moduleId);
+                    print(snapshot.data!.first.studentId);
+                    print(snapshot.data!.first.studentModuleId);
+
+                    print(snapshot.data!.first.thi);
+
+                    print(snapshot.data!.first.times);
+
+                    print(snapshot.data!.first.timesId);
+                    print(snapshot.data!.first.tkhp);
+
+
+                  }
+                  return CircularProgressIndicator();
+                },
+              )
             ],
           ),
         ),

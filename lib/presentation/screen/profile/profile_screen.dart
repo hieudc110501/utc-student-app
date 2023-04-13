@@ -19,7 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late Future<Student> futureStudent;
   @override
   void initState() {
-    futureStudent = fecthStudent('191203659', 'datcuu99');
+    futureStudent = fecthStudent('191203659');
     super.initState();
   }
 
