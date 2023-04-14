@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:utc_student_app/data/model/mark.dart';
+import 'package:utc_student_app/data/models/mark.dart';
 import 'package:utc_student_app/logic/request/mark_request.dart';
-import 'package:utc_student_app/presentation/screen/mark/widgets/mark_item.dart';
+import 'package:utc_student_app/presentation/widgets/mark/mark_item.dart';
 import 'package:utc_student_app/utils/color.dart';
 import 'package:utc_student_app/utils/size.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';

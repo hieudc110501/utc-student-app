@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:utc_student_app/logic/bloc/login/login_event.dart';
-import 'package:utc_student_app/logic/bloc/login/login_state.dart';
+import 'package:utc_student_app/presentation/bloc/login/login_event.dart';
+import 'package:utc_student_app/presentation/bloc/login/login_state.dart';
 import 'package:utc_student_app/logic/repositories/student_repository.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {

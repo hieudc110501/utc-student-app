@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:utc_student_app/logic/bloc/login/login_bloc.dart';
-import 'package:utc_student_app/logic/bloc/login/login_event.dart';
-import 'package:utc_student_app/logic/bloc/login/login_state.dart';
+import 'package:utc_student_app/presentation/bloc/login/login_bloc.dart';
+import 'package:utc_student_app/presentation/bloc/login/login_event.dart';
+import 'package:utc_student_app/presentation/bloc/login/login_state.dart';
 import 'package:utc_student_app/presentation/screen/loading/loading_screen.dart';
 import 'package:utc_student_app/presentation/screen/main_screen.dart';
 import 'package:utc_student_app/presentation/widgets/loading/loading_dialog.dart';

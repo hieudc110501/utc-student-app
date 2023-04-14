@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:utc_student_app/data/model/mark.dart';
+import 'package:utc_student_app/data/models/mark.dart';
 
 Future<List<Mark>> fecthMark(String username) async {
   final dio =  Dio();

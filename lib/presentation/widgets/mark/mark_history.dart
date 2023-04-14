@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:utc_student_app/presentation/screen/mark/widgets/mark_item.dart';
+import 'package:utc_student_app/presentation/widgets/mark/mark_item.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 import 'package:utc_student_app/utils/color.dart';
 
@@ -44,7 +44,7 @@ class MarkHistory extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: ListView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             children: [
               SizedBox(
                 height: 35,
