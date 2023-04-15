@@ -1,3 +1,4 @@
+import 'package:utc_student_app/data/models/calendar.dart';
 import 'package:utc_student_app/data/models/mark.dart';
 import 'package:utc_student_app/data/models/student.dart';
 import 'package:utc_student_app/data/repositories/student/student_provider.dart';
@@ -11,5 +12,9 @@ class StudentRepository {
 
   Future<List<Mark>> fetchMark(String username) {
     return _provider.fetchMark(username);
+  }
+
+  Future<List<Calendar>> fetchSchedule(String username) {
+    return _provider.fetchSchedule(username);
   }
 }

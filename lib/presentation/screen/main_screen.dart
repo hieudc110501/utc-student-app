@@ -61,6 +61,7 @@ class _MainScreenState extends State<MainScreen> {
       case 0:
         break;
       case 1:
+        _studentBloc.add(const StudentEventLoadSchedule('191203659'));
         break;
       case 2:
         _studentBloc.add(const StudentEventLoadMark('191203659'));

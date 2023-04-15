@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:utc_student_app/data/models/calendar.dart';
 import 'package:utc_student_app/data/models/mark.dart';
 import 'package:utc_student_app/data/models/student.dart';
-import 'package:utc_student_app/utils/constant.dart';
+import 'package:utc_student_app/utils/url.dart';
 
 class StudentProvider {
   final Dio _dio = Dio();
@@ -35,6 +36,23 @@ class StudentProvider {
       }
     } catch (e) {
       throw Exception('load student data fail');
+    }
+  }
+
+  //lấy lịch sinh viên
+  Future<List<Calendar>> fetchSchedule(String username) async {
+    try {
+      final response = await _dio.get('$getScheduleById$username');
+      if (response.statusCode == 200) {
+        List schedule = response.data;
+        List<Calendar> calendar =
+            schedule.map((e) => Calendar.fromJson(jsonEncode(e))).toList();
+        return calendar;
+      } else {
+        throw Exception('Fail to load Student data');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
     }
   }
 }

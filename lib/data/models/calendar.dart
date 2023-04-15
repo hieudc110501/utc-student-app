@@ -2,42 +2,53 @@
 import 'dart:convert';
 
 class Calendar {
-  final int subjectdetailId;
-  final int studentSubjectTermId;
-  final DateTime startDay;
-  final DateTime endDay;
-  final String? lesson;
-  final String? weekday;
+  final String termId;
+  final num studentSubjectTermId;
+  final num subjectId;
+  final num subjectdetailId;
+  final String startDay;
+  final String endDay;
+  final DateTime? lesson;
+  final DateTime? weekday;
+  final String subjectName;
 
   Calendar(
-    this.subjectdetailId,
+    this.termId,
     this.studentSubjectTermId,
+    this.subjectId,
+    this.subjectdetailId,
     this.startDay,
     this.endDay,
     this.lesson,
     this.weekday,
+    this.subjectName,
   );
-
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'subjectdetailId': subjectdetailId,
+      'termId': termId,
       'studentSubjectTermId': studentSubjectTermId,
-      'startDay': startDay.millisecondsSinceEpoch,
-      'endDay': endDay.millisecondsSinceEpoch,
-      'lesson': lesson,
-      'weekday': weekday,
+      'subjectId': subjectId,
+      'subjectdetailId': subjectdetailId,
+      'startDay': startDay,
+      'endDay': endDay,
+      'lesson': lesson?.millisecondsSinceEpoch,
+      'weekday': weekday?.millisecondsSinceEpoch,
+      'subjectName': subjectName,
     };
   }
 
   factory Calendar.fromMap(Map<String, dynamic> map) {
     return Calendar(
-      map['subjectdetailId'] as int,
-      map['studentSubjectTermId'] as int,
-      DateTime.fromMillisecondsSinceEpoch(map['startDay'] as int),
-      DateTime.fromMillisecondsSinceEpoch(map['endDay'] as int),
-      map['lesson'] != null ? map['lesson'] as String : null,
-      map['weekday'] != null ? map['weekday'] as String : null,
+      map['termId'] as String,
+      map['studentSubjectTermId'] as num,
+      map['subjectId'] as num,
+      map['subjectdetailId'] as num,
+      map['startDay'] as String,
+      map['endDay'] as String,
+      map['lesson'] != null ? DateTime.fromMillisecondsSinceEpoch(map['lesson'] as int) : null,
+      map['weekday'] != null ? DateTime.fromMillisecondsSinceEpoch(map['weekday'] as int) : null,
+      map['subjectName'] as String,
     );
   }
 

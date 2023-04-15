@@ -4,16 +4,21 @@ import 'package:equatable/equatable.dart';
 abstract class StudentEvent extends Equatable {
   final String username;
   const StudentEvent(this.username);
+  @override
+  List<Object?> get props => [username];
 }
 
+//thông tin sv
 class StudentEventLoadData extends StudentEvent {
   const StudentEventLoadData(super.username);
-  @override
-  List<Object?> get props => [username];
 }
 
+//điểm sv
 class StudentEventLoadMark extends StudentEvent {
   const StudentEventLoadMark(super.username);
-  @override
-  List<Object?> get props => [username];
+}
+
+//lịch sv
+class StudentEventLoadSchedule extends StudentEvent {
+  const StudentEventLoadSchedule(super.username);
 }

@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:utc_student_app/utils/constant.dart';
+import 'package:utc_student_app/utils/url.dart';
 
 class StudentRepository {
   //kiểm tra login

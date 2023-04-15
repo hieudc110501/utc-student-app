@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
+import 'package:utc_student_app/data/models/calendar.dart';
 import 'package:utc_student_app/data/models/mark.dart';
 import 'package:utc_student_app/data/models/student.dart';
 
@@ -24,6 +25,12 @@ class StudentStateMarkSuccess extends StudentState {
   const StudentStateMarkSuccess(this.listMark);
 }
 
+class StudentStateScheduleSuccess extends StudentState {
+  final List<Calendar> listCalendar;
+  const StudentStateScheduleSuccess(this.listCalendar);
+}
+
 class StudentStateError extends StudentState {
-  const StudentStateError();
+  final String error;
+  const StudentStateError(this.error);
 }
