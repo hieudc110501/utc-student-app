@@ -29,13 +29,12 @@ class MarkItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
-            child: Center(
-              child: SampleText(
-                text: mon,
-                fontWeight: FontWeight.w400,
-                size: 14,
-                color: grey700,
-              ),
+            flex: 2,
+            child: SampleText(
+              text: mon,
+              fontWeight: FontWeight.w400,
+              size: 14,
+              color: grey700,
             ),
           ),
           Expanded(

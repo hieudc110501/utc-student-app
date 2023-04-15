@@ -24,6 +24,7 @@ class SampleText extends StatelessWidget {
       ).copyWith(
         color: color,
       ),
+      textAlign: TextAlign.left,
     );
   }
 }

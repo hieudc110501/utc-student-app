@@ -1,33 +1,29 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
+import 'package:utc_student_app/data/models/mark.dart';
 import 'package:utc_student_app/data/models/student.dart';
 
 abstract class StudentState extends Equatable {
-  final bool isLoading;
-  const StudentState({
-    required this.isLoading,
-  });
+  const StudentState();
 
   @override
   List<Object> get props => [];
 }
 
 class StudentStateInitial extends StudentState {
-  const StudentStateInitial({
-    required super.isLoading,
-  });
+  const StudentStateInitial();
 }
 
-class StudentStateSuccess extends StudentState {
+class StudentStateInfoSuccess extends StudentState {
   final Student student;
-  const StudentStateSuccess(
-    this.student, {
-    required super.isLoading,
-  });
+  const StudentStateInfoSuccess(this.student);
+}
+
+class StudentStateMarkSuccess extends StudentState {
+  final List<Mark> listMark;
+  const StudentStateMarkSuccess(this.listMark);
 }
 
 class StudentStateError extends StudentState {
-  const StudentStateError({
-    required super.isLoading,
-  });
+  const StudentStateError();
 }

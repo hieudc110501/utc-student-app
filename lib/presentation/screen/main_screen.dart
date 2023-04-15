@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utc_student_app/logic/repositories/student_repository.dart';
+import 'package:utc_student_app/presentation/bloc/student/student_bloc.dart';
+import 'package:utc_student_app/presentation/bloc/student/student_event.dart';
 import 'package:utc_student_app/presentation/screen/home/home_screen.dart';
 import 'package:utc_student_app/presentation/screen/mark/mark_screen.dart';
 import 'package:utc_student_app/presentation/screen/profile/profile_screen.dart';
@@ -21,6 +24,7 @@ class _MainScreenState extends State<MainScreen> {
   int index = 0;
   late Future<bool> fetchData;
   late final SharedPreferences prefs;
+  final StudentBloc _studentBloc = StudentBloc();
 
   @override
   void initState() {
@@ -36,22 +40,15 @@ class _MainScreenState extends State<MainScreen> {
       const MarkScreen(),
       const ProfileScreen(),
     ];
-    return Scaffold(
-      backgroundColor: whiteText,
-      body: FutureBuilder<bool>(
-        future: fetchData,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return screens[index];
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
-      bottomNavigationBar: CupertinoTabbarWidget(
-        index: index,
-        onChangedTab: onChangedTab,
+    return BlocProvider<StudentBloc>(
+      create: (context) => _studentBloc,
+      child: Scaffold(
+        backgroundColor: whiteText,
+        body: screens[index],
+        bottomNavigationBar: CupertinoTabbarWidget(
+          index: index,
+          onChangedTab: onChangedTab,
+        ),
       ),
     );
   }
@@ -60,5 +57,19 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {
       this.index = index;
     });
+    switch (index) {
+      case 0:
+        break;
+      case 1:
+        break;
+      case 2:
+        _studentBloc.add(const StudentEventLoadMark('191203659'));
+        break;
+      case 3:
+        _studentBloc.add(const StudentEventLoadData('191203659'));
+        break;
+      default:
+        break;
+    }
   }
 }

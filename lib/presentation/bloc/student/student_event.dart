@@ -2,15 +2,18 @@
 import 'package:equatable/equatable.dart';
 
 abstract class StudentEvent extends Equatable {
-  const StudentEvent();
+  final String username;
+  const StudentEvent(this.username);
 }
 
 class StudentEventLoadData extends StudentEvent {
-  final String username;
-  const StudentEventLoadData({
-    required this.username,
-  });
-  
+  const StudentEventLoadData(super.username);
+  @override
+  List<Object?> get props => [username];
+}
+
+class StudentEventLoadMark extends StudentEvent {
+  const StudentEventLoadMark(super.username);
   @override
   List<Object?> get props => [username];
 }
