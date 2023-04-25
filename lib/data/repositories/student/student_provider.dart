@@ -10,6 +10,42 @@ class StudentProvider {
   final Dio _dio = Dio();
 
   //lấy thông tin sinh viên
+  Future<bool> login(String username, String password) async {
+    try {
+      final response = await _dio.post('${httpLogin}postLogin', data: {
+        'username': username,
+        'password': password,
+      });
+      if (response.statusCode == 200) {
+        if (response.data == true) {
+          return true;
+        }
+      }
+      return false;
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  //đồng bộ dữ liệu sinh viên
+  Future<bool> syncData(String username, String password) async {
+    try {
+      final response = await _dio.post(newsInsert, data: {
+        'username': username,
+        'password': password,
+      });
+      if (response.statusCode == 200) {
+        if (response.data == true) {
+          return true;
+        }
+      }
+      return false;
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  //lấy thông tin sinh viên
   Future<Student> fetchStudent(String username) async {
     try {
       final response = await _dio.get('$getStudentByUsername$username');

@@ -2,6 +2,9 @@ import 'package:equatable/equatable.dart';
 
 abstract class LoginEvent extends Equatable {
   const LoginEvent();
+
+  @override
+  List<Object?> get props => [];
 }
 
 class LoginEventSubmit extends LoginEvent {
@@ -12,10 +15,4 @@ class LoginEventSubmit extends LoginEvent {
     this.username,
     this.password,
   );
-  
-  @override
-  List<Object?> get props => [username, password];
-
-  @override
-  String toString() => 'LoginSubmit username: {username: $username, password: $password}';
 }

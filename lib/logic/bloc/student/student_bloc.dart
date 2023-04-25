@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:utc_student_app/data/repositories/student/student_repostitory.dart';
-import 'package:utc_student_app/presentation/bloc/student/student_event.dart';
-import 'package:utc_student_app/presentation/bloc/student/student_state.dart';
+import 'package:utc_student_app/logic/bloc/student/student_event.dart';
+import 'package:utc_student_app/logic/bloc/student/student_state.dart';
 
 class StudentBloc extends Bloc<StudentEvent, StudentState> {
-  StudentBloc() : super(const StudentStateInitial()) {
+  StudentBloc() : super(StudentStateInitial(isLoading: false)) {
     final StudentRepository studentRepository = StudentRepository();
 
     //lấy thông tin

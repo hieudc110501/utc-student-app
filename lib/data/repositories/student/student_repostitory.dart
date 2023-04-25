@@ -6,6 +6,11 @@ import 'package:utc_student_app/data/repositories/student/student_provider.dart'
 class StudentRepository {
 
   final _provider =  StudentProvider();
+  
+  Future<bool> login(String username, String password) {
+    return _provider.login(username, password);
+  }
+
   Future<Student> fetchStudent(String username) {
     return _provider.fetchStudent(username);
   }

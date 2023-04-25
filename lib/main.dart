@@ -1,15 +1,37 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:utc_student_app/presentation/bloc/login/login_bloc.dart';
-import 'package:utc_student_app/logic/repositories/student_repository.dart';
+import 'package:utc_student_app/logic/bloc/login/login_bloc.dart';
+import 'package:utc_student_app/logic/bloc/student/student_bloc.dart';
+import 'package:utc_student_app/presentation/screen/main_screen.dart';
 import 'package:utc_student_app/router/router.dart';
-import 'package:utc_student_app/presentation/screen/login/login_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+  ));
+  SystemChrome.setPreferredOrientations(
+    [
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ],
+  );
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<LoginBloc>(
+          create: (BuildContext context) => LoginBloc(),
+        ),
+        BlocProvider<StudentBloc>(
+          create: (BuildContext context) => StudentBloc(),
+        ),
+      ],
+      child: const MyApp(),
+    ), //
+  );
   // runApp(
   //   DevicePreview(
   //     enabled: !kReleaseMode,
@@ -24,7 +46,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final StudentRepository studentRepository = StudentRepository();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       useInheritedMediaQuery: true,
@@ -44,9 +65,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       onGenerateRoute: (settings) => generateRoute(settings),
-      home: BlocProvider<LoginBloc>(
-        create: (context) => LoginBloc(studentRepository),
-        child: const LoginScreen(),
+      home: const MainScreen(
+        username: '',
+        password: '',
       ),
     );
   }

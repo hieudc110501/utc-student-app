@@ -1,19 +1,26 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:utc_student_app/logic/repositories/student_repository.dart';
-import 'package:utc_student_app/presentation/bloc/student/student_bloc.dart';
-import 'package:utc_student_app/presentation/bloc/student/student_event.dart';
+
+import 'package:utc_student_app/logic/bloc/student/student_bloc.dart';
+import 'package:utc_student_app/logic/bloc/student/student_event.dart';
+import 'package:utc_student_app/logic/bloc/student/student_state.dart';
 import 'package:utc_student_app/presentation/screen/home/home_screen.dart';
 import 'package:utc_student_app/presentation/screen/mark/mark_screen.dart';
 import 'package:utc_student_app/presentation/screen/profile/profile_screen.dart';
 import 'package:utc_student_app/presentation/screen/schedule/schedule_screen.dart';
-import 'package:utc_student_app/utils/color.dart';
 import 'package:utc_student_app/presentation/widgets/cupertino_tabbar.dart';
+import 'package:utc_student_app/utils/color.dart';
 
 class MainScreen extends StatefulWidget {
   static const routeName = 'main-screen';
-  const MainScreen({super.key});
+  final String username;
+  final String password;
+  const MainScreen({
+    Key? key,
+    required this.username,
+    required this.password,
+  }) : super(key: key);
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -22,14 +29,10 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int currentTab = 0;
   int index = 0;
-  late Future<bool> fetchData;
-  late final SharedPreferences prefs;
-  final StudentBloc _studentBloc = StudentBloc();
 
   @override
   void initState() {
     super.initState();
-    fetchData = syncData('191203659', 'datcuu99');
   }
 
   @override
@@ -40,15 +43,12 @@ class _MainScreenState extends State<MainScreen> {
       const MarkScreen(),
       const ProfileScreen(),
     ];
-    return BlocProvider<StudentBloc>(
-      create: (context) => _studentBloc,
-      child: Scaffold(
-        backgroundColor: whiteText,
-        body: screens[index],
-        bottomNavigationBar: CupertinoTabbarWidget(
-          index: index,
-          onChangedTab: onChangedTab,
-        ),
+    return Scaffold(
+      backgroundColor: whiteText,
+      body: screens[index],
+      bottomNavigationBar: CupertinoTabbarWidget(
+        index: index,
+        onChangedTab: onChangedTab,
       ),
     );
   }
@@ -57,20 +57,26 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {
       this.index = index;
     });
-    switch (index) {
-      case 0:
-        break;
-      case 1:
-        _studentBloc.add(const StudentEventLoadSchedule('191203659'));
-        break;
-      case 2:
-        _studentBloc.add(const StudentEventLoadMark('191203659'));
-        break;
-      case 3:
-        _studentBloc.add(const StudentEventLoadData('191203659'));
-        break;
-      default:
-        break;
-    }
+    // switch (index) {
+    //   case 0:
+    //     break;
+    //   case 1:
+    //     context
+    //         .read<StudentBloc>()
+    //         .add(const StudentEventLoadSchedule('191203659'));
+    //     break;
+    //   case 2:
+    //     context
+    //         .read<StudentBloc>()
+    //         .add(const StudentEventLoadMark('191203659'));
+    //     break;
+    //   case 3:
+    //     context
+    //         .read<StudentBloc>()
+    //         .add(const StudentEventLoadData('191203659'));
+    //     break;
+    //   default:
+    //     break;
+    // }
   }
 }
