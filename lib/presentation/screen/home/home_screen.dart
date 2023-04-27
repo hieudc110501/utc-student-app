@@ -1,6 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:utc_student_app/presentation/screen/home/home_news_screen.dart';
 import 'package:utc_student_app/presentation/widgets/home/home_box.dart';
+import 'package:utc_student_app/presentation/widgets/home/home_news_item.dart';
 
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 import 'package:utc_student_app/utils/color.dart';
@@ -100,6 +103,13 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 30),
+              const SampleText(
+                text: 'DANH MỤC CHÍNH',
+                fontWeight: FontWeight.w700,
+                size: 16,
+                color: grey700,
+              ),
               const SizedBox(height: 10),
               Row(
                 children: const [
@@ -131,6 +141,66 @@ class HomeScreen extends StatelessWidget {
                     text: 'Tra cứu học phí',
                   ),
                 ],
+              ),
+              const SizedBox(height: 30),
+              SampleText(
+                text:
+                    'LỊCH HÔM NAY (${DateFormat('yyyy-MM-dd').format(DateTime.now())})',
+                fontWeight: FontWeight.w700,
+                size: 16,
+                color: grey700,
+              ),
+              const SizedBox(height: 10),
+              Container(
+                height: 150,
+                decoration: BoxDecoration(
+                  color: whiteText,
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12.withAlpha(10),
+                      spreadRadius: 4,
+                      blurRadius: 10,
+                      offset: const Offset(0, 0),
+                    ),
+                  ],
+                ),
+                child: const Center(
+                  child: SampleText(
+                    text: 'Ngày hôm nay không có lịch nào',
+                    fontWeight: FontWeight.w400,
+                    size: 14,
+                    color: grey500,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children:  [
+                  const SampleText(
+                    text: 'THÔNG TIN ĐÁNG CHÚ Ý',
+                    fontWeight: FontWeight.w700,
+                    size: 16,
+                    color: grey700,
+                  ),
+                  InkWell(
+                    onTap: () => Navigator.pushNamed(context, HomeNewsScreen.routeName),
+                    child: const SampleText(
+                      text: 'Xem thêm',
+                      fontWeight: FontWeight.w600,
+                      size: 14,
+                      color: grey500,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              const HomeNewsItem(
+                title: 'Thông báo về việc tổ chức học kỳ hè năm học 2022-2023',
+                text:
+                    'Căn cứ kế hoạch học tập năm học 2022-2023, Nhà trường thông báo tổ chức học kỳ hè (đợt 5) năm học 2022-2023 cho các lớp đaiị học chính quy khóa 62 trở về trước. SV xem thông tin cụ thể trong file đính kèm. Trân trọng!',
+                date: '24/04/2023',
               ),
             ],
           ),

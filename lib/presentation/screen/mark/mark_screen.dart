@@ -4,6 +4,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:utc_student_app/logic/bloc/student/student_bloc.dart';
 import 'package:utc_student_app/logic/bloc/student/student_event.dart';
 import 'package:utc_student_app/logic/bloc/student/student_state.dart';
+import 'package:utc_student_app/presentation/screen/mark/mark_detail_screen.dart';
 import 'package:utc_student_app/presentation/widgets/mark/mark_item.dart';
 import 'package:utc_student_app/utils/color.dart';
 import 'package:utc_student_app/utils/size.dart';
@@ -26,12 +27,16 @@ class _MarkScreenState extends State<MarkScreen> {
   Widget build(BuildContext context) {
     const double heightChart = 380;
     final List<ChartData> chartData = [
-      ChartData('Test 1', 2.84),
-      ChartData('Test 2', 3.2),
-      ChartData('Test 3', 3.6),
-      ChartData('Test 4', 2.5),
-      ChartData('Test 5', 1.5),
-      ChartData('Test 6', 3),
+      ChartData('1', 2.84),
+      ChartData('2', 3.2),
+      ChartData('3', 3.6),
+      ChartData('4', 2.5),
+      ChartData('5', 1.5),
+      ChartData('6', 3),
+      ChartData('7', 3),
+      ChartData('8', 3),
+      ChartData('9', 3),
+      ChartData('10', 3),
     ];
     return Scaffold(
       appBar: AppBar(
@@ -62,7 +67,7 @@ class _MarkScreenState extends State<MarkScreen> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(16),
           child: ListView(
             children: [
               Container(
@@ -93,7 +98,7 @@ class _MarkScreenState extends State<MarkScreen> {
                           right: 0,
                           child: SizedBox(
                             height: heightChart,
-                            width: screenSize.width * 0.76,
+                            width: screenSize.width * 0.82,
                             child: Column(
                               children: [
                                 Container(
@@ -158,10 +163,11 @@ class _MarkScreenState extends State<MarkScreen> {
                                 yValueMapper: (ChartData data, _) => data.y,
                                 // Renders the marker
                                 markerSettings: const MarkerSettings(
-                                    isVisible: true,
-                                    borderColor: blue600,
-                                    height: 12,
-                                    width: 12),
+                                  isVisible: true,
+                                  borderColor: blue600,
+                                  height: 8,
+                                  width: 8,
+                                ),
                                 dataLabelSettings: DataLabelSettings(
                                   isVisible: true,
                                   labelAlignment: ChartDataLabelAlignment.top,
@@ -282,7 +288,9 @@ class _MarkScreenState extends State<MarkScreen> {
                   style: const ButtonStyle(
                       overlayColor:
                           MaterialStatePropertyAll(Colors.transparent)),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, MarkDetailScreen.routeName);
+                  },
                   child: const SampleText(
                     text: 'Xem thêm',
                     fontWeight: FontWeight.w400,
@@ -296,7 +304,7 @@ class _MarkScreenState extends State<MarkScreen> {
                 child: Row(
                   children: [
                     Expanded(
-                      flex: 2,
+                      flex: 4,
                       child: Container(
                         decoration: BoxDecoration(
                           color: blue400,
@@ -304,7 +312,7 @@ class _MarkScreenState extends State<MarkScreen> {
                         ),
                         child: const Center(
                           child: SampleText(
-                            text: 'MÔN',
+                            text: 'HỌC PHẦN',
                             fontWeight: FontWeight.w600,
                             size: 14,
                             color: whiteText,
@@ -348,21 +356,21 @@ class _MarkScreenState extends State<MarkScreen> {
               const SizedBox(
                 height: 10,
               ),
-              // Container(
-              //   color: whiteText,
-              //   height: 200,
-              //   child: ListView.builder(
-              //     itemCount: state.listMark.length,
-              //     itemBuilder: (context, index) {
-              //       return MarkItem(
-              //         mon: state.listMark[index].moduleName,
-              //         dqt: state.listMark[index].dqt.toString(),
-              //         thi: state.listMark[index].thi.toString(),
-              //         tkhp: state.listMark[index].tkhp.toString(),
-              //       );
-              //     },
-              //   ),
-              // ),
+              Container(
+                color: whiteText,
+                height: 200,
+                child: ListView.builder(
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return const MarkItem(
+                      mon: 'Hệ điều hành',
+                      dqt: '10',
+                      thi: '10',
+                      tkhp: '10',
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),

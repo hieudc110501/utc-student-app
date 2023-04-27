@@ -1,7 +1,10 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:utc_student_app/utils/color.dart';
+
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
+import 'package:utc_student_app/presentation/widgets/schedule/schedule_item.dart';
+import 'package:utc_student_app/utils/color.dart';
 
 class ScheduleScreen extends StatelessWidget {
   const ScheduleScreen({super.key});
@@ -14,7 +17,7 @@ class ScheduleScreen extends StatelessWidget {
         title: const Align(
           alignment: Alignment.centerLeft,
           child: SampleText(
-            text: 'Thời khóa biểu',
+            text: 'Thời Khóa Biểu',
             fontWeight: FontWeight.w600,
             size: 18,
             color: whiteText,
@@ -104,6 +107,33 @@ class ScheduleScreen extends StatelessWidget {
                     // ),
                   ),
                   onDaySelected: (selectedDay, focusedDay) {},
+                ),
+              ),
+              const SizedBox(height: 30),
+              const SampleText(
+                text: 'THỜI KHÓA BIỂU CHI TIẾT',
+                fontWeight: FontWeight.w700,
+                size: 16,
+                color: grey700,
+              ),
+              const SizedBox(height: 10),
+              // Container(
+              //   height: 400,
+              //   color: Colors.amber,
+              // ),
+              SizedBox(
+                height: 400,
+                child: ListView.builder(
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return const ScheduleItem(
+                      subject: 'Công nghệ phần mềm',
+                      room: '406-A8',
+                      begin: '27-4-2023',
+                      end: '30-5-2023',
+                      lesson: '7,8,9',
+                    );
+                  },
                 ),
               ),
             ],

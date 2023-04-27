@@ -25,49 +25,52 @@ class MarkItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(6),
       ),
       height: 35,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            flex: 2,
-            child: SampleText(
-              text: mon,
-              fontWeight: FontWeight.w400,
-              size: 14,
-              color: grey700,
-            ),
-          ),
-          Expanded(
-            child: Center(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 4,
               child: SampleText(
-                text: dqt,
-                fontWeight: FontWeight.w400,
+                text: mon,
+                fontWeight: FontWeight.w600,
                 size: 14,
                 color: grey700,
               ),
             ),
-          ),
-          Expanded(
-            child: Center(
-              child: SampleText(
-                text: thi,
-                fontWeight: FontWeight.w400,
-                size: 14,
-                color: grey700,
+            Expanded(
+              child: Center(
+                child: SampleText(
+                  text: dqt,
+                  fontWeight: FontWeight.w500,
+                  size: 14,
+                  color: grey700,
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: Center(
-              child: SampleText(
-                text: tkhp,
-                fontWeight: FontWeight.w400,
-                size: 14,
-                color: grey700,
+            Expanded(
+              child: Center(
+                child: SampleText(
+                  text: thi,
+                  fontWeight: FontWeight.w500,
+                  size: 14,
+                  color: grey700,
+                ),
               ),
             ),
-          ),
-        ],
+            Expanded(
+              child: Center(
+                child: SampleText(
+                  text: tkhp,
+                  fontWeight: FontWeight.w500,
+                  size: 14,
+                  color: grey700,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

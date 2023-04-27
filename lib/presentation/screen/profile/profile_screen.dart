@@ -132,6 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Expanded(
                         child: Column(
                           children: const [
+                            Expanded(child: SizedBox()),
                             Expanded(
                               child: SampleText(
                                 text: 'Kỳ đã học',
@@ -148,13 +149,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 color: greyText,
                               ),
                             ),
+                            Expanded(child: SizedBox()),
                           ],
                         ),
                       ),
                       Expanded(
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: const [
+                            Expanded(child: SizedBox()),
                             Expanded(
                               child: SampleText(
                                 text: 'Tín chỉ tích lũy',
@@ -171,16 +173,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 color: greyText,
                               ),
                             ),
+                            Expanded(child: SizedBox()),
                           ],
                         ),
                       ),
                       Expanded(
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: const [
+                            Expanded(child: SizedBox()),
                             Expanded(
                               child: SampleText(
-                                text: 'Điểm GPA',
+                                text: 'GPA',
                                 fontWeight: FontWeight.w500,
                                 size: 16,
                                 color: greyText,
@@ -194,6 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 color: greyText,
                               ),
                             ),
+                            Expanded(child: SizedBox()),
                           ],
                         ),
                       ),
@@ -223,9 +227,64 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: ProfileContainer(
                       leftIcon: 'assets/icons/profile_info.png',
                       title: 'Thông tin cá nhân',
+                      textColor: grey700,
                     ),
                   ),
                 ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: InkWell(
+                  onTap: () {},
+                  child: const SizedBox(
+                    height: 50,
+                    child: ProfileContainer(
+                      leftIcon: 'assets/icons/profile_map.png',
+                      title: 'Bản đồ',
+                      textColor: grey700,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: InkWell(
+                  onTap: () {},
+                  child: const SizedBox(
+                    height: 50,
+                    child: ProfileContainer(
+                      leftIcon: 'assets/icons/profile_email.png',
+                      title: 'Đóng góp ý kiến',
+                      textColor: grey700,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: InkWell(
+                  onTap: () {},
+                  child: const SizedBox(
+                    height: 50,
+                    child: ProfileContainer(
+                      leftIcon: 'assets/icons/profile_info.png',
+                      title: 'Thông tin cá nhân',
+                      textColor: grey700,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
               ),
               const SizedBox(
                 height: 20,
@@ -237,40 +296,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: const SizedBox(
                     height: 50,
                     child: ProfileContainer(
-                      leftIcon: 'assets/icons/profile_info.png',
-                      title: 'Thông tin cá nhân',
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: InkWell(
-                  onTap: () {},
-                  child: const SizedBox(
-                    height: 50,
-                    child: ProfileContainer(
-                      leftIcon: 'assets/icons/profile_info.png',
-                      title: 'Thông tin cá nhân',
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: InkWell(
-                  onTap: () {},
-                  child: const SizedBox(
-                    height: 50,
-                    child: ProfileContainer(
-                      leftIcon: 'assets/icons/profile_info.png',
-                      title: 'Thông tin cá nhân',
+                      leftIcon: 'assets/icons/profile_logout.png',
+                      title: 'Đăng xuất',
+                      textColor: rose700,
                     ),
                   ),
                 ),
