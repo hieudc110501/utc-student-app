@@ -30,3 +30,14 @@ class LoginStateFailure extends LoginState {
     this.error,
   ) : super(isLoading: false);
 }
+
+class LoginStateSyncDataSuccess extends LoginState {
+  const LoginStateSyncDataSuccess() : super(isLoading: false);
+}
+
+class LoginStateSyncDataFailure extends LoginState {
+  String error;
+  LoginStateSyncDataFailure(
+    this.error,
+  ) : super(isLoading: false);
+}

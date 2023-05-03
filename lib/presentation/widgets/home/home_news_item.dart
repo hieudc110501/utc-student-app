@@ -27,62 +27,72 @@ class HomeNewsItem extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ).copyWith(
-                color: greyText,
+            Expanded(
+              flex: 2,
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ).copyWith(
+                  color: greyText,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.left,
               ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.left,
             ),
             const Divider(),
-            Text(
-              text,
-              style: const TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-              ).copyWith(
-                color: greyText,
+            Expanded(
+              flex: 3,
+              child: Text(
+                text,
+                style: const TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                ).copyWith(
+                  color: greyText,
+                ),
+                maxLines: 4,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.left,
               ),
-              maxLines: 4,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.left,
             ),
             const SizedBox(
               height: 5,
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: SampleText(
-                    text: date,
-                    fontWeight: FontWeight.w600,
-                    size: 14,
-                    color: greyText,
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    'Chi tiết',
-                    style: const TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 14,
+            Expanded(
+              flex: 1,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: SampleText(
+                      text: date,
                       fontWeight: FontWeight.w600,
-                      decoration: TextDecoration.underline,
-                    ).copyWith(
-                      color: blue500,
+                      size: 14,
+                      color: greyText,
                     ),
-                    textAlign: TextAlign.right,
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: Text(
+                      'Chi tiết',
+                      style: const TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        decoration: TextDecoration.underline,
+                      ).copyWith(
+                        color: blue500,
+                      ),
+                      textAlign: TextAlign.right,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

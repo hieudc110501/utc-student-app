@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:utc_student_app/data/models/news.dart';
 import 'package:utc_student_app/presentation/screen/home/home_news_screen.dart';
 import 'package:utc_student_app/presentation/screen/login/login_screen.dart';
 import 'package:utc_student_app/presentation/screen/main_screen.dart';
@@ -20,8 +21,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         builder: (context) => const MarkDetailScreen(),
       );
     case HomeNewsScreen.routeName:
+      final news = settings.arguments as List<News>;
       return MaterialPageRoute(
-        builder: (context) => const HomeNewsScreen(),
+        builder: (context) => HomeNewsScreen(
+          news: news,
+        ),
       );
     default:
       return MaterialPageRoute(

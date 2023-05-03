@@ -17,6 +17,10 @@ class StudentEventSyncData extends StudentEvent {
   );
 }
 
+class StudentEventSynched extends StudentEvent {
+  const StudentEventSynched(super.username);
+}
+
 //thông tin sv
 class StudentEventLoadData extends StudentEvent {
   const StudentEventLoadData(super.username);

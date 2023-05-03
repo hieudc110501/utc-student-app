@@ -1,13 +1,18 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:utc_student_app/presentation/widgets/home/home_news_item.dart';
+import 'package:utc_student_app/data/models/news.dart';
 
+import 'package:utc_student_app/presentation/widgets/home/home_news_item.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 import 'package:utc_student_app/utils/color.dart';
 
 class HomeNewsScreen extends StatelessWidget {
   static const routeName = 'home-news-screen';
-  const HomeNewsScreen({super.key});
+  final List<News> news;
+  const HomeNewsScreen({
+    Key? key,
+    required this.news,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,21 +46,19 @@ class HomeNewsScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: ListView.builder(
-            itemCount: 6,
+            itemCount: news.length,
             itemBuilder: (context, index) {
               return Column(
-                children: const [
-                  SizedBox(
+                children: [
+                  const SizedBox(
                     height: 10,
                   ),
                   HomeNewsItem(
-                    title:
-                        'Thông báo về việc tổ chức học kỳ hè năm học 2022-2023',
-                    text:
-                        'Căn cứ kế hoạch học tập năm học 2022-2023, Nhà trường thông báo tổ chức học kỳ hè (đợt 5) năm học 2022-2023 cho các lớp đaiị học chính quy khóa 62 trở về trước. SV xem thông tin cụ thể trong file đính kèm. Trân trọng!',
-                    date: '24/04/2023',
+                    title: news[index].title,
+                    text: news[index].content,
+                    date: news[index].date,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                 ],

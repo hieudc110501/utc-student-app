@@ -1,5 +1,6 @@
 import 'package:utc_student_app/data/models/calendar.dart';
 import 'package:utc_student_app/data/models/mark.dart';
+import 'package:utc_student_app/data/models/news.dart';
 import 'package:utc_student_app/data/models/student.dart';
 import 'package:utc_student_app/data/repositories/student/student_provider.dart';
 
@@ -11,8 +12,16 @@ class StudentRepository {
     return _provider.login(username, password);
   }
 
+  Future<bool> syncData(String username, String password) {
+    return _provider.syncData(username, password);
+  }
+
   Future<Student> fetchStudent(String username) {
     return _provider.fetchStudent(username);
+  }
+
+  Future<List<News>> fetchNews(String username) {
+    return _provider.fetchNews(username);
   }
 
   Future<List<Mark>> fetchMark(String username) {

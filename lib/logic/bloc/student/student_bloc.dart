@@ -7,11 +7,32 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
   StudentBloc() : super(StudentStateInitial(isLoading: false)) {
     final StudentRepository studentRepository = StudentRepository();
 
+    //đã đồng bộ dữ liệu
+    on<StudentEventSynched>((event, emit) async {
+      emit(StudentStateLoading(isLoading: true));
+      emit(StudentStateSynched());
+    });
+
+    //đồng bộ dữ liệu
+    on<StudentEventSyncData>((event, emit) async {
+      emit(StudentStateLoading(isLoading: true));
+      try {
+        final bool check =
+            await studentRepository.syncData(event.username, event.password);
+        if (check) {
+          emit(StudentStateSyncSuccess());
+        }
+      } catch (e) {
+        emit(StudentStateSyncFailure(e.toString()));
+      }
+    });
+
     //lấy thông tin
     on<StudentEventLoadData>((event, emit) async {
       try {
         final student = await studentRepository.fetchStudent(event.username);
-        emit(StudentStateInfoSuccess(student));
+        final news = await studentRepository.fetchNews(event.username);
+        emit(StudentStateInfoSuccess(student, news));
       } catch (e) {
         emit(StudentStateError(e.toString()));
       }

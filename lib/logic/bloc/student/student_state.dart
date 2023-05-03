@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import 'package:utc_student_app/data/models/calendar.dart';
 import 'package:utc_student_app/data/models/mark.dart';
+import 'package:utc_student_app/data/models/news.dart';
 import 'package:utc_student_app/data/models/student.dart';
 
 abstract class StudentState extends Equatable {
@@ -20,6 +21,10 @@ class StudentStateInitial extends StudentState {
   StudentStateInitial({required super.isLoading});
 }
 
+class StudentStateLoading extends StudentState {
+  StudentStateLoading({required super.isLoading});
+}
+
 class StudentStateError extends StudentState {
   final String error;
   StudentStateError(this.error) : super(isLoading: false);
@@ -30,14 +35,23 @@ class StudentStateSyncSuccess extends StudentState {
   StudentStateSyncSuccess() : super(isLoading: false);
 }
 
+class StudentStateSynched extends StudentState {
+  StudentStateSynched() : super(isLoading: false);
+}
+
 // đồng bộ dữ liệu thất bại
 class StudentStateSyncFailure extends StudentState {
-  StudentStateSyncFailure() : super(isLoading: false);
+  final String error;
+  StudentStateSyncFailure(this.error) : super(isLoading: false);
 }
 
 class StudentStateInfoSuccess extends StudentState {
   final Student student;
-  StudentStateInfoSuccess(this.student) : super(isLoading: false);
+  final List<News> news;
+  StudentStateInfoSuccess(
+    this.student,
+    this.news,
+  ) : super(isLoading: false);
 }
 
 class StudentStateMarkSuccess extends StudentState {

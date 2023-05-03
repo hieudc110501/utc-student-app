@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:utc_student_app/logic/bloc/login/login_bloc.dart';
 import 'package:utc_student_app/logic/bloc/student/student_bloc.dart';
-import 'package:utc_student_app/presentation/screen/main_screen.dart';
+import 'package:utc_student_app/presentation/screen/login/login_screen.dart';
 import 'package:utc_student_app/router/router.dart';
 
 void main() {
@@ -65,10 +65,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       onGenerateRoute: (settings) => generateRoute(settings),
-      home: const MainScreen(
-        username: '',
-        password: '',
-      ),
+      home: const LoginScreen()
     );
   }
 }

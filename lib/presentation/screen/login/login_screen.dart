@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utc_student_app/logic/bloc/login/login_bloc.dart';
 import 'package:utc_student_app/logic/bloc/login/login_event.dart';
 import 'package:utc_student_app/logic/bloc/login/login_state.dart';
@@ -22,6 +23,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController controller1 = TextEditingController();
   final TextEditingController controller2 = TextEditingController();
+
   bool isClick = false;
 
   @override
@@ -31,6 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    context.read<LoginBloc>().add(const LoginEventCheck());
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state.isLoading) {
@@ -65,14 +68,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const Expanded(
-                  flex: 1,
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: SampleText(
-                      text: 'ĐĂNG NHẬP',
-                      fontWeight: FontWeight.w700,
-                      size: 24,
-                      color: indigo800,
+                  flex: 2,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'TRƯỜNG ĐẠI HỌC GIAO THÔNG VẬN TẢI',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 24,
+                          color: indigo800,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                 ),
@@ -158,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: SampleText(
-                      text: 'Copyright by Trương Hiếu',
+                      text: 'https://qldt.utc.edu.vn',
                       fontWeight: FontWeight.w500,
                       size: 14,
                       color: indigo800,
