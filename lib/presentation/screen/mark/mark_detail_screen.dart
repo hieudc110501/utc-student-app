@@ -1,4 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
+import 'package:utc_student_app/data/models/mark.dart';
+import 'package:utc_student_app/logic/handle/mark_handle.dart';
 import 'package:utc_student_app/presentation/widgets/mark/mark_detail_item.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 import 'package:utc_student_app/utils/color.dart';
@@ -6,10 +10,17 @@ import 'package:utc_student_app/utils/color.dart';
 // màn hỉnh hiển thị lịch sử của 4 lần test gần nhất
 class MarkDetailScreen extends StatelessWidget {
   static const routeName = 'mark-detail-screen';
-  const MarkDetailScreen({super.key});
+  final List<Mark> marks;
+  const MarkDetailScreen({
+    Key? key,
+    required this.marks,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Map<String, int> map = termMark(marks);
+    var keys = map.keys.toList();
+    var values = map.values.toList();
     return Scaffold(
       appBar: AppBar(
         title: Align(
@@ -108,9 +119,13 @@ class MarkDetailScreen extends StatelessWidget {
               ListView.builder(
                 physics: const ClampingScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: 4,
+                itemCount: map.length,
                 itemBuilder: (context, index) {
-                  return const MarkDetailItem(title: 'Kỳ 2 năm 2021_2022');
+                  return MarkDetailItem(
+                    title: keys[index],
+                    size: values[index],
+                    marks: marks,
+                  );
                 },
               ),
             ],

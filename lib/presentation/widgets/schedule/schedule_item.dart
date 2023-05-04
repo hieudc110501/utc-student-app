@@ -49,7 +49,7 @@ class ScheduleItem extends StatelessWidget {
               color: rose700,
             ),
             SampleText(
-              text: 'Tiết $lesson',
+              text: 'Tiết: $lesson',
               fontWeight: FontWeight.w500,
               size: 16,
               color: grey700,

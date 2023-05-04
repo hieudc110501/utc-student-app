@@ -107,7 +107,13 @@ class MarkHistory extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: 4,
                 itemBuilder: (context, index) {
-                  return MarkItem(mon: 'a', dqt: '1', thi: '1', tkhp: '1');
+                  return const MarkItem(
+                    mon: 'a',
+                    dqt: '1',
+                    thi: '1',
+                    tkhp: '1',
+                    index: 1,
+                  );
                 },
               ),
             ],

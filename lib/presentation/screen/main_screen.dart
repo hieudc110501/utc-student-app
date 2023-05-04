@@ -2,9 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:utc_student_app/logic/bloc/login/login_bloc.dart';
-import 'package:utc_student_app/logic/bloc/login/login_event.dart';
-import 'package:utc_student_app/logic/bloc/login/login_state.dart';
 import 'package:utc_student_app/logic/bloc/student/student_bloc.dart';
 import 'package:utc_student_app/logic/bloc/student/student_event.dart';
 import 'package:utc_student_app/logic/bloc/student/student_state.dart';
@@ -36,6 +33,7 @@ class _MainScreenState extends State<MainScreen> {
   int currentTab = 0;
   int index = 0;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  late String? username;
 
   @override
   void initState() {
@@ -51,26 +49,27 @@ class _MainScreenState extends State<MainScreen> {
 
   Future<void> checkData(BuildContext context) async {
     final SharedPreferences prefs = await _prefs;
-    String? username = prefs.getString('username');
+    username = prefs.getString('username');
     if (username == null) {
       context
           .read<StudentBloc>()
           .add(StudentEventSyncData(widget.username, widget.password));
-    } else {
-      context.read<StudentBloc>().add(StudentEventSynched(username));
-      context.read<StudentBloc>().add(StudentEventLoadData(username));
+    }
+    if (index == 0) {
+      context.read<StudentBloc>().add(StudentEventLoadData(username!));
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    checkData(context);
+
     final List<Widget> screens = [
       const HomeScreen(),
       const ScheduleScreen(),
       const MarkScreen(),
       const ProfileScreen(),
     ];
-    checkData(context);
     return BlocListener<StudentBloc, StudentState>(
       listener: (context, state) {
         if (state.isLoading) {
@@ -105,17 +104,13 @@ class _MainScreenState extends State<MainScreen> {
     });
     switch (index) {
       case 0:
-        context.read<StudentBloc>().add(StudentEventLoadData(widget.username));
+        context.read<StudentBloc>().add(StudentEventLoadData(username!));
         break;
       case 1:
-        // context
-        //     .read<StudentBloc>()
-        //     .add(const StudentEventLoadSchedule('191203659'));
+        context.read<StudentBloc>().add(StudentEventLoadSchedule(username!));
         break;
       case 2:
-        context
-            .read<StudentBloc>()
-            .add(const StudentEventLoadMark('191203659'));
+        context.read<StudentBloc>().add(StudentEventLoadMark(username!));
         break;
       case 3:
         context

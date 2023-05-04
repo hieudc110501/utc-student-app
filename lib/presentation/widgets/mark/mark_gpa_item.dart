@@ -4,26 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 import 'package:utc_student_app/utils/color.dart';
 
-class MarkItem extends StatelessWidget {
+class MarkGpaItem extends StatelessWidget {
   final String mon;
   final String dqt;
   final String thi;
   final String tkhp;
-  final int index;
-  const MarkItem({
+  const MarkGpaItem({
     Key? key,
     required this.mon,
     required this.dqt,
     required this.thi,
     required this.tkhp,
-    required this.index,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: index % 2==0 ? whiteText : blue100,
+        color: whiteText,
         borderRadius: BorderRadius.circular(6),
       ),
       height: 35,
@@ -71,7 +69,6 @@ class MarkItem extends StatelessWidget {
                 ),
               ),
             ),
-            const Divider(),
           ],
         ),
       ),

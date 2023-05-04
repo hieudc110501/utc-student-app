@@ -2,6 +2,7 @@
 import 'package:equatable/equatable.dart';
 
 import 'package:utc_student_app/data/models/calendar.dart';
+import 'package:utc_student_app/data/models/gpa.dart';
 import 'package:utc_student_app/data/models/mark.dart';
 import 'package:utc_student_app/data/models/news.dart';
 import 'package:utc_student_app/data/models/student.dart';
@@ -56,7 +57,11 @@ class StudentStateInfoSuccess extends StudentState {
 
 class StudentStateMarkSuccess extends StudentState {
   final List<Mark> listMark;
-  StudentStateMarkSuccess(this.listMark) : super(isLoading: false);
+  final List<GPA> listGPA;
+  StudentStateMarkSuccess(
+    this.listMark,
+    this.listGPA,
+  ) : super(isLoading: false);
 }
 
 class StudentStateScheduleSuccess extends StudentState {

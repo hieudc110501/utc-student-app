@@ -33,6 +33,7 @@ const scheduleDeleteExam = '$httpSchedule/deleteExam';
 //mark
 const markInsertMarkTerm = '$httpMark/insertMarkTerm';
 const markGetMarkByTerm = '$httpMark/getMarkByTerm';
+const markGetAll = '$httpMark/getAll';
 const markGetAllTerm = '$httpMark/getAllTerm';
 const markInsertGPA = '$httpMark/insertGPA';
 const markGetGPA = '$httpMark/getGPA';

@@ -3,59 +3,64 @@ import 'dart:convert';
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 class Mark {
-  String moduleId;
-  String moduleName;
-  int moduleCredit;
-  int studentModuleId;
-  String studentId;
-  int times;
-  int timesId;
-  num dqt;
-  num thi;
-  num tkhp;
+  final int studentModuleId;
+  final int studentTermId;
+  final String moduleId;
+  final String moduleName;
+  final int moduleCredit;
+  final int times;
+  final String? evaluate;
+  final int timesId;
+  final num? dqt;
+  final num? thi;
+  final num? tkhp;
+  final String termId;
   Mark({
+    required this.studentModuleId,
+    required this.studentTermId,
     required this.moduleId,
     required this.moduleName,
     required this.moduleCredit,
-    required this.studentModuleId,
-    required this.studentId,
     required this.times,
+    this.evaluate,
     required this.timesId,
-    required this.dqt,
-    required this.thi,
-    required this.tkhp,
+    this.dqt,
+    this.thi,
+    this.tkhp,
+    required this.termId,
   });
-
-
- 
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'studentModuleId': studentModuleId,
+      'studentTermId': studentTermId,
       'moduleId': moduleId,
       'moduleName': moduleName,
       'moduleCredit': moduleCredit,
-      'studentModuleId': studentModuleId,
-      'studentId': studentId,
       'times': times,
+      'evaluate': evaluate,
       'timesId': timesId,
       'DQT': dqt,
       'THI': thi,
       'TKHP': tkhp,
+      'termId': termId,
     };
   }
 
-  factory Mark.fromMap(Map<String, dynamic> map) {  
+  factory Mark.fromMap(Map<String, dynamic> map) {
     return Mark(
+      studentModuleId: map['studentModuleId'] as int,
+      studentTermId: map['studentTermId'] as int,
       moduleId: map['moduleId'] as String,
       moduleName: map['moduleName'] as String,
       moduleCredit: map['moduleCredit'] as int,
-      studentModuleId: map['studentModuleId'] as int,
-      studentId: map['studentId'] as String,
       times: map['times'] as int,
+      evaluate: map['evaluate'] != null ? map['evaluate'] as String : null,
       timesId: map['timesId'] as int,
-      dqt: map['DQT'] as num,
-      thi: map['THI'] as num,
-      tkhp: map['TKHP'] as num,
+      dqt: map['DQT'] != null ? map['DQT'] as num : null,
+      thi: map['THI'] != null ? map['THI'] as num : null,
+      tkhp: map['TKHP'] != null ? map['TKHP'] as num : null,
+      termId: map['termId'] as String,
     );
   }
 

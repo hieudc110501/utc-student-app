@@ -42,7 +42,8 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     on<StudentEventLoadMark>((event, emit) async {
       try {
         final mark = await studentRepository.fetchMark(event.username);
-        emit(StudentStateMarkSuccess(mark));
+        final gpa = await studentRepository.fetchGPA(event.username);
+        emit(StudentStateMarkSuccess(mark, gpa));
       } catch (e) {
         emit(StudentStateError(e.toString()));
       }

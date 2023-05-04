@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:utc_student_app/presentation/widgets/profile/profile_container.dart';
-import 'package:utc_student_app/presentation/widgets/profile/profile_item.dart';
 import 'package:utc_student_app/utils/color.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 
