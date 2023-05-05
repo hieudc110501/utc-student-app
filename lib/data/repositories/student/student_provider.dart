@@ -71,6 +71,23 @@ class StudentProvider {
     }
   }
 
+   //kiếm tra xem đã đồng bộ chưa
+  Future<bool> checkSync(String username) async {
+    try {
+      final response = await _dio.get('$studentGet/$username');
+      if (response.statusCode == 200) {
+        if (response.data == false) {
+          return false;
+        }
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
   //lấy thông tin sinh viên
   Future<Student> fetchStudent(String username) async {
     try {
@@ -149,4 +166,5 @@ class StudentProvider {
       throw Exception(e.toString());
     }
   }
+
 }

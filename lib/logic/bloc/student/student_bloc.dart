@@ -17,11 +17,11 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     on<StudentEventSyncData>((event, emit) async {
       emit(StudentStateLoading(isLoading: true));
       try {
-        final bool check =
-            await studentRepository.syncData(event.username, event.password);
-        if (check) {
-          emit(StudentStateSyncSuccess());
+        final check = await studentRepository.checkSync(event.username);
+        if (!check) {
+          await studentRepository.syncData(event.username, event.password);
         }
+        emit(StudentStateSyncSuccess());
       } catch (e) {
         emit(StudentStateSyncFailure(e.toString()));
       }
@@ -54,6 +54,17 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       try {
         final calendar = await studentRepository.fetchSchedule(event.username);
         emit(StudentStateScheduleSuccess(calendar));
+      } catch (e) {
+        emit(StudentStateError(e.toString()));
+      }
+    });
+
+    //lấy thông tin
+    on<StudentEventLoadProfile>((event, emit) async {
+      try {
+        final gpa = await studentRepository.fetchGPA(event.username);
+        final student = await studentRepository.fetchStudent(event.username);
+        emit(StudentStateProfileSuccess(student, gpa));
       } catch (e) {
         emit(StudentStateError(e.toString()));
       }

@@ -113,9 +113,7 @@ class _MainScreenState extends State<MainScreen> {
         context.read<StudentBloc>().add(StudentEventLoadMark(username!));
         break;
       case 3:
-        context
-            .read<StudentBloc>()
-            .add(const StudentEventLoadData('191203659'));
+        context.read<StudentBloc>().add(StudentEventLoadProfile(username!));
         break;
       default:
         break;

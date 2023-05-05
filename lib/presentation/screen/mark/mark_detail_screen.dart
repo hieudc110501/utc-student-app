@@ -27,7 +27,6 @@ class MarkDetailScreen extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: Text(
             'Điểm học phần theo kì',
-            textScaleFactor: 1.0,
             style: const TextStyle(
               fontFamily: 'Inter',
               fontSize: 18,

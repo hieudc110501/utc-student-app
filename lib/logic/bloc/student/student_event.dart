@@ -35,3 +35,7 @@ class StudentEventLoadMark extends StudentEvent {
 class StudentEventLoadSchedule extends StudentEvent {
   const StudentEventLoadSchedule(super.username);
 }
+
+class StudentEventLoadProfile extends StudentEvent {
+  const StudentEventLoadProfile(super.username);
+}

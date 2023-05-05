@@ -43,12 +43,11 @@ class LoadingScreen {
     final textController = StreamController<String>();
     textController.add(text);
 
-
     //create overlay
     final overlay = OverlayEntry(
       builder: (context) {
         return Material(
-          color: Colors.white.withAlpha(150),
+          color: Colors.white.withAlpha(50),
           child: Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -65,10 +64,12 @@ class LoadingScreen {
                     if (snapshot.hasData) {
                       return Text(
                         snapshot.requireData,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(color: Colors.black),
+                        style: const TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: grey700,
+                        ),
                       );
                     } else {
                       return Container();

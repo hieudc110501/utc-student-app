@@ -68,3 +68,12 @@ class StudentStateScheduleSuccess extends StudentState {
   final List<Calendar> listCalendar;
   StudentStateScheduleSuccess(this.listCalendar) : super(isLoading: false);
 }
+
+class StudentStateProfileSuccess extends StudentState {
+  final Student student;
+  final List<GPA> listGPA;
+  StudentStateProfileSuccess(
+    this.student,
+    this.listGPA,
+  ) : super(isLoading: false);
+}

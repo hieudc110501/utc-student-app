@@ -27,6 +27,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
+    controller1.dispose();
+    controller2.dispose();
     super.dispose();
   }
 
@@ -97,12 +99,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           iconUrl: Asset.icon('user.png'),
                           controller: controller1,
                           isClick: isClick,
+                          isPassword: false,
                         ),
                         InputField(
                           name: 'Mật khẩu',
                           iconUrl: Asset.icon('lock.png'),
                           controller: controller2,
                           isClick: isClick,
+                          isPassword: true,
                         ),
                       ],
                     ),

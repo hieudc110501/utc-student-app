@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 import 'package:flutter/material.dart';
+import 'package:utc_student_app/utils/asset.dart';
+
 import 'package:utc_student_app/utils/color.dart';
 
 class InputField extends StatefulWidget {
@@ -7,13 +9,14 @@ class InputField extends StatefulWidget {
   String iconUrl;
   TextEditingController controller;
   bool isClick;
-
+  bool isPassword;
   InputField({
     Key? key,
     required this.name,
     required this.iconUrl,
     required this.controller,
     required this.isClick,
+    required this.isPassword,
   }) : super(key: key);
 
   @override
@@ -22,6 +25,7 @@ class InputField extends StatefulWidget {
 
 class _InputFieldState extends State<InputField> {
   late FocusNode _focus;
+  late bool isShow; 
 
   @override
   void initState() {
@@ -29,6 +33,7 @@ class _InputFieldState extends State<InputField> {
     _focus.addListener(() {
       setState(() {});
     });
+    isShow = widget.isPassword;
     super.initState();
   }
 
@@ -38,8 +43,15 @@ class _InputFieldState extends State<InputField> {
     super.dispose();
   }
 
+  void _toggle() {
+    setState(() {
+      isShow = !isShow;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    
     return Container(
       decoration: BoxDecoration(
         boxShadow: const [
@@ -59,10 +71,11 @@ class _InputFieldState extends State<InputField> {
         style: const TextStyle(
           fontFamily: 'Inter',
           fontSize: 16,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w600,
         ).copyWith(
           color: _focus.hasFocus ? indigo900 : grey400,
         ),
+        obscureText: isShow,
         decoration: InputDecoration(
           focusColor: rose400,
           prefixIcon: Image.asset(
@@ -70,6 +83,16 @@ class _InputFieldState extends State<InputField> {
             color: _focus.hasFocus ? indigo900 : grey400,
           ),
           prefixIconColor: grey400,
+          suffixIcon: widget.isPassword ? InkWell(
+            onTap: _toggle,
+            child: Image.asset(
+              isShow
+                  ? Asset.icon('hide_password.png')
+                  : Asset.icon('show_password.png'),
+              color: _focus.hasFocus ? indigo900 : grey400,
+              scale: 3,
+            ),
+          ) : const SizedBox(),
           hintText: widget.name,
           hintStyle: const TextStyle(
             fontFamily: 'Inter',

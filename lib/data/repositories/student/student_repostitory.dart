@@ -17,6 +17,10 @@ class StudentRepository {
     return _provider.syncData(username, password);
   }
 
+  Future<bool> checkSync(String username) {
+    return _provider.checkSync(username);
+  }
+
   Future<Student> fetchStudent(String username) {
     return _provider.fetchStudent(username);
   }
