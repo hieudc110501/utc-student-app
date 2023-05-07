@@ -1,11 +1,15 @@
+// ignore_for_file:  sort_constructors_first
 // ignore_for_file: public_member_api_docs, sort_ructors_first, must_be_immutable
 import 'package:equatable/equatable.dart';
 
 import 'package:utc_student_app/data/models/calendar.dart';
+import 'package:utc_student_app/data/models/exam.dart';
 import 'package:utc_student_app/data/models/gpa.dart';
 import 'package:utc_student_app/data/models/mark.dart';
 import 'package:utc_student_app/data/models/news.dart';
+import 'package:utc_student_app/data/models/point.dart';
 import 'package:utc_student_app/data/models/student.dart';
+import 'package:utc_student_app/data/models/tuition.dart';
 
 abstract class StudentState extends Equatable {
   bool isLoading;
@@ -49,9 +53,13 @@ class StudentStateSyncFailure extends StudentState {
 class StudentStateInfoSuccess extends StudentState {
   final Student student;
   final List<News> news;
+  final List<Tuition> tuitions;
+  final List<Point> points;
   StudentStateInfoSuccess(
     this.student,
     this.news,
+    this.tuitions,
+    this.points,
   ) : super(isLoading: false);
 }
 
@@ -66,7 +74,11 @@ class StudentStateMarkSuccess extends StudentState {
 
 class StudentStateScheduleSuccess extends StudentState {
   final List<Calendar> listCalendar;
-  StudentStateScheduleSuccess(this.listCalendar) : super(isLoading: false);
+  final List<Exam> listExam;
+  StudentStateScheduleSuccess(
+    this.listCalendar,
+    this.listExam,
+  ) : super(isLoading: false);
 }
 
 class StudentStateProfileSuccess extends StudentState {

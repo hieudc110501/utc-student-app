@@ -2,10 +2,13 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:utc_student_app/data/models/calendar.dart';
+import 'package:utc_student_app/data/models/exam.dart';
 import 'package:utc_student_app/data/models/gpa.dart';
 import 'package:utc_student_app/data/models/mark.dart';
 import 'package:utc_student_app/data/models/news.dart';
+import 'package:utc_student_app/data/models/point.dart';
 import 'package:utc_student_app/data/models/student.dart';
+import 'package:utc_student_app/data/models/tuition.dart';
 import 'package:utc_student_app/utils/url.dart';
 
 class StudentProvider {
@@ -71,7 +74,7 @@ class StudentProvider {
     }
   }
 
-   //kiếm tra xem đã đồng bộ chưa
+  //kiếm tra xem đã đồng bộ chưa
   Future<bool> checkSync(String username) async {
     try {
       final response = await _dio.get('$studentGet/$username');
@@ -167,4 +170,54 @@ class StudentProvider {
     }
   }
 
+  //lấy lịch thi sinh viên
+  Future<List<Exam>> fetchExam(String username) async {
+    try {
+      final response = await _dio.get('$scheduleGetExam/$username');
+      if (response.statusCode == 200) {
+        List schedule = response.data;
+        List<Exam> calendar =
+            schedule.map((e) => Exam.fromJson(jsonEncode(e))).toList();
+        return calendar;
+      } else {
+        throw Exception('Fail to load Exam data');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  //lấy lịch học phí
+  Future<List<Tuition>> fetchTuition(String username) async {
+    try {
+      final response = await _dio.get('$tuitionGet/$username');
+      if (response.statusCode == 200) {
+        List data = response.data;
+        List<Tuition> tuitions =
+            data.map((e) => Tuition.fromJson(jsonEncode(e))).toList();
+        return tuitions;
+      } else {
+        throw Exception('Fail to load Tuition data');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  //lấy lịch học phí
+  Future<List<Point>> fetchPoint(String username) async {
+    try {
+      final response = await _dio.get('$pointGet/$username');
+      if (response.statusCode == 200) {
+        List data = response.data;
+        List<Point> points =
+            data.map((e) => Point.fromJson(jsonEncode(e))).toList();
+        return points;
+      } else {
+        throw Exception('Fail to load Point data');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }

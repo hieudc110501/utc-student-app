@@ -69,6 +69,7 @@ class _MarkScreenState extends State<MarkScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: ListView(
+                  physics: const BouncingScrollPhysics(),
                   children: [
                     Container(
                       height: heightChart,
@@ -83,7 +84,7 @@ class _MarkScreenState extends State<MarkScreen> {
                           ),
                           const Center(
                             child: SampleText(
-                              text: 'Biểu đồ điểm',
+                              text: 'Biểu đồ GPA hệ 4',
                               fontWeight: FontWeight.w700,
                               size: 14,
                               color: grey700,

@@ -32,7 +32,9 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       try {
         final student = await studentRepository.fetchStudent(event.username);
         final news = await studentRepository.fetchNews(event.username);
-        emit(StudentStateInfoSuccess(student, news));
+        final tuitions = await studentRepository.fetchTuition(event.username);
+        final points = await studentRepository.fetchPoint(event.username);
+        emit(StudentStateInfoSuccess(student, news, tuitions, points));
       } catch (e) {
         emit(StudentStateError(e.toString()));
       }
@@ -53,7 +55,8 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     on<StudentEventLoadSchedule>((event, emit) async {
       try {
         final calendar = await studentRepository.fetchSchedule(event.username);
-        emit(StudentStateScheduleSuccess(calendar));
+        final exam = await studentRepository.fetchExam(event.username);
+        emit(StudentStateScheduleSuccess(calendar, exam));
       } catch (e) {
         emit(StudentStateError(e.toString()));
       }

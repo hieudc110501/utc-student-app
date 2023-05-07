@@ -5,8 +5,10 @@ import 'package:intl/intl.dart';
 import 'package:utc_student_app/logic/bloc/student/student_bloc.dart';
 import 'package:utc_student_app/logic/bloc/student/student_state.dart';
 import 'package:utc_student_app/presentation/screen/home/home_news_screen.dart';
+import 'package:utc_student_app/presentation/screen/home/home_point_screen.dart';
 import 'package:utc_student_app/presentation/screen/loading/loading_circle_screen.dart';
 import 'package:utc_student_app/presentation/screen/loading/loading_screen.dart';
+import 'package:utc_student_app/presentation/screen/tuition/tuition_screen.dart';
 import 'package:utc_student_app/presentation/widgets/home/home_box.dart';
 import 'package:utc_student_app/presentation/widgets/home/home_news_item.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
@@ -60,6 +62,7 @@ class HomeScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: ListView(
+                  physics: const BouncingScrollPhysics(),
                   children: [
                     const SizedBox(height: 10),
                     Container(
@@ -130,33 +133,65 @@ class HomeScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Row(
-                      children: const [
-                        HomeBox(
-                          image: 'assets/icons/home_news.png',
-                          text: 'Thông tin chú ý',
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () => Navigator.pushNamed(
+                              context,
+                              HomeNewsScreen.routeName,
+                              arguments: state.news,
+                            ),
+                            child: const HomeBox(
+                              image: 'assets/icons/home_news.png',
+                              text: 'Thông tin chú ý',
+                            ),
+                          ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
-                        HomeBox(
-                          image: 'assets/icons/home_calendar.png',
-                          text: 'Thời khóa biểu',
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {},
+                            child: const HomeBox(
+                              image: 'assets/icons/home_calendar.png',
+                              text: 'Tra cứu lịch thi',
+                            ),
+                          ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 10),
                     Row(
-                      children: const [
-                        HomeBox(
-                          image: 'assets/icons/home_score.png',
-                          text: 'Danh sách điểm',
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () => Navigator.pushNamed(
+                              context,
+                              HomePointScreen.routeName,
+                              arguments: state.points,
+                            ),
+                            child: const HomeBox(
+                              image: 'assets/icons/home_score.png',
+                              text: 'Điểm rèn luyện',
+                            ),
+                          ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
-                        HomeBox(
-                          image: 'assets/icons/home_tuition.png',
-                          text: 'Tra cứu học phí',
+                        Expanded(
+                          child: InkWell(
+                            onTap: () => Navigator.pushNamed(
+                              context,
+                              TuitionScreen.routeName,
+                              arguments: state.tuitions,
+                            ),
+                            child: const HomeBox(
+                              image: 'assets/icons/home_tuition.png',
+                              text: 'Tra cứu học phí',
+                            ),
+                          ),
                         ),
                       ],
                     ),

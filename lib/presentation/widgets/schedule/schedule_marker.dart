@@ -9,11 +9,13 @@ class ScheduleMarker extends StatelessWidget {
   final String day;
   final bool isMarker;
   final bool isToday;
+  final bool isExam;
   const ScheduleMarker({
     Key? key,
     required this.day,
     required this.isMarker,
     required this.isToday,
+    required this.isExam,
   }) : super(key: key);
 
   @override
@@ -27,7 +29,7 @@ class ScheduleMarker extends StatelessWidget {
                   Asset.icon('marker.png'),
                   scale: 2.8,
                   fit: BoxFit.cover,
-                  color: indigo700,
+                  color: isExam ? rose700 : indigo700,
                 )
               : const SizedBox(),
         ),

@@ -4,23 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 import 'package:utc_student_app/utils/color.dart';
 
-class ScheduleItem extends StatelessWidget {
+class ScheduleExamItem extends StatelessWidget {
   final int index;
   final String subject;
   final String room;
-  final String begin;
-  final String end;
+  final String date;
+  final String type;
   final String lesson;
-  final String weekday;
-  const ScheduleItem({
+  final String identity;
+  const ScheduleExamItem({
     Key? key,
     required this.index,
     required this.subject,
     required this.room,
-    required this.begin,
-    required this.end,
+    required this.date,
+    required this.type,
     required this.lesson,
-    required this.weekday,
+    required this.identity,
   }) : super(key: key);
 
   @override
@@ -41,7 +41,13 @@ class ScheduleItem extends StatelessWidget {
                     color: indigo900,
                   ),
                   SampleText(
-                    text: 'Từ $begin đến $end',
+                    text: 'Ngày $date',
+                    fontWeight: FontWeight.w600,
+                    size: 16,
+                    color: rose700,
+                  ),
+                  SampleText(
+                    text: lesson,
                     fontWeight: FontWeight.w600,
                     size: 16,
                     color: rose700,
@@ -60,13 +66,13 @@ class ScheduleItem extends StatelessWidget {
               child: Column(
                 children: [
                   SampleText(
-                    text: 'Tiết: $lesson',
+                    text: 'SBD: $identity',
                     fontWeight: FontWeight.w500,
                     size: 16,
                     color: grey700,
                   ),
                   SampleText(
-                    text: 'Thứ: $weekday',
+                    text: type,
                     fontWeight: FontWeight.w500,
                     size: 16,
                     color: grey700,

@@ -1,8 +1,11 @@
 import 'package:utc_student_app/data/models/calendar.dart';
+import 'package:utc_student_app/data/models/exam.dart';
 import 'package:utc_student_app/data/models/gpa.dart';
 import 'package:utc_student_app/data/models/mark.dart';
 import 'package:utc_student_app/data/models/news.dart';
+import 'package:utc_student_app/data/models/point.dart';
 import 'package:utc_student_app/data/models/student.dart';
+import 'package:utc_student_app/data/models/tuition.dart';
 import 'package:utc_student_app/data/repositories/student/student_provider.dart';
 
 class StudentRepository {
@@ -39,5 +42,17 @@ class StudentRepository {
 
   Future<List<Calendar>> fetchSchedule(String username) {
     return _provider.fetchSchedule(username);
+  }
+
+  Future<List<Exam>> fetchExam(String username) {
+    return _provider.fetchExam(username);
+  }
+
+  Future<List<Tuition>> fetchTuition(String username) {
+    return _provider.fetchTuition(username);
+  }
+
+  Future<List<Point>> fetchPoint(String username) {
+    return _provider.fetchPoint(username);
   }
 }

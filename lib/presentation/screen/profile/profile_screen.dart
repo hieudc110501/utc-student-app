@@ -110,13 +110,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 children: [
                                   SampleText(
                                     text: state.student.studentName,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w700,
                                     size: 20,
                                     color: greyText,
                                   ),
                                   SampleText(
                                     text: state.student.studentId,
-                                    fontWeight: FontWeight.w400,
+                                    fontWeight: FontWeight.w500,
                                     size: 16,
                                     color: greyText,
                                   ),
@@ -159,7 +159,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   const Expanded(
                                     child: SampleText(
                                       text: 'Kỳ đã học',
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.w700,
                                       size: 16,
                                       color: greyText,
                                     ),
@@ -184,7 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   const Expanded(
                                     child: SampleText(
                                       text: 'Tín chỉ tích lũy',
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.w700,
                                       size: 16,
                                       color: greyText,
                                     ),
@@ -209,7 +209,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   const Expanded(
                                     child: SampleText(
                                       text: 'GPA',
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.w700,
                                       size: 16,
                                       color: greyText,
                                     ),

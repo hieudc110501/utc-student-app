@@ -47,10 +47,39 @@ String convertWeekDay(int weekDay) {
   }
 }
 
+// chuyển thứ thành T2
+String weekdayNumber(int weekDay) {
+  switch (weekDay) {
+    case 1:
+      return 'Thứ 2';
+    case 2:
+      return 'Thứ 3';
+    case 3:
+      return 'Thứ 4';
+    case 4:
+      return 'Thứ 5';
+    case 5:
+      return 'Thứ 6';
+    case 6:
+      return 'Thứ 7';
+    case 7:
+      return 'Chủ Nhật';
+    default:
+      return 'Thứ 2';
+  }
+}
+
 //check today
 bool checkToday(DateTime day) {
   DateTime now = DateTime.now();
   if (now.year == day.year && now.month == day.month && now.day == day.day) {
+    return true;
+  }
+  return false;
+}
+
+bool checkSameDay(DateTime a, DateTime b) {
+  if (a.day == b.day && a.month == b.month && a.year == b.year) {
     return true;
   }
   return false;
