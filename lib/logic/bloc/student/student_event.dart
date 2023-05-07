@@ -39,3 +39,7 @@ class StudentEventLoadSchedule extends StudentEvent {
 class StudentEventLoadProfile extends StudentEvent {
   const StudentEventLoadProfile(super.username);
 }
+
+class StudentEventDeleteData extends StudentEvent {
+  const StudentEventDeleteData(super.username);
+}

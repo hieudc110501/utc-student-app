@@ -72,5 +72,15 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
         emit(StudentStateError(e.toString()));
       }
     });
+
+    //xóa hết thông tin
+    on<StudentEventDeleteData>((event, emit) async {
+      try {
+        await studentRepository.deleteAll(event.username);
+        emit(StudentStateDeleteSuccess());
+      } catch (e) {
+        emit(StudentStateError(e.toString()));
+      }
+    });
   }
 }

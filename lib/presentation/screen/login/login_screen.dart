@@ -161,7 +161,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                        child: const Text('Đăng nhập'),
+                        child: const SampleText(
+                          text: 'Đăng nhập',
+                          fontWeight: FontWeight.w600,
+                          size: 18,
+                          color: whiteText,
+                        ),
                       ),
                     ),
                   ),

@@ -7,6 +7,7 @@ const httpSchedule = '$http/schedule';
 const httpMark = '$http/mark';
 const httpTuition = '$http/tuition';
 const httpPoint = '$http/point';
+const httpController = '$http/controller';
 
 //login
 const postLogin = '$httpLogin/postLogin';
@@ -49,6 +50,5 @@ const pointInsert = '$httpPoint/insert';
 const pointGet = '$httpPoint/get';
 const pointDelete = '$httpPoint/delete';
 
-const getStudentByUsername = '${http}getStudentByUsername/';
-const getMarkById = '${http}fetchMark/';
-const getScheduleById = '${http}fetchSchedule/';
+//controller
+const controllerDeleteAll = '$httpController/deleteAll';

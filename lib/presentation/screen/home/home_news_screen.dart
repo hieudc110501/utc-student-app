@@ -46,6 +46,7 @@ class HomeNewsScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: ListView.builder(
+            physics: const BouncingScrollPhysics(),
             itemCount: news.length,
             itemBuilder: (context, index) {
               return Column(

@@ -55,7 +55,7 @@ class _MainScreenState extends State<MainScreen> {
           .read<StudentBloc>()
           .add(StudentEventSyncData(widget.username, widget.password));
     }
-    if (index == 0) {
+    else if (index == 0) {
       context.read<StudentBloc>().add(StudentEventLoadData(username!));
     }
   }

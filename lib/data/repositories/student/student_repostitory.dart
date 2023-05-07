@@ -55,4 +55,8 @@ class StudentRepository {
   Future<List<Point>> fetchPoint(String username) {
     return _provider.fetchPoint(username);
   }
+
+  Future<bool> deleteAll(String username) {
+    return _provider.deleteAll(username);
+  }
 }

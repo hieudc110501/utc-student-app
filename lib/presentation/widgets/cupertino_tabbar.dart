@@ -21,10 +21,11 @@ class _CupertinoTabbarWidgetState extends State<CupertinoTabbarWidget> {
   Widget build(BuildContext context) {
     return CupertinoTabBar(
       backgroundColor: whiteText,
-      border: Border(
+      height: 60,
+      border: const Border(
         top: BorderSide(
-          width: 3,
-          color: grey200.withOpacity(0.4),
+          width: 1,
+          color: indigo900,
         ),
       ),
       items: [

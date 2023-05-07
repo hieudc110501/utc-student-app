@@ -36,7 +36,7 @@ class HomeNewsItem extends StatelessWidget {
                 style: const TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w700,
                 ).copyWith(
                   color: greyText,
                 ),

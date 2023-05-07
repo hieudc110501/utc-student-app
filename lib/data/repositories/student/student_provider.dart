@@ -220,4 +220,18 @@ class StudentProvider {
       throw Exception(e.toString());
     }
   }
+
+  //lấy lịch học phí
+  Future<bool> deleteAll(String username) async {
+    try {
+      final response = await _dio.get('$controllerDeleteAll/$username');
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
 }

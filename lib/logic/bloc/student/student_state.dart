@@ -89,3 +89,7 @@ class StudentStateProfileSuccess extends StudentState {
     this.listGPA,
   ) : super(isLoading: false);
 }
+
+class StudentStateDeleteSuccess extends StudentState {
+  StudentStateDeleteSuccess() : super(isLoading: false);
+}

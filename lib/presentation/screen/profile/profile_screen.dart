@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utc_student_app/logic/bloc/login/login_bloc.dart';
 import 'package:utc_student_app/logic/bloc/login/login_event.dart';
 import 'package:utc_student_app/logic/bloc/student/student_bloc.dart';
+import 'package:utc_student_app/logic/bloc/student/student_event.dart';
 import 'package:utc_student_app/logic/bloc/student/student_state.dart';
 import 'package:utc_student_app/presentation/screen/loading/loading_circle_screen.dart';
 import 'package:utc_student_app/presentation/widgets/profile/profile_box.dart';
@@ -333,6 +334,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: InkWell(
                         onTap: () {
+                          context.read<StudentBloc>().add(
+                              StudentEventDeleteData(state.student.studentId));
+                          logout();
+                          context
+                              .read<LoginBloc>()
+                              .add(const LoginEventCheck());
+                        },
+                        child: const SizedBox(
+                          height: 50,
+                          child: ProfileContainer(
+                            leftIcon: 'assets/icons/profile_info.png',
+                            title: 'Xóa dữ liệu',
+                            textColor: grey700,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: InkWell(
+                        onTap: () {
                           showModalBottomSheet(
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.vertical(
@@ -474,7 +499,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   child: ElevatedButton(
                                                     onPressed: () {
                                                       logout();
-                                                      Navigator.of(context).pop();
+                                                      Navigator.of(context)
+                                                          .pop();
                                                       BlocProvider.of<
                                                                   LoginBloc>(
                                                               context)

@@ -19,7 +19,7 @@ class HomePointScreen extends StatelessWidget {
         title: const Align(
           alignment: Alignment.centerLeft,
           child: SampleText(
-            text: 'Thông Tin Học Phí',
+            text: 'Điểm rèn luyện',
             fontWeight: FontWeight.w600,
             size: 18,
             color: whiteText,

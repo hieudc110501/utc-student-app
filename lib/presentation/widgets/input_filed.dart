@@ -25,7 +25,7 @@ class InputField extends StatefulWidget {
 
 class _InputFieldState extends State<InputField> {
   late FocusNode _focus;
-  late bool isShow; 
+  late bool isShow;
 
   @override
   void initState() {
@@ -51,7 +51,6 @@ class _InputFieldState extends State<InputField> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Container(
       decoration: BoxDecoration(
         boxShadow: const [
@@ -66,6 +65,7 @@ class _InputFieldState extends State<InputField> {
       ),
       child: TextField(
         controller: widget.controller,
+        textAlignVertical: TextAlignVertical.center,
         focusNode: _focus,
         cursorColor: indigo600,
         style: const TextStyle(
@@ -83,16 +83,18 @@ class _InputFieldState extends State<InputField> {
             color: _focus.hasFocus ? indigo900 : grey400,
           ),
           prefixIconColor: grey400,
-          suffixIcon: widget.isPassword ? InkWell(
-            onTap: _toggle,
-            child: Image.asset(
-              isShow
-                  ? Asset.icon('hide_password.png')
-                  : Asset.icon('show_password.png'),
-              color: _focus.hasFocus ? indigo900 : grey400,
-              scale: 3,
-            ),
-          ) : const SizedBox(),
+          suffixIcon: widget.isPassword
+              ? InkWell(
+                  onTap: _toggle,
+                  child: Image.asset(
+                    isShow
+                        ? Asset.icon('hide_password.png')
+                        : Asset.icon('show_password.png'),
+                    color: _focus.hasFocus ? indigo900 : grey400,
+                    scale: 4,
+                  ),
+                )
+              : const SizedBox(),
           hintText: widget.name,
           hintStyle: const TextStyle(
             fontFamily: 'Inter',
