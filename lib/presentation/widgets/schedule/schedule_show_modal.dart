@@ -143,6 +143,7 @@ class ScheduleShowModal extends StatelessWidget {
                           width: screenSize.width,
                           height: screenSize.height * 0.5,
                           child: ListView.builder(
+                            physics: const BouncingScrollPhysics(),
                             itemCount: listExam.length,
                             itemBuilder: (context, index) {
                               return Padding(
@@ -208,6 +209,7 @@ class ScheduleShowModal extends StatelessWidget {
                           width: screenSize.width,
                           height: screenSize.height * 0.5,
                           child: ListView.builder(
+                            physics: const BouncingScrollPhysics(),
                             itemCount: listSelected.length,
                             itemBuilder: (context, index) {
                               return Padding(
