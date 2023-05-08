@@ -2,7 +2,7 @@
 // ignore_for_file: public_member_api_docs, sort_ructors_first, must_be_immutable
 import 'package:equatable/equatable.dart';
 
-import 'package:utc_student_app/data/models/calendar.dart';
+import 'package:utc_student_app/data/models/schedule.dart';
 import 'package:utc_student_app/data/models/exam.dart';
 import 'package:utc_student_app/data/models/gpa.dart';
 import 'package:utc_student_app/data/models/mark.dart';
@@ -73,7 +73,7 @@ class StudentStateMarkSuccess extends StudentState {
 }
 
 class StudentStateScheduleSuccess extends StudentState {
-  final List<Calendar> listCalendar;
+  final List<Schedule> listCalendar;
   final List<Exam> listExam;
   StudentStateScheduleSuccess(
     this.listCalendar,

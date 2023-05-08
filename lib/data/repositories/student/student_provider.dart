@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:utc_student_app/data/models/calendar.dart';
+import 'package:utc_student_app/data/models/schedule.dart';
 import 'package:utc_student_app/data/models/exam.dart';
 import 'package:utc_student_app/data/models/gpa.dart';
 import 'package:utc_student_app/data/models/mark.dart';
@@ -35,42 +35,30 @@ class StudentProvider {
   //đồng bộ dữ liệu sinh viên
   Future<bool> syncData(String username, String password) async {
     try {
-      await _dio.post(studentInsert, data: {
+      final response = await _dio.get(controllerInsertAll, data: {
         'username': username,
         'password': password,
       });
-      await _dio.post(newsInsert, data: {
-        'username': username,
-        'password': password,
-      });
-      await _dio.post(scheduleInsert, data: {
-        'username': username,
-        'password': password,
-      });
-      await _dio.post(scheduleInsertExam, data: {
-        'username': username,
-        'password': password,
-      });
-      await _dio.post(markInsertMarkTerm, data: {
-        'username': username,
-        'password': password,
-      });
-      await _dio.post(markInsertGPA, data: {
-        'username': username,
-        'password': password,
-      });
-      await _dio.post(tuitionInsert, data: {
-        'username': username,
-        'password': password,
-      });
-      await _dio.post(pointInsert, data: {
-        'username': username,
-        'password': password,
-      });
-
-      return true;
+      if (response.data) {
+        return true;
+      }
+      return false;
     } catch (e) {
       throw Exception(e.toString());
+    }
+  }
+
+  //xóa tất cả dữ liệu
+  Future<bool> deleteAll(String username) async {
+    try {
+      final response = await _dio.get('$controllerDeleteAll/$username');
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
     }
   }
 
@@ -154,13 +142,13 @@ class StudentProvider {
   }
 
   //lấy lịch sinh viên
-  Future<List<Calendar>> fetchSchedule(String username) async {
+  Future<List<Schedule>> fetchSchedule(String username) async {
     try {
       final response = await _dio.get('$scheduleGet/$username');
       if (response.statusCode == 200) {
         List schedule = response.data;
-        List<Calendar> calendar =
-            schedule.map((e) => Calendar.fromJson(jsonEncode(e))).toList();
+        List<Schedule> calendar =
+            schedule.map((e) => Schedule.fromJson(jsonEncode(e))).toList();
         return calendar;
       } else {
         throw Exception('Fail to load Calendar data');
@@ -218,20 +206,6 @@ class StudentProvider {
       }
     } catch (e) {
       throw Exception(e.toString());
-    }
-  }
-
-  //lấy lịch học phí
-  Future<bool> deleteAll(String username) async {
-    try {
-      final response = await _dio.get('$controllerDeleteAll/$username');
-      if (response.statusCode == 200) {
-        return response.data;
-      } else {
-        return false;
-      }
-    } catch (e) {
-      return false;
     }
   }
 }

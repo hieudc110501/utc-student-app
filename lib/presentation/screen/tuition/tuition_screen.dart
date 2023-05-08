@@ -22,10 +22,10 @@ class TuitionScreen extends StatelessWidget {
         tuitions.where((tuition) => tuition.paid == 0).toList();
     String totalPaid = NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
         .format(listPaid.fold(
-            0, (previousValue, element) => previousValue + element.payment));
+            0, (previousValue, element) => previousValue + (element.payment ?? 0)));
     String totalNotPaid = NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
         .format(listNotPaid.fold(
-            0, (previousValue, element) => previousValue + element.payment));
+            0, (previousValue, element) => previousValue + (element.payment ?? 0)));
 
     return Scaffold(
       appBar: AppBar(
@@ -145,7 +145,7 @@ class TuitionScreen extends StatelessWidget {
                         Align(
                           alignment: Alignment.center,
                           child: SampleText(
-                            text: listPaid[i].content,
+                            text: listPaid[i].content ?? '',
                             fontWeight: FontWeight.w500,
                             size: 14,
                             color: grey700,
@@ -154,7 +154,7 @@ class TuitionScreen extends StatelessWidget {
                         Align(
                           alignment: Alignment.center,
                           child: SampleText(
-                            text: listPaid[i].term,
+                            text: listPaid[i].term ?? '',
                             fontWeight: FontWeight.w500,
                             size: 14,
                             color: grey700,
@@ -163,7 +163,7 @@ class TuitionScreen extends StatelessWidget {
                         Align(
                           alignment: Alignment.center,
                           child: SampleText(
-                            text: listPaid[i].date,
+                            text: listPaid[i].date ?? '',
                             fontWeight: FontWeight.w500,
                             size: 14,
                             color: grey700,
@@ -268,7 +268,7 @@ class TuitionScreen extends StatelessWidget {
                         Align(
                           alignment: Alignment.center,
                           child: SampleText(
-                            text: listNotPaid[i].content,
+                            text: listNotPaid[i].content ?? '',
                             fontWeight: FontWeight.w500,
                             size: 14,
                             color: grey700,
@@ -277,7 +277,7 @@ class TuitionScreen extends StatelessWidget {
                         Align(
                           alignment: Alignment.center,
                           child: SampleText(
-                            text: listNotPaid[i].term,
+                            text: listNotPaid[i].term ?? '',
                             fontWeight: FontWeight.w500,
                             size: 14,
                             color: grey700,
@@ -286,7 +286,7 @@ class TuitionScreen extends StatelessWidget {
                         Align(
                           alignment: Alignment.center,
                           child: SampleText(
-                            text: listNotPaid[i].date,
+                            text: listNotPaid[i].date ?? '',
                             fontWeight: FontWeight.w500,
                             size: 14,
                             color: grey700,

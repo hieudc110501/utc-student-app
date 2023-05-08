@@ -1,21 +1,21 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-class Calendar {
-  final int subjectdetailId;
+class Schedule {
+  final int scheduleId;
   final String studentId;
-  final String subjectId;
-  final String subjectName;
+  final String moduleId;
+  final String moduleName;
   final String startDay;
   final String endDay;
   final int? weekDay;
   final int? lesson;
   final String? location;
-  Calendar({
-    required this.subjectdetailId,
+  Schedule({
+    required this.scheduleId,
     required this.studentId,
-    required this.subjectId,
-    required this.subjectName,
+    required this.moduleId,
+    required this.moduleName,
     required this.startDay,
     required this.endDay,
     this.weekDay,
@@ -23,13 +23,12 @@ class Calendar {
     this.location,
   });
 
-
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'subjectdetailId': subjectdetailId,
+      'scheduleId': scheduleId,
       'studentId': studentId,
-      'subjectId': subjectId,
-      'subjectName': subjectName,
+      'moduleId': moduleId,
+      'moduleName': moduleName,
       'startDay': startDay,
       'endDay': endDay,
       'weekDay': weekDay,
@@ -38,12 +37,12 @@ class Calendar {
     };
   }
 
-  factory Calendar.fromMap(Map<String, dynamic> map) {
-    return Calendar(
-      subjectdetailId: map['subjectdetailId'] as int,
+  factory Schedule.fromMap(Map<String, dynamic> map) {
+    return Schedule(
+      scheduleId: map['scheduleId'] as int,
       studentId: map['studentId'] as String,
-      subjectId: map['subjectId'] as String,
-      subjectName: map['subjectName'] as String,
+      moduleId: map['moduleId'] as String,
+      moduleName: map['moduleName'] as String,
       startDay: map['startDay'] as String,
       endDay: map['endDay'] as String,
       weekDay: map['weekDay'] != null ? map['weekDay'] as int : null,
@@ -54,5 +53,5 @@ class Calendar {
 
   String toJson() => json.encode(toMap());
 
-  factory Calendar.fromJson(String source) => Calendar.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Schedule.fromJson(String source) => Schedule.fromMap(json.decode(source) as Map<String, dynamic>);
 }

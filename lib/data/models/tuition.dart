@@ -4,22 +4,23 @@ import 'dart:convert';
 class Tuition {
   final int tuitionId;
   final String studentId;
-  final String type;
-  final String content;
-  final String term;
-  final String date;
-  final int payment;
-  final int paid;
+  final String? type;
+  final String? content;
+  final String? term;
+  final String? date;
+  final int? payment;
+  final int? paid;
   Tuition({
     required this.tuitionId,
     required this.studentId,
-    required this.type,
-    required this.content,
-    required this.term,
-    required this.date,
-    required this.payment,
-    required this.paid,
+    this.type,
+    this.content,
+    this.term,
+    this.date,
+    this.payment,
+    this.paid,
   });
+  
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -38,12 +39,12 @@ class Tuition {
     return Tuition(
       tuitionId: map['tuitionId'] as int,
       studentId: map['studentId'] as String,
-      type: map['type'] as String,
-      content: map['content'] as String,
-      term: map['term'] as String,
-      date: map['date'] as String,
-      payment: map['payment'] as int,
-      paid: map['paid'] as int,
+      type: map['type'] != null ? map['type'] as String : null,
+      content: map['content'] != null ? map['content'] as String : null,
+      term: map['term'] != null ? map['term'] as String : null,
+      date: map['date'] != null ? map['date'] as String : null,
+      payment: map['payment'] != null ? map['payment'] as int : null,
+      paid: map['paid'] != null ? map['paid'] as int : null,
     );
   }
 

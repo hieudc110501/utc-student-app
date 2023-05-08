@@ -1,4 +1,4 @@
-const http = 'http://192.168.1.163';
+const http = 'http://192.168.1.109';
 
 const httpLogin = '$http/login';
 const httpStudent = '$http/student';
@@ -52,3 +52,4 @@ const pointDelete = '$httpPoint/delete';
 
 //controller
 const controllerDeleteAll = '$httpController/deleteAll';
+const controllerInsertAll = '$httpController/insertAll';

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:utc_student_app/data/models/calendar.dart';
+import 'package:utc_student_app/data/models/schedule.dart';
 import 'package:utc_student_app/data/models/exam.dart';
 import 'package:utc_student_app/logic/bloc/student/student_bloc.dart';
 import 'package:utc_student_app/logic/bloc/student/student_state.dart';
@@ -131,7 +131,7 @@ class ScheduleScreen extends StatelessWidget {
                         ),
                         calendarBuilders: CalendarBuilders(
                           markerBuilder: (context, day, markedDates) {
-                            for (Calendar calendar in state.listCalendar) {
+                            for (Schedule calendar in state.listCalendar) {
                               if (markerCheck(
                                 calendar.startDay,
                                 calendar.endDay,
@@ -189,9 +189,9 @@ class ScheduleScreen extends StatelessWidget {
                             ),
                             context: context,
                             builder: (context) {
-                              List<Calendar> listSelected = [];
+                              List<Schedule> listSelected = [];
                               List<Exam> listExam = [];
-                              for (Calendar calendar in state.listCalendar) {
+                              for (Schedule calendar in state.listCalendar) {
                                 if (markerCheck(
                                   calendar.startDay,
                                   calendar.endDay,
@@ -252,7 +252,7 @@ class ScheduleScreen extends StatelessWidget {
                                   child: ScheduleItem(
                                     index: index + 1,
                                     subject:
-                                        state.listCalendar[index].subjectName,
+                                        state.listCalendar[index].moduleName,
                                     room: state.listCalendar[index].location ??
                                         'Trống',
                                     begin: state.listCalendar[index].startDay,

@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
-import 'package:utc_student_app/data/models/calendar.dart';
+import 'package:utc_student_app/data/models/schedule.dart';
 import 'package:utc_student_app/data/models/exam.dart';
 import 'package:utc_student_app/logic/handle/calender_handle.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
@@ -10,7 +10,7 @@ import 'package:utc_student_app/utils/size.dart';
 
 class ScheduleShowModal extends StatelessWidget {
   final DateTime day;
-  final List<Calendar> listSelected;
+  final List<Schedule> listSelected;
   final List<Exam> listExam;
   const ScheduleShowModal({
     Key? key,
@@ -233,7 +233,7 @@ class ScheduleShowModal extends StatelessWidget {
                                           children: [
                                             SampleText(
                                               text: listSelected[index]
-                                                  .subjectName,
+                                                  .moduleName,
                                               fontWeight: FontWeight.w700,
                                               size: 18,
                                               color: indigo700,

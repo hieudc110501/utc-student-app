@@ -1,4 +1,4 @@
-import 'package:utc_student_app/data/models/calendar.dart';
+import 'package:utc_student_app/data/models/schedule.dart';
 import 'package:utc_student_app/data/models/exam.dart';
 import 'package:utc_student_app/data/models/gpa.dart';
 import 'package:utc_student_app/data/models/mark.dart';
@@ -40,7 +40,7 @@ class StudentRepository {
     return _provider.fetchGPA(username);
   }
 
-  Future<List<Calendar>> fetchSchedule(String username) {
+  Future<List<Schedule>> fetchSchedule(String username) {
     return _provider.fetchSchedule(username);
   }
 

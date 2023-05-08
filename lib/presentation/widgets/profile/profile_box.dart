@@ -72,7 +72,7 @@ class ProfileBox extends StatelessWidget {
             ),
             ProfileItem(
               title: 'Ngày Sinh',
-              content: student.birth,
+              content: student.birth ?? '',
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 24),
@@ -80,7 +80,7 @@ class ProfileBox extends StatelessWidget {
             ),
             ProfileItem(
               title: 'Giới Tính',
-              content: student.gender,
+              content: student.gender!,
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 24),
@@ -88,7 +88,7 @@ class ProfileBox extends StatelessWidget {
             ),
             ProfileItem(
               title: 'Căn Cước Công Dân',
-              content: student.identity,
+              content: student.identity ?? '',
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 24),
@@ -96,7 +96,7 @@ class ProfileBox extends StatelessWidget {
             ),
             ProfileItem(
               title: 'Số Điện Thoại',
-              content: student.tel,
+              content: student.tel ?? '',
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 24),
@@ -104,7 +104,7 @@ class ProfileBox extends StatelessWidget {
             ),
             ProfileItem(
               title: 'Số Tài Khoản',
-              content: student.bankAccount,
+              content: student.bankAccount ?? '',
             ),
             const SizedBox(
               height: 20,
