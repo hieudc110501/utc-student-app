@@ -359,7 +359,7 @@ class LocalProvider {
 
       final res = await db.query(tblNews);
       if (res.isNotEmpty) {
-        deleteNews();
+        await deleteNews();
       }
       newss.forEach((news) async {
         await db.insert(tblNews, {
@@ -391,6 +391,49 @@ class LocalProvider {
     try {
       final db = await dbProvider.database;
       await db.delete(tblNews);
+      return true;
+    } catch (e) {
+      throw (e.toString());
+    }
+  }
+
+  //insert all
+  Future<bool> insertAll(
+    Student student,
+    List<GPA> gpas,
+    List<Schedule> schedules,
+    List<Mark> marks,
+    List<Exam> exams,
+    List<Point> points,
+    List<Tuition> tuitions,
+    List<News> news,
+  ) async {
+    try {
+      await insertStudent(student);
+      await insertGpa(gpas);
+      await insertSchedule(schedules);
+      await insertMark(marks);
+      await insertExam(exams);
+      await insertPoint(points);
+      await insertTuition(tuitions);
+      await insertNews(news);
+      return true;
+    } catch (e) {
+      throw (e.toString());
+    }
+  }
+
+  //delete all
+  Future<bool> deleteAll(String id) async {
+    try {
+      deleteMark(id);
+      deletePoint(id);
+      deleteSchedule(id);
+      deleteExam(id);
+      deleteTuition(id);
+      deleteGpa(id);
+      deletePoint(id);
+      deleteStudent(id);
       return true;
     } catch (e) {
       throw (e.toString());

@@ -2,12 +2,12 @@
 // ignore_for_file: public_member_api_docs, sort_ructors_first, must_be_immutable
 import 'package:equatable/equatable.dart';
 
-import 'package:utc_student_app/data/models/schedule.dart';
 import 'package:utc_student_app/data/models/exam.dart';
 import 'package:utc_student_app/data/models/gpa.dart';
 import 'package:utc_student_app/data/models/mark.dart';
 import 'package:utc_student_app/data/models/news.dart';
 import 'package:utc_student_app/data/models/point.dart';
+import 'package:utc_student_app/data/models/schedule.dart';
 import 'package:utc_student_app/data/models/student.dart';
 import 'package:utc_student_app/data/models/tuition.dart';
 
@@ -55,11 +55,16 @@ class StudentStateInfoSuccess extends StudentState {
   final List<News> news;
   final List<Tuition> tuitions;
   final List<Point> points;
+  final List<Schedule> schedules;
+  final List<Exam> exams;
+
   StudentStateInfoSuccess(
     this.student,
     this.news,
     this.tuitions,
     this.points,
+    this.schedules,
+    this.exams,
   ) : super(isLoading: false);
 }
 

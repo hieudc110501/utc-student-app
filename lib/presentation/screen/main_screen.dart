@@ -1,11 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:utc_student_app/data/local/repository/local_repository.dart';
+import 'package:utc_student_app/data/local/shared_preferences/shared_preferences_service.dart';
+import 'package:utc_student_app/data/repositories/student/student_repostitory.dart';
 import 'package:utc_student_app/logic/bloc/student/student_bloc.dart';
 import 'package:utc_student_app/logic/bloc/student/student_event.dart';
 import 'package:utc_student_app/logic/bloc/student/student_state.dart';
-
 import 'package:utc_student_app/presentation/screen/home/home_screen.dart';
 import 'package:utc_student_app/presentation/screen/loading/loading_screen.dart';
 import 'package:utc_student_app/presentation/screen/mark/mark_screen.dart';
@@ -13,6 +14,7 @@ import 'package:utc_student_app/presentation/screen/profile/profile_screen.dart'
 import 'package:utc_student_app/presentation/screen/schedule/schedule_screen.dart';
 import 'package:utc_student_app/presentation/widgets/cupertino_tabbar.dart';
 import 'package:utc_student_app/presentation/widgets/dialog/error_dialog.dart';
+import 'package:utc_student_app/presentation/widgets/dialog/update_dialog.dart';
 import 'package:utc_student_app/utils/color.dart';
 
 class MainScreen extends StatefulWidget {
@@ -32,7 +34,6 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int currentTab = 0;
   int index = 0;
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   late String? username;
 
   @override
@@ -41,21 +42,31 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Future<void> saveData() async {
-    final SharedPreferences prefs = await _prefs;
     setState(() {
-      prefs.setString('username', widget.username);
+      SharedPreferencesService.preferences
+          .setString('username', widget.username);
+      SharedPreferencesService.preferences
+          .setString('password', widget.password);
     });
   }
 
   Future<void> checkData(BuildContext context) async {
-    final SharedPreferences prefs = await _prefs;
-    username = prefs.getString('username');
+    username = SharedPreferencesService.preferences.getString('username');
     if (username == null) {
+      LocalRepository localRepository = LocalRepository();
+      StudentRepository studentRepository = StudentRepository();
+      final check = await localRepository.check(widget.username);
+      if (check) {
+        final update = await showUpdateDialog(context);
+        if (update) {
+          await studentRepository.deleteAll(widget.username);
+          await localRepository.deleteAll(widget.username);
+        }
+      }
       context
           .read<StudentBloc>()
           .add(StudentEventSyncData(widget.username, widget.password));
-    }
-    else if (index == 0) {
+    } else if (index == 0) {
       context.read<StudentBloc>().add(StudentEventLoadData(username!));
     }
   }
@@ -73,12 +84,15 @@ class _MainScreenState extends State<MainScreen> {
     return BlocListener<StudentBloc, StudentState>(
       listener: (context, state) {
         if (state.isLoading) {
-          LoadingScreen.instance()
-              .show(context: context, text: 'Đang đồ bộ dữ liệu...');
+          LoadingScreen().show(context: context, text: 'Đang đồng bộ...');
         } else {
-          LoadingScreen.instance().hide();
+          LoadingScreen().hide();
           if (state is StudentStateSyncFailure) {
-            showErrorDialog(context, state.error);
+            showErrorDialog(
+              context: context,
+              title: 'Đồng bộ thất bại',
+              text: state.error,
+            );
           } else if (state is StudentStateSyncSuccess) {
             saveData();
             context

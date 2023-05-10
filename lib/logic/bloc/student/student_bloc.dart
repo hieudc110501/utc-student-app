@@ -19,14 +19,16 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     on<StudentEventSyncData>((event, emit) async {
       emit(StudentStateLoading(isLoading: true));
       try {
+        //kiểm tra xem dữ liệu đã có trên server chưa
         final check = await studentRepository.checkSync(event.username);
         if (!check) {
           await studentRepository.syncData(event.username, event.password);
         }
 
+        //kiểm tra xem dữ liệu đã có trên local chưa
         final checkLocal = await localRepository.check(event.username);
         if (!checkLocal) {
-          //fecth
+          // get data
           final student = await studentRepository.fetchStudent(event.username);
           final gpas = await studentRepository.fetchGPA(event.username);
           final schedules =
@@ -37,15 +39,8 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
           final tuitions = await studentRepository.fetchTuition(event.username);
           final news = await studentRepository.fetchNews(event.username);
 
-          //save
-          await localRepository.insertStudent(student);
-          await localRepository.insertGpa(gpas);
-          await localRepository.insertSchedule(schedules);
-          await localRepository.insertMark(marks);
-          await localRepository.insertExam(exams);
-          await localRepository.insertPoint(points);
-          await localRepository.insertTuition(tuitions);
-          await localRepository.insertNews(news);
+          //save data to local
+          await localRepository.insertAll(student, gpas, schedules, marks, exams, points, tuitions, news);
         }
 
         emit(StudentStateSyncSuccess());
@@ -65,7 +60,17 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
         final news = await localRepository.getNews();
         final tuitions = await localRepository.getTuition(event.username);
         final points = await localRepository.getPoint(event.username);
-        emit(StudentStateInfoSuccess(student, news, tuitions, points));
+        final schedules = await localRepository.getSchedule(event.username);
+        final exams = await localRepository.getExam(event.username);
+
+        emit(StudentStateInfoSuccess(
+          student,
+          news,
+          tuitions,
+          points,
+          schedules,
+          exams,
+        ));
       } catch (e) {
         emit(StudentStateError(e.toString()));
       }
@@ -114,7 +119,9 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     //xóa hết thông tin
     on<StudentEventDeleteData>((event, emit) async {
       try {
+        // delete data api and local
         await studentRepository.deleteAll(event.username);
+        await localRepository.deleteAll(event.username);
         emit(StudentStateDeleteSuccess());
       } catch (e) {
         emit(StudentStateError(e.toString()));

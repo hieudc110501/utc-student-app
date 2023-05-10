@@ -1,4 +1,7 @@
 // xử lí tiết học
+import 'package:utc_student_app/data/models/exam.dart';
+import 'package:utc_student_app/data/models/schedule.dart';
+
 String lessonHandle(int lesson) {
   switch (lesson) {
     case 1:
@@ -83,4 +86,26 @@ bool checkSameDay(DateTime a, DateTime b) {
     return true;
   }
   return false;
+}
+
+// lấy ra ngày có lịch học
+List checkSchedule(List<Schedule> schedules) {
+  final list = [];
+  schedules.forEach((e) {
+    if (markerCheck(e.startDay, e.endDay, DateTime.now(), e.weekDay ?? -1)) {
+      list.add(e);
+    }
+  });
+  return list;
+}
+
+// lấy ra ngày có lịch thi
+List checkExam(List<Exam> exams) {
+  final list = [];
+  exams.forEach((e) {
+    if (checkSameDay(DateTime.parse(e.date), DateTime.now())) {
+      list.add(e);
+    }
+  });
+  return list;
 }

@@ -2,11 +2,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:utc_student_app/presentation/screen/loading/loading_screen_controller.dart';
 import 'package:utc_student_app/utils/color.dart';
+import 'package:utc_student_app/utils/size.dart';
 
 class LoadingScreen {
   LoadingScreen._sharedInstance();
   static final LoadingScreen _shared = LoadingScreen._sharedInstance();
-  factory LoadingScreen.instance() => _shared;
+  factory LoadingScreen() => _shared;
 
   LoadingScreenController? _controller;
 
@@ -33,50 +34,50 @@ class LoadingScreen {
     required BuildContext context,
     required String text,
   }) {
-    final state = Overlay.of(context);
-    // ignore: unnecessary_null_comparison
-    if (state == null) {
-      return null;
-    }
-
     //add status text into StreamController
     final textController = StreamController<String>();
-    textController.add(text);
+    textController.sink.add(text);
+    final state = Overlay.of(context);
 
     //create overlay
     final overlay = OverlayEntry(
       builder: (context) {
         return Material(
-          color: Colors.white.withAlpha(50),
+          color: Colors.black.withAlpha(150),
           child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 10),
-                const CircularProgressIndicator(
-                  color: blue700,
+            child: Container(
+              constraints: BoxConstraints(
+                maxWidth: screenSize.width * 0.8,
+                maxHeight: screenSize.height * 0.8,
+                minWidth: screenSize.width * 0.5,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 10),
+                    const CircularProgressIndicator(
+                      color: blue700,
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      text,
+                      style: const TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: grey700,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 10),
-                StreamBuilder<String>(
-                  stream: textController.stream,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Text(
-                        snapshot.requireData,
-                        style: const TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: grey700,
-                        ),
-                      );
-                    } else {
-                      return Container();
-                    }
-                  },
-                ),
-              ],
+              ),
             ),
           ),
         );

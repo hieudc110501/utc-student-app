@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:utc_student_app/presentation/widgets/sample_text.dart';
+import 'package:utc_student_app/utils/color.dart';
 
 typedef DialogOptionBuilder<T> = Map<String, T?> Function();
 
@@ -13,8 +15,18 @@ Future<T?> showGenericDialog<T>({
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: Text(title),
-        content: Text(content),
+        title: SampleText(
+          text: title,
+          fontWeight: FontWeight.w700,
+          size: 20,
+          color: grey700,
+        ),
+        content: SampleText(
+          text: content,
+          fontWeight: FontWeight.w500,
+          size: 16,
+          color: grey500,
+        ),
         actions: options.keys.map((optionTitle) {
           final T value = options[optionTitle];
           return TextButton(
@@ -25,7 +37,12 @@ Future<T?> showGenericDialog<T>({
                 Navigator.of(context).pop();
               }
             },
-            child: Text(optionTitle),
+            child: SampleText(
+              text: optionTitle,
+              fontWeight: FontWeight.w700,
+              size: 16,
+              color: blue500,
+            ),
           );
         }).toList(),
       );

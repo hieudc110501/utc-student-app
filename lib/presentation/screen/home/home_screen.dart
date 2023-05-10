@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:utc_student_app/logic/bloc/student/student_bloc.dart';
 import 'package:utc_student_app/logic/bloc/student/student_state.dart';
+import 'package:utc_student_app/logic/handle/calender_handle.dart';
 import 'package:utc_student_app/presentation/screen/home/home_news_screen.dart';
 import 'package:utc_student_app/presentation/screen/home/home_point_screen.dart';
 import 'package:utc_student_app/presentation/screen/loading/loading_circle_screen.dart';
@@ -12,6 +13,8 @@ import 'package:utc_student_app/presentation/screen/tuition/tuition_screen.dart'
 import 'package:utc_student_app/presentation/widgets/home/home_box.dart';
 import 'package:utc_student_app/presentation/widgets/home/home_news_item.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
+import 'package:utc_student_app/presentation/widgets/schedule/schedule_exam_item.dart';
+import 'package:utc_student_app/presentation/widgets/schedule/schedule_item.dart';
 import 'package:utc_student_app/utils/color.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -51,9 +54,9 @@ class HomeScreen extends StatelessWidget {
       body: BlocConsumer<StudentBloc, StudentState>(
         listener: (context, state) {
           if (state.isLoading) {
-            LoadingScreen.instance().show(context: context, text: '');
+            LoadingScreen().show(context: context, text: '');
           } else {
-            LoadingScreen.instance().hide();
+            LoadingScreen().hide();
           }
         },
         builder: (context, state) {
@@ -219,13 +222,59 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: const Center(
-                        child: SampleText(
-                          text: 'Ngày hôm nay không có lịch nào',
-                          fontWeight: FontWeight.w400,
-                          size: 14,
-                          color: grey500,
-                        ),
+                      child: Center(
+                        child: checkSchedule(state.schedules).isEmpty
+                            ? checkExam(state.exams).isEmpty
+                                ? const SampleText(
+                                    text: 'Ngày hôm nay không có lịch nào',
+                                    fontWeight: FontWeight.w400,
+                                    size: 14,
+                                    color: grey500,
+                                  )
+                                : ListView.builder(
+                                    itemCount: checkExam(state.exams).length,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: ScheduleExamItem(
+                                          index: index + 1,
+                                          subject:
+                                              checkExam(state.exams)[index].moduleName,
+                                          room: checkExam(state.exams)[index].room,
+                                          date: checkExam(state.exams)[index].date,
+                                          type: checkExam(state.exams)[index].type,
+                                          lesson: checkExam(state.exams)[index].lesson,
+                                          identity: state.exams[index].identify
+                                              .toString(),
+                                        ),
+                                      );
+                                    },
+                                    physics: const BouncingScrollPhysics(),
+                                  )
+                            : ListView.builder(
+                                itemCount: checkSchedule(state.schedules).length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ScheduleItem(
+                                      index: index + 1,
+                                      subject:
+                                          checkSchedule(state.schedules)[index].moduleName,
+                                      room: checkSchedule(state.schedules)[index].location ??
+                                          'Trống',
+                                      begin: checkSchedule(state.schedules)[index].startDay,
+                                      end: checkSchedule(state.schedules)[index].endDay,
+                                      lesson: lessonHandle(
+                                          checkSchedule(state.schedules)[index].lesson ?? -1),
+                                      weekday:
+                                          (checkSchedule(state.schedules)[index].weekDay ??
+                                                  'Trống')
+                                              .toString(),
+                                    ),
+                                  );
+                                },
+                                physics: const BouncingScrollPhysics(),
+                              ),
                       ),
                     ),
                     const SizedBox(height: 30),

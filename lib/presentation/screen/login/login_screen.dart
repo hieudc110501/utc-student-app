@@ -38,11 +38,15 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state.isLoading) {
-          LoadingScreen.instance().show(context: context, text: '');
+          LoadingScreen().show(context: context, text: 'Đang đăng nhập...');
         } else {
-          LoadingScreen.instance().hide();
+          LoadingScreen().hide();
           if (state is LoginStateFailure) {
-            showErrorDialog(context, state.error);
+            showErrorDialog(
+              context: context,
+              title: 'Đăng nhập',
+              text: 'Sai tên tài khoản hoặc mật khẩu',
+            );
           }
         }
       },
@@ -134,9 +138,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(38),
                       ),
                       child: ElevatedButton(
-                        onPressed: () => context.read<LoginBloc>().add(
-                            LoginEventSubmit(
-                                controller1.text, controller2.text)),
+                        onPressed: () =>
+                            context.read<LoginBloc>().add(LoginEventSubmit(
+                                  controller1.text,
+                                  controller2.text,
+                                )),
                         style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all(Colors.transparent),

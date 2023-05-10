@@ -3,15 +3,18 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:utc_student_app/data/local/repository/local_repository.dart';
+import 'package:utc_student_app/data/local/shared_preferences/shared_preferences_service.dart';
+import 'package:utc_student_app/data/repositories/student/student_repostitory.dart';
 import 'package:utc_student_app/logic/bloc/login/login_bloc.dart';
 import 'package:utc_student_app/logic/bloc/login/login_event.dart';
 import 'package:utc_student_app/logic/bloc/student/student_bloc.dart';
-import 'package:utc_student_app/logic/bloc/student/student_event.dart';
 import 'package:utc_student_app/logic/bloc/student/student_state.dart';
 import 'package:utc_student_app/presentation/screen/loading/loading_circle_screen.dart';
+import 'package:utc_student_app/presentation/screen/loading/loading_screen.dart';
 import 'package:utc_student_app/presentation/widgets/profile/profile_box.dart';
 import 'package:utc_student_app/presentation/widgets/profile/profile_container.dart';
+import 'package:utc_student_app/utils/asset.dart';
 import 'package:utc_student_app/utils/color.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 import 'package:utc_student_app/utils/size.dart';
@@ -29,13 +32,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
   }
 
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
+  // xóa phiên
   Future<void> logout() async {
-    final SharedPreferences prefs = await _prefs;
     setState(() {
-      prefs.remove('username');
+      SharedPreferencesService.preferences.remove('username');
+      SharedPreferencesService.preferences.remove('password');
     });
+  }
+
+  //xóa dữ liệu
+  Future<bool> deleteAll(String id) async {
+    LocalRepository localRepository = LocalRepository();
+    StudentRepository studentRepository = StudentRepository();
+    final checkApi = await studentRepository.deleteAll(id);
+    final checkLocal = await localRepository.deleteAll(id);
+    if (checkApi && checkLocal) {
+      return true;
+    }
+    return false;
   }
 
   @override
@@ -334,19 +348,214 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: InkWell(
                         onTap: () {
-                          context.read<StudentBloc>().add(
-                              StudentEventDeleteData(state.student.studentId));
-                          logout();
-                          context
-                              .read<LoginBloc>()
-                              .add(const LoginEventCheck());
+                          showModalBottomSheet(
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(26),
+                              ),
+                            ),
+                            isScrollControlled: true,
+                            barrierColor: grey900.withOpacity(0.4),
+                            context: context,
+                            builder: (context) {
+                              return BackdropFilter(
+                                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                    color: whiteText,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(26),
+                                      topRight: Radius.circular(26),
+                                    ),
+                                  ),
+                                  height: screenSize.height * 0.3,
+                                  child: Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 40),
+                                      child: Column(
+                                        children: [
+                                          const SampleText(
+                                            text: 'Đồng bộ dữ liệu',
+                                            fontWeight: FontWeight.w700,
+                                            size: 18,
+                                            color: green300,
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 70),
+                                            child: Text(
+                                              'Dữ liệu sẽ bị xóa hết và bạn phải đăng nhập lại để đồng bộ dữ liệu mới nhất',
+                                              textScaleFactor: 1.0,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 40,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: [
+                                                DecoratedBox(
+                                                  decoration: BoxDecoration(
+                                                    gradient:
+                                                        const LinearGradient(
+                                                      begin:
+                                                          Alignment.centerLeft,
+                                                      end:
+                                                          Alignment.centerRight,
+                                                      colors: [
+                                                        indigo900,
+                                                        indigo900,
+                                                      ],
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            38),
+                                                  ),
+                                                  child: ElevatedButton(
+                                                    onPressed: () =>
+                                                        Navigator.of(context)
+                                                            .pop(),
+                                                    style: ButtonStyle(
+                                                        overlayColor:
+                                                            const MaterialStatePropertyAll(
+                                                                Colors
+                                                                    .transparent),
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all(
+                                                                    Colors
+                                                                        .transparent),
+                                                        shape: MaterialStateProperty
+                                                            .all(
+                                                                RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(38),
+                                                        )),
+                                                        elevation:
+                                                            MaterialStateProperty
+                                                                .all(0),
+                                                        fixedSize:
+                                                            MaterialStatePropertyAll(
+                                                                Size(
+                                                                    screenSize
+                                                                            .width *
+                                                                        0.4,
+                                                                    40))
+                                                        //foregroundColor: MaterialStateProperty.all(primaryColorRoseTitleText),
+                                                        ),
+                                                    child: const Text(
+                                                      'Quay lại',
+                                                      textScaleFactor: 1.0,
+                                                      style: TextStyle(
+                                                        fontFamily: 'Inter',
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                DecoratedBox(
+                                                  decoration: BoxDecoration(
+                                                    gradient:
+                                                        const LinearGradient(
+                                                      begin:
+                                                          Alignment.centerLeft,
+                                                      end:
+                                                          Alignment.centerRight,
+                                                      colors: [
+                                                        green300,
+                                                        green300,
+                                                      ],
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            38),
+                                                  ),
+                                                  child: ElevatedButton(
+                                                    onPressed: () async {
+                                                      Navigator.pop(context);
+                                                      final check =
+                                                          await deleteAll(state
+                                                              .student
+                                                              .studentId);
+                                                      if (check) {
+                                                        logout();
+                                                      }
+                                                    },
+                                                    style: ButtonStyle(
+                                                        overlayColor:
+                                                            const MaterialStatePropertyAll(
+                                                                Colors
+                                                                    .transparent),
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all(
+                                                                    Colors
+                                                                        .transparent),
+                                                        shape: MaterialStateProperty
+                                                            .all(
+                                                                RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(38),
+                                                        )),
+                                                        elevation:
+                                                            MaterialStateProperty
+                                                                .all(0),
+                                                        fixedSize:
+                                                            MaterialStatePropertyAll(
+                                                                Size(
+                                                                    screenSize
+                                                                            .width *
+                                                                        0.4,
+                                                                    40))
+                                                        //foregroundColor: MaterialStateProperty.all(primaryColorRoseTitleText),
+                                                        ),
+                                                    child: const Text(
+                                                      'Đồng bộ',
+                                                      textScaleFactor: 1.0,
+                                                      style: TextStyle(
+                                                        fontFamily: 'Inter',
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
                         },
-                        child: const SizedBox(
+                        child: SizedBox(
                           height: 50,
                           child: ProfileContainer(
-                            leftIcon: 'assets/icons/profile_info.png',
-                            title: 'Xóa dữ liệu',
-                            textColor: grey700,
+                            leftIcon: Asset.icon('sync.png'),
+                            title: 'Đồng bộ dữ liệu',
+                            textColor: green300,
                           ),
                         ),
                       ),

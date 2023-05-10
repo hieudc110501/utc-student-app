@@ -25,7 +25,8 @@ class LocalRepository {
   Future deleteGpa(String id) => localProvider.deleteGpa(id);
 
   //schedule
-  Future insertSchedule(List<Schedule> schedules) => localProvider.insertSchedule(schedules);
+  Future insertSchedule(List<Schedule> schedules) =>
+      localProvider.insertSchedule(schedules);
   Future getSchedule(String id) => localProvider.getSchedule(id);
   Future deleteSchedule(String id) => localProvider.deleteSchedule(id);
 
@@ -40,7 +41,8 @@ class LocalRepository {
   Future deleteExam(String id) => localProvider.deleteExam(id);
 
   //tuition
-  Future insertTuition(List<Tuition> tuitions) => localProvider.insertTuition(tuitions);
+  Future insertTuition(List<Tuition> tuitions) =>
+      localProvider.insertTuition(tuitions);
   Future getTuition(String id) => localProvider.getTuition(id);
   Future deleteTuition(String id) => localProvider.deleteTuition(id);
 
@@ -54,4 +56,18 @@ class LocalRepository {
   Future getNews() => localProvider.getNews();
   Future deleteNews() => localProvider.deleteNews();
 
+  //controller
+  Future deleteAll(String id) => localProvider.deleteAll(id);
+  Future insertAll(
+    Student student,
+    List<GPA> gpas,
+    List<Schedule> schedules,
+    List<Mark> marks,
+    List<Exam> exams,
+    List<Point> points,
+    List<Tuition> tuitions,
+    List<News> news,
+  ) =>
+      localProvider.insertAll(
+          student, gpas, schedules, marks, exams, points, tuitions, news);
 }

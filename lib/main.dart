@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:utc_student_app/data/local/shared_preferences/shared_preferences_service.dart';
 import 'package:utc_student_app/logic/bloc/login/login_bloc.dart';
 import 'package:utc_student_app/logic/bloc/student/student_bloc.dart';
 import 'package:utc_student_app/presentation/screen/login/login_screen.dart';
 import 'package:utc_student_app/router/router.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
@@ -19,6 +20,7 @@ void main() {
       DeviceOrientation.portraitDown,
     ],
   );
+  await SharedPreferencesService.init();
   runApp(
     MultiBlocProvider(
       providers: [
@@ -32,12 +34,6 @@ void main() {
       child: const MyApp(),
     ), //
   );
-  // runApp(
-  //   DevicePreview(
-  //     enabled: !kReleaseMode,
-  //     builder: (context) => const MyApp(), // Wrap your app
-  //   ),
-  // );
 }
 
 class MyApp extends StatelessWidget {
@@ -65,7 +61,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       onGenerateRoute: (settings) => generateRoute(settings),
-      home: const LoginScreen()
+      home: const LoginScreen(),
     );
   }
 }
