@@ -61,11 +61,19 @@ class _MainScreenState extends State<MainScreen> {
         if (update) {
           await studentRepository.deleteAll(widget.username);
           await localRepository.deleteAll(widget.username);
+          context
+              .read<StudentBloc>()
+              .add(StudentEventUpdateData(widget.username, widget.password));
+        } else if (index == 0) {
+          context
+              .read<StudentBloc>()
+              .add(StudentEventLoadData(widget.username));
         }
+      } else {
+        context
+            .read<StudentBloc>()
+            .add(StudentEventSyncData(widget.username, widget.password));
       }
-      context
-          .read<StudentBloc>()
-          .add(StudentEventSyncData(widget.username, widget.password));
     } else if (index == 0) {
       context.read<StudentBloc>().add(StudentEventLoadData(username!));
     }
@@ -98,6 +106,8 @@ class _MainScreenState extends State<MainScreen> {
             context
                 .read<StudentBloc>()
                 .add(StudentEventLoadData(widget.username));
+          } else if (state is StudentStateInfoSuccess) {
+            saveData();
           }
         }
       },

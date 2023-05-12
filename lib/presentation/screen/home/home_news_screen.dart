@@ -55,9 +55,7 @@ class HomeNewsScreen extends StatelessWidget {
                     height: 10,
                   ),
                   HomeNewsItem(
-                    title: news[index].title,
-                    text: news[index].content,
-                    date: news[index].date,
+                    news: news[index],
                   ),
                   const SizedBox(
                     height: 10,

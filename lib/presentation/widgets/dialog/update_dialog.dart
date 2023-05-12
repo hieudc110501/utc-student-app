@@ -7,7 +7,7 @@ Future<bool> showUpdateDialog(
 ) {
   return showGenericDialog(
     context: context,
-    title: 'Cập nhật dữ liệu mới nhất',
+    title: 'Cập nhật dữ liệu',
     content: 'Quá trình cập nhật dữ liệu có thể mất vài phút, bạn có chắc chắn muốn cập nhật không?',
     optionsBuilder: () => {
       'Để sau': false,

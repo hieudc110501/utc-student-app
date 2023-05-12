@@ -1,17 +1,17 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
+import 'package:utc_student_app/data/models/news.dart';
+import 'package:utc_student_app/presentation/widgets/home/home_news_detail.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 import 'package:utc_student_app/utils/color.dart';
 import 'package:utc_student_app/utils/size.dart';
 
 class HomeNewsItem extends StatelessWidget {
-  final String title;
-  final String text;
-  final String date;
+  final News news;
   const HomeNewsItem({
     Key? key,
-    required this.title,
-    required this.text,
-    required this.date,
+    required this.news,
   }) : super(key: key);
 
   @override
@@ -32,7 +32,7 @@ class HomeNewsItem extends StatelessWidget {
             Expanded(
               flex: 2,
               child: Text(
-                title,
+                news.title,
                 style: const TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 14,
@@ -49,7 +49,7 @@ class HomeNewsItem extends StatelessWidget {
             Expanded(
               flex: 3,
               child: Text(
-                text,
+                news.content,
                 style: const TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 12,
@@ -71,24 +71,27 @@ class HomeNewsItem extends StatelessWidget {
                 children: [
                   Expanded(
                     child: SampleText(
-                      text: date,
+                      text: news.date,
                       fontWeight: FontWeight.w600,
                       size: 14,
                       color: greyText,
                     ),
                   ),
                   Expanded(
-                    child: Text(
-                      'Chi tiết',
-                      style: const TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        decoration: TextDecoration.underline,
-                      ).copyWith(
-                        color: blue500,
+                    child: InkWell(
+                      onTap: () => Navigator.pushNamed(context, HomeNewsDetail.routeName, arguments: news),
+                      child: Text(
+                        'Chi tiết',
+                        style: const TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          decoration: TextDecoration.underline,
+                        ).copyWith(
+                          color: blue500,
+                        ),
+                        textAlign: TextAlign.right,
                       ),
-                      textAlign: TextAlign.right,
                     ),
                   ),
                 ],

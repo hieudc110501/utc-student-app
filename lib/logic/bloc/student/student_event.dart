@@ -17,6 +17,14 @@ class StudentEventSyncData extends StudentEvent {
   );
 }
 
+class StudentEventUpdateData extends StudentEvent {
+  String password;
+  StudentEventUpdateData(
+    super.username,
+    this.password,
+  );
+}
+
 class StudentEventSynched extends StudentEvent {
   const StudentEventSynched(super.username);
 }

@@ -49,6 +49,37 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       }
     });
 
+    //đồng bộ dữ liệu
+    on<StudentEventUpdateData>((event, emit) async {
+      emit(StudentStateLoading(isLoading: true));
+      try {
+        //kiểm tra xem dữ liệu đã có trên server chưa
+        await studentRepository.syncData(event.username, event.password);
+
+        //kiểm tra xem dữ liệu đã có trên local chưa
+        final checkLocal = await localRepository.check(event.username);
+        if (!checkLocal) {
+          // get data
+          final student = await studentRepository.fetchStudent(event.username);
+          final gpas = await studentRepository.fetchGPA(event.username);
+          final schedules =
+              await studentRepository.fetchSchedule(event.username);
+          final marks = await studentRepository.fetchMark(event.username);
+          final exams = await studentRepository.fetchExam(event.username);
+          final points = await studentRepository.fetchPoint(event.username);
+          final tuitions = await studentRepository.fetchTuition(event.username);
+          final news = await studentRepository.fetchNews(event.username);
+
+          //save data to local
+          await localRepository.insertAll(student, gpas, schedules, marks, exams, points, tuitions, news);
+        }
+
+        emit(StudentStateSyncSuccess());
+      } catch (e) {
+        emit(StudentStateSyncFailure(e.toString()));
+      }
+    });
+
     //lấy thông tin
     on<StudentEventLoadData>((event, emit) async {
       try {

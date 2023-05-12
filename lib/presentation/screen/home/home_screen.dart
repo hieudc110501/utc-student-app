@@ -238,12 +238,16 @@ class HomeScreen extends StatelessWidget {
                                         padding: const EdgeInsets.all(8.0),
                                         child: ScheduleExamItem(
                                           index: index + 1,
-                                          subject:
-                                              checkExam(state.exams)[index].moduleName,
-                                          room: checkExam(state.exams)[index].room,
-                                          date: checkExam(state.exams)[index].date,
-                                          type: checkExam(state.exams)[index].type,
-                                          lesson: checkExam(state.exams)[index].lesson,
+                                          subject: checkExam(state.exams)[index]
+                                              .moduleName,
+                                          room: checkExam(state.exams)[index]
+                                              .room,
+                                          date: checkExam(state.exams)[index]
+                                              .date,
+                                          type: checkExam(state.exams)[index]
+                                              .type,
+                                          lesson: checkExam(state.exams)[index]
+                                              .lesson,
                                           identity: state.exams[index].identify
                                               .toString(),
                                         ),
@@ -252,22 +256,32 @@ class HomeScreen extends StatelessWidget {
                                     physics: const BouncingScrollPhysics(),
                                   )
                             : ListView.builder(
-                                itemCount: checkSchedule(state.schedules).length,
+                                itemCount:
+                                    checkSchedule(state.schedules).length,
                                 itemBuilder: (context, index) {
                                   return Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: ScheduleItem(
                                       index: index + 1,
                                       subject:
-                                          checkSchedule(state.schedules)[index].moduleName,
-                                      room: checkSchedule(state.schedules)[index].location ??
-                                          'Trống',
-                                      begin: checkSchedule(state.schedules)[index].startDay,
-                                      end: checkSchedule(state.schedules)[index].endDay,
+                                          checkSchedule(state.schedules)[index]
+                                              .moduleName,
+                                      room:
+                                          checkSchedule(state.schedules)[index]
+                                                  .location ??
+                                              'Trống',
+                                      begin:
+                                          checkSchedule(state.schedules)[index]
+                                              .startDay,
+                                      end: checkSchedule(state.schedules)[index]
+                                          .endDay,
                                       lesson: lessonHandle(
-                                          checkSchedule(state.schedules)[index].lesson ?? -1),
+                                          checkSchedule(state.schedules)[index]
+                                                  .lesson ??
+                                              -1),
                                       weekday:
-                                          (checkSchedule(state.schedules)[index].weekDay ??
+                                          (checkSchedule(state.schedules)[index]
+                                                      .weekDay ??
                                                   'Trống')
                                               .toString(),
                                     ),
@@ -304,9 +318,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     HomeNewsItem(
-                      title: state.news.first.title,
-                      text: state.news.first.content,
-                      date: state.news.first.date,
+                      news: state.news.first,
                     ),
                   ],
                 ),
