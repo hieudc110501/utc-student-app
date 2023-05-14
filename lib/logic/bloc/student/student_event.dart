@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 import 'package:equatable/equatable.dart';
+import 'package:utc_student_app/data/models/student.dart';
 
 abstract class StudentEvent extends Equatable {
   final String username;
@@ -39,6 +40,10 @@ class StudentEventLoadMark extends StudentEvent {
   const StudentEventLoadMark(super.username);
 }
 
+class StudentEventLoadBlog extends StudentEvent {
+  const StudentEventLoadBlog(super.username);
+}
+
 //lịch sv
 class StudentEventLoadSchedule extends StudentEvent {
   const StudentEventLoadSchedule(super.username);
@@ -50,4 +55,14 @@ class StudentEventLoadProfile extends StudentEvent {
 
 class StudentEventDeleteData extends StudentEvent {
   const StudentEventDeleteData(super.username);
+}
+
+class StudentEventCreateBlog extends StudentEvent {
+  Map<String, dynamic> data;
+  Student student;
+  StudentEventCreateBlog(
+    super.username,
+    this.data,
+    this.student,
+  );
 }

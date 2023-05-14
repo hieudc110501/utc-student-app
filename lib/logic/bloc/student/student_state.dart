@@ -2,6 +2,7 @@
 // ignore_for_file: public_member_api_docs, sort_ructors_first, must_be_immutable
 import 'package:equatable/equatable.dart';
 
+import 'package:utc_student_app/data/models/blog.dart';
 import 'package:utc_student_app/data/models/exam.dart';
 import 'package:utc_student_app/data/models/gpa.dart';
 import 'package:utc_student_app/data/models/mark.dart';
@@ -95,6 +96,19 @@ class StudentStateProfileSuccess extends StudentState {
   ) : super(isLoading: false);
 }
 
+class StudentStateBlogSuccess extends StudentState {
+  final Student student;
+  final List<Blog> blogs;
+
+  StudentStateBlogSuccess(
+    this.student,
+    this.blogs,
+  ) : super(isLoading: false);
+}
+
 class StudentStateDeleteSuccess extends StudentState {
   StudentStateDeleteSuccess() : super(isLoading: false);
+}
+class StudentStateCreateBlogSucces extends StudentState {
+  StudentStateCreateBlogSucces() : super(isLoading: false);
 }

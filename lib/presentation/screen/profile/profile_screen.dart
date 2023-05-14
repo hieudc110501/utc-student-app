@@ -11,7 +11,6 @@ import 'package:utc_student_app/logic/bloc/login/login_event.dart';
 import 'package:utc_student_app/logic/bloc/student/student_bloc.dart';
 import 'package:utc_student_app/logic/bloc/student/student_state.dart';
 import 'package:utc_student_app/presentation/screen/loading/loading_circle_screen.dart';
-import 'package:utc_student_app/presentation/screen/loading/loading_screen.dart';
 import 'package:utc_student_app/presentation/widgets/profile/profile_box.dart';
 import 'package:utc_student_app/presentation/widgets/profile/profile_container.dart';
 import 'package:utc_student_app/utils/asset.dart';

@@ -8,6 +8,7 @@ const httpMark = '$http/mark';
 const httpTuition = '$http/tuition';
 const httpPoint = '$http/point';
 const httpController = '$http/controller';
+const httpBlog = '$http/blog';
 
 //login
 const postLogin = '$httpLogin/postLogin';
@@ -53,3 +54,7 @@ const pointDelete = '$httpPoint/delete';
 //controller
 const controllerDeleteAll = '$httpController/deleteAll';
 const controllerInsertAll = '$httpController/insertAll';
+
+//blog
+const blogInsert = '$httpBlog/insert';
+const blogGetAll = '$httpBlog/getAll';

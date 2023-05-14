@@ -4,6 +4,7 @@ import 'package:utc_student_app/data/models/news.dart';
 import 'package:utc_student_app/data/models/point.dart';
 import 'package:utc_student_app/data/models/student.dart';
 import 'package:utc_student_app/data/models/tuition.dart';
+import 'package:utc_student_app/presentation/screen/blog/blog_create_screen.dart';
 import 'package:utc_student_app/presentation/screen/home/home_news_screen.dart';
 import 'package:utc_student_app/presentation/screen/home/home_point_screen.dart';
 import 'package:utc_student_app/presentation/screen/login/login_screen.dart';
@@ -60,6 +61,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         builder: (context) => HomeNewsDetail(
           news: news,
+        ),
+      );
+    case BlogCreateScreen.routeName:
+      final student = settings.arguments as Student;
+      return MaterialPageRoute(
+        builder: (context) => BlogCreateScreen(
+          student: student,
         ),
       );
     default:

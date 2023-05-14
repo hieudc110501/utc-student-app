@@ -40,7 +40,8 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
           final news = await studentRepository.fetchNews(event.username);
 
           //save data to local
-          await localRepository.insertAll(student, gpas, schedules, marks, exams, points, tuitions, news);
+          await localRepository.insertAll(
+              student, gpas, schedules, marks, exams, points, tuitions, news);
         }
 
         emit(StudentStateSyncSuccess());
@@ -71,7 +72,8 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
           final news = await studentRepository.fetchNews(event.username);
 
           //save data to local
-          await localRepository.insertAll(student, gpas, schedules, marks, exams, points, tuitions, news);
+          await localRepository.insertAll(
+              student, gpas, schedules, marks, exams, points, tuitions, news);
         }
 
         emit(StudentStateSyncSuccess());
@@ -147,6 +149,17 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       }
     });
 
+    //lấy tất cả blogs
+    on<StudentEventLoadBlog>((event, emit) async {
+      try {
+        final student = await localRepository.getStudent(event.username);
+        final blogs = await studentRepository.getAllBlog();
+        emit(StudentStateBlogSuccess(student, blogs));
+      } catch (e) {
+        emit(StudentStateError(e.toString()));
+      }
+    });
+
     //xóa hết thông tin
     on<StudentEventDeleteData>((event, emit) async {
       try {
@@ -154,6 +167,18 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
         await studentRepository.deleteAll(event.username);
         await localRepository.deleteAll(event.username);
         emit(StudentStateDeleteSuccess());
+      } catch (e) {
+        emit(StudentStateError(e.toString()));
+      }
+    });
+
+    //xóa hết thông tin
+    on<StudentEventCreateBlog>((event, emit) async {
+      try {
+        // delete data api and local
+        await studentRepository.insertBlog(event.username, event.data);
+        final blogs = await studentRepository.getAllBlog();
+        emit(StudentStateBlogSuccess(event.student, blogs));
       } catch (e) {
         emit(StudentStateError(e.toString()));
       }

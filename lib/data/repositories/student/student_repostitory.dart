@@ -1,3 +1,4 @@
+import 'package:utc_student_app/data/models/blog.dart';
 import 'package:utc_student_app/data/models/schedule.dart';
 import 'package:utc_student_app/data/models/exam.dart';
 import 'package:utc_student_app/data/models/gpa.dart';
@@ -58,5 +59,13 @@ class StudentRepository {
 
   Future<bool> deleteAll(String username) {
     return _provider.deleteAll(username);
+  }
+
+  Future<bool> insertBlog(String username, Map<String, dynamic> data) {
+    return _provider.insertBlog(username, data);
+  }
+
+  Future<List<Blog>> getAllBlog() {
+    return _provider.getAllBlog();
   }
 }

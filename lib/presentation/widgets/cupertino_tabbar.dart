@@ -30,15 +30,12 @@ class _CupertinoTabbarWidgetState extends State<CupertinoTabbarWidget> {
       ),
       items: [
         BottomNavigationBarItem(
-          icon: Padding(
-            padding: const EdgeInsets.only(left: 40),
-            child: Image.asset(
-              widget.index == 0
-                  ? 'assets/icons/home_active.png'
-                  : 'assets/icons/home_unactive.png',
-              scale: 2.5,
-              color: widget.index == 0 ? indigo900 : grey500,
-            ),
+          icon: Image.asset(
+            widget.index == 0
+                ? 'assets/icons/home_active.png'
+                : 'assets/icons/home_unactive.png',
+            scale: 2.5,
+            color: widget.index == 0 ? indigo900 : grey500,
           ),
         ),
         BottomNavigationBarItem(
@@ -53,22 +50,28 @@ class _CupertinoTabbarWidgetState extends State<CupertinoTabbarWidget> {
         BottomNavigationBarItem(
           icon: Image.asset(
             widget.index == 2
-                ? 'assets/icons/chart_active.png'
-                : 'assets/icons/chart_unactive.png',
+                ? 'assets/icons/blog.png'
+                : 'assets/icons/blog.png',
             scale: 2.5,
             color: widget.index == 2 ? indigo900 : grey500,
           ),
         ),
         BottomNavigationBarItem(
-          icon: Padding(
-            padding: const EdgeInsets.only(right: 40),
-            child: Image.asset(
-              widget.index == 3
-                  ? 'assets/icons/user_active.png'
-                  : 'assets/icons/user_unactive.png',
-              scale: 2.5,
-              color: widget.index == 3 ? indigo900 : grey500,
-            ),
+          icon: Image.asset(
+            widget.index == 3
+                ? 'assets/icons/chart_active.png'
+                : 'assets/icons/chart_unactive.png',
+            scale: 2.5,
+            color: widget.index == 3 ? indigo900 : grey500,
+          ),
+        ),
+        BottomNavigationBarItem(
+          icon: Image.asset(
+            widget.index == 4
+                ? 'assets/icons/user_active.png'
+                : 'assets/icons/user_unactive.png',
+            scale: 2.5,
+            color: widget.index == 4 ? indigo900 : grey500,
           ),
         ),
       ],

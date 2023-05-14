@@ -7,6 +7,7 @@ import 'package:utc_student_app/data/repositories/student/student_repostitory.da
 import 'package:utc_student_app/logic/bloc/student/student_bloc.dart';
 import 'package:utc_student_app/logic/bloc/student/student_event.dart';
 import 'package:utc_student_app/logic/bloc/student/student_state.dart';
+import 'package:utc_student_app/presentation/screen/blog/blog_screen.dart';
 import 'package:utc_student_app/presentation/screen/home/home_screen.dart';
 import 'package:utc_student_app/presentation/screen/loading/loading_screen.dart';
 import 'package:utc_student_app/presentation/screen/mark/mark_screen.dart';
@@ -42,12 +43,8 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Future<void> saveData() async {
-    setState(() {
-      SharedPreferencesService.preferences
-          .setString('username', widget.username);
-      SharedPreferencesService.preferences
-          .setString('password', widget.password);
-    });
+    SharedPreferencesService.preferences.setString('username', widget.username);
+    SharedPreferencesService.preferences.setString('password', widget.password);
   }
 
   Future<void> checkData(BuildContext context) async {
@@ -65,6 +62,7 @@ class _MainScreenState extends State<MainScreen> {
               .read<StudentBloc>()
               .add(StudentEventUpdateData(widget.username, widget.password));
         } else if (index == 0) {
+          await saveData();
           context
               .read<StudentBloc>()
               .add(StudentEventLoadData(widget.username));
@@ -86,6 +84,7 @@ class _MainScreenState extends State<MainScreen> {
     final List<Widget> screens = [
       const HomeScreen(),
       const ScheduleScreen(),
+      const BlogScreen(),
       const MarkScreen(),
       const ProfileScreen(),
     ];
@@ -106,8 +105,6 @@ class _MainScreenState extends State<MainScreen> {
             context
                 .read<StudentBloc>()
                 .add(StudentEventLoadData(widget.username));
-          } else if (state is StudentStateInfoSuccess) {
-            saveData();
           }
         }
       },
@@ -134,9 +131,12 @@ class _MainScreenState extends State<MainScreen> {
         context.read<StudentBloc>().add(StudentEventLoadSchedule(username!));
         break;
       case 2:
-        context.read<StudentBloc>().add(StudentEventLoadMark(username!));
+        context.read<StudentBloc>().add(StudentEventLoadBlog(username!));
         break;
       case 3:
+        context.read<StudentBloc>().add(StudentEventLoadMark(username!));
+        break;
+      case 4:
         context.read<StudentBloc>().add(StudentEventLoadProfile(username!));
         break;
       default:

@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utc_student_app/data/local/shared_preferences/shared_preferences_service.dart';
 import 'package:utc_student_app/data/repositories/student/student_repostitory.dart';
 import 'package:utc_student_app/logic/bloc/login/login_event.dart';
@@ -13,9 +12,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginEventCheck>((event, emit) async {
       emit(const LoginStateLoading());
       try {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        String? check = prefs.getString('username');
-        if (check != null) {
+        String? check = SharedPreferencesService.preferences.getString('username');
+        if (check != null && check != '') {
           emit(const LoginStateSuccess());
         } else {
           emit(const LoginStateInitial(isLoading: false));
