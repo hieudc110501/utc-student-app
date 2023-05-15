@@ -44,6 +44,10 @@ class StudentEventLoadBlog extends StudentEvent {
   const StudentEventLoadBlog(super.username);
 }
 
+class StudentEventRefreshBlog extends StudentEvent {
+  const StudentEventRefreshBlog(super.username);
+}
+
 //lịch sv
 class StudentEventLoadSchedule extends StudentEvent {
   const StudentEventLoadSchedule(super.username);

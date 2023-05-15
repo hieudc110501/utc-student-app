@@ -34,7 +34,7 @@ class _BlogScreenState extends State<BlogScreen> {
   }
 
   Future<void> refresh(BuildContext context, String studentId) async {
-    context.read<StudentBloc>().add(StudentEventLoadBlog(studentId));
+    context.read<StudentBloc>().add(StudentEventRefreshBlog(studentId));
   }
 
   @override

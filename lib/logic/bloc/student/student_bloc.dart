@@ -160,6 +160,18 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       }
     });
 
+    //lấy tất cả blogs
+    on<StudentEventRefreshBlog>((event, emit) async {
+      try {
+        emit(StudentStateLoading(isLoading: false));
+        final student = await localRepository.getStudent(event.username);
+        final blogs = await studentRepository.getAllBlog();
+        emit(StudentStateBlogSuccess(student, blogs));
+      } catch (e) {
+        emit(StudentStateError(e.toString()));
+      }
+    });
+
     //xóa hết thông tin
     on<StudentEventDeleteData>((event, emit) async {
       try {
