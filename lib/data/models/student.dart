@@ -13,6 +13,8 @@ class Student {
   final String? email;
   final String? gender;
   final String updateAt;
+  final int sync;
+
   Student({
     required this.studentId,
     required this.studentName,
@@ -24,6 +26,7 @@ class Student {
     this.email,
     this.gender,
     required this.updateAt,
+    required this.sync,
   });
   
 
@@ -39,6 +42,7 @@ class Student {
       'email': email,
       'gender': gender,
       'updateAt': updateAt,
+      'sync': sync,
     };
   }
 
@@ -54,6 +58,7 @@ class Student {
       email: map['email'] != null ? map['email'] as String : null,
       gender: map['gender'] != null ? map['gender'] as String : null,
       updateAt: map['updateAt'] as String,
+      sync: map['sync'] as int,
     );
   }
 

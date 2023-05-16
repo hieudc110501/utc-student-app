@@ -153,7 +153,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     on<StudentEventLoadBlog>((event, emit) async {
       try {
         final student = await localRepository.getStudent(event.username);
-        final blogs = await studentRepository.getAllBlog();
+        final blogs = await studentRepository.getAllBlog(studentId: event.username);
         emit(StudentStateBlogSuccess(student, blogs));
       } catch (e) {
         emit(StudentStateError(e.toString()));
@@ -165,7 +165,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       try {
         emit(StudentStateLoading(isLoading: false));
         final student = await localRepository.getStudent(event.username);
-        final blogs = await studentRepository.getAllBlog();
+        final blogs = await studentRepository.getAllBlog(studentId: event.username);
         emit(StudentStateBlogSuccess(student, blogs));
       } catch (e) {
         emit(StudentStateError(e.toString()));
@@ -185,15 +185,15 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     });
 
     //xóa hết thông tin
-    on<StudentEventCreateBlog>((event, emit) async {
-      try {
-        // delete data api and local
-        await studentRepository.insertBlog(event.username, event.data);
-        final blogs = await studentRepository.getAllBlog();
-        emit(StudentStateBlogSuccess(event.student, blogs));
-      } catch (e) {
-        emit(StudentStateError(e.toString()));
-      }
-    });
+    // on<StudentEventCreateBlog>((event, emit) async {
+    //   try {
+    //     // delete data api and local
+    //     await studentRepository.insertBlog(event.username, event.data);
+    //     final blogs = await studentRepository.getAllBlog();
+    //     emit(StudentStateBlogSuccess(event.student, blogs));
+    //   } catch (e) {
+    //     emit(StudentStateError(e.toString()));
+    //   }
+    // });
   }
 }

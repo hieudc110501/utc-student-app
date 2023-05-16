@@ -22,6 +22,7 @@ const createStudent = '''CREATE TABLE IF NOT EXISTS $tblStudent (
 	"email"	NUMERIC,
 	"gender"	TEXT,
 	"updateAt"	TEXT,
+  "sync"	INTEGER,
 	PRIMARY KEY("studentId")
 )''';
 

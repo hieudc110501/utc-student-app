@@ -95,12 +95,15 @@ class _BlogScreenState extends State<BlogScreen> {
                     return Column(
                       children: [
                         BlogItemScreen(
+                          blogId: state.blogs[index].blogId,
+                          studentId: state.blogs[index].studentId,
                           studentName: state.blogs[index].studentName,
                           date: state.blogs[index].createdAt,
                           body: state.blogs[index].body,
-                          image: Asset.image('logo.png'),
+                          image: state.blogs[index].image,
                           likeCount: state.blogs[index].likeCount,
                           commentCount: state.blogs[index].commentCount,
+                          isLiked: state.blogs[index].isLiked,
                         ),
                         const SizedBox(height: 10),
                       ],

@@ -47,6 +47,7 @@ class LocalProvider {
         'email': student.email,
         'gender': student.gender,
         'updateAt': student.updateAt,
+        'sync': student.sync,
       });
       return true;
     } catch (e) {

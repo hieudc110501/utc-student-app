@@ -10,9 +10,8 @@ import 'package:utc_student_app/data/models/tuition.dart';
 import 'package:utc_student_app/data/repositories/student/student_provider.dart';
 
 class StudentRepository {
+  final _provider = StudentProvider();
 
-  final _provider =  StudentProvider();
-  
   Future<bool> login(String username, String password) {
     return _provider.login(username, password);
   }
@@ -61,11 +60,30 @@ class StudentRepository {
     return _provider.deleteAll(username);
   }
 
-  Future<bool> insertBlog(String username, Map<String, dynamic> data) {
+  Future<bool> insertBlog({
+    required String username,
+    required Map<String, dynamic> data,
+  }) {
     return _provider.insertBlog(username, data);
   }
 
-  Future<List<Blog>> getAllBlog() {
-    return _provider.getAllBlog();
+  Future<List<Blog>> getAllBlog({
+    required String studentId,
+  }) {
+    return _provider.getAllBlog(studentId);
+  }
+
+  Future<bool> insertLike({
+    required int blogId,
+    required String studentId,
+  }) {
+    return _provider.insertLike(blogId, studentId);
+  }
+
+  Future<bool> deleteLike({
+    required int blogId,
+    required String studentId,
+  }) {
+    return _provider.deleteLike(blogId, studentId);
   }
 }

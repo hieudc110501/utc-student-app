@@ -1,6 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:utc_student_app/data/models/student.dart';
 import 'package:utc_student_app/data/repositories/student/student_repostitory.dart';
@@ -26,11 +30,62 @@ class _BlogCreateScreenState extends State<BlogCreateScreen> {
   TextEditingController controller = TextEditingController();
   late StudentRepository _studentRepository;
   bool isData = false;
+  final picker = ImagePicker();
+  File? _image;
 
   @override
   void initState() {
     _studentRepository = StudentRepository();
     super.initState();
+  }
+
+  Future imagePicker() async {
+    try {
+      final pick = await picker.pickImage(source: ImageSource.gallery);
+      setState(() {
+        if (pick != null) {
+          _image = File(pick.path);
+        } else {}
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future cameraPicker() async {
+    try {
+      final pick = await picker.pickImage(source: ImageSource.camera);
+      setState(() {
+        if (pick != null) {
+          _image = File(pick.path);
+        } else {}
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  void deleteImage() {
+    setState(() {
+      _image = null;
+    });
+  }
+
+  Future<String?> uploadImageToFirebase() async {
+    if (_image != null) {
+      try {
+        String fileName = widget.student.studentId +
+            DateTime.now().millisecondsSinceEpoch.toString();
+        UploadTask uploadTask =
+            FirebaseStorage.instance.ref('images/$fileName').putFile(_image!);
+        TaskSnapshot snapshot = await uploadTask.whenComplete(() {});
+        String imageUrl = await snapshot.ref.getDownloadURL();
+        return imageUrl;
+      } catch (e) {
+        throw Exception(e.toString());
+      }
+    }
+    return null;
   }
 
   @override
@@ -56,37 +111,37 @@ class _BlogCreateScreenState extends State<BlogCreateScreen> {
         bottomOpacity: 0.1,
         elevation: 3,
         actions: [
-          isData
-              ? TextButton(
-                  onPressed: () {
-                    context.read<StudentBloc>().add(
-                          StudentEventCreateBlog(
-                            widget.student.studentId,
-                            {
-                              'body': controller.text,
-                            },
-                            widget.student,
-                          ),
-                        );
-                  },
-                  child: Container(
-                    height: 30,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: whiteText,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: const Center(
-                      child: SampleText(
-                        text: 'Đăng',
-                        fontWeight: FontWeight.w700,
-                        size: 12,
-                        color: greyText,
-                      ),
-                    ),
+          if (isData || _image != null) ...[
+            TextButton(
+              onPressed: () async {
+                String? image = await uploadImageToFirebase();
+                bool check = await _studentRepository
+                    .insertBlog(username: widget.student.studentId, data: {
+                  'body': controller.text,
+                  'image': image,
+                });
+                if (check) {
+                  Navigator.of(context).pop();
+                }
+              },
+              child: Container(
+                height: 30,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: whiteText,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: const Center(
+                  child: SampleText(
+                    text: 'Đăng',
+                    fontWeight: FontWeight.w700,
+                    size: 12,
+                    color: greyText,
                   ),
-                )
-              : const SizedBox(),
+                ),
+              ),
+            )
+          ],
           IconButton(
             onPressed: () {},
             icon: Image.asset(
@@ -98,12 +153,12 @@ class _BlogCreateScreenState extends State<BlogCreateScreen> {
         ],
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: ListView(
-            children: [
-              const SizedBox(height: 10),
-              Row(
+        child: ListView(
+          children: [
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
                 children: [
                   Image.asset(
                     Asset.icon('avatar.png'),
@@ -118,28 +173,125 @@ class _BlogCreateScreenState extends State<BlogCreateScreen> {
                   ),
                 ],
               ),
-              TextFormField(
-                onChanged: (value) {
-                  if (value.isNotEmpty) {
-                    setState(() {
-                      isData = true;
-                    });
-                  } else {
-                    setState(() {
-                      isData = false;
-                    });
-                  }
-                },
-                minLines: 1,
-                maxLines: null,
-                controller: controller,
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Nhập nội dung...',
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Container(
+                constraints: const BoxConstraints(
+                  minHeight: 50,
+                  maxHeight: 500,
+                ),
+                child: TextFormField(
+                  onChanged: (value) {
+                    if (value.isNotEmpty) {
+                      setState(() {
+                        isData = true;
+                      });
+                    } else {
+                      setState(() {
+                        isData = false;
+                      });
+                    }
+                  },
+                  minLines: 1,
+                  maxLines: null,
+                  controller: controller,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Nhập nội dung...',
+                  ),
                 ),
               ),
+            ),
+            if (_image != null) ...[
+              Stack(
+                children: [
+                  Image.file(
+                    _image!,
+                  ),
+                  Positioned(
+                    right: 0,
+                    child: IconButton(
+                      onPressed: () => deleteImage(),
+                      icon: Image.asset(
+                        Asset.icon('cross.png'),
+                        color: whiteText,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
-          ),
+            const SizedBox(height: 20),
+            InkWell(
+              onTap: () {
+                imagePicker().whenComplete(() => null);
+              },
+              child: Container(
+                decoration: const BoxDecoration(
+                  border: Border.symmetric(
+                    horizontal: BorderSide(
+                      width: 1,
+                      color: grey300,
+                    ),
+                  ),
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        Asset.icon('gallery.png'),
+                        scale: 4,
+                      ),
+                      const SizedBox(width: 20),
+                      const SampleText(
+                        text: 'Thêm ảnh',
+                        fontWeight: FontWeight.w500,
+                        size: 16,
+                        color: grey600,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                cameraPicker().whenComplete(() => null);
+              },
+              child: Container(
+                decoration: const BoxDecoration(
+                  border: Border.symmetric(
+                    horizontal: BorderSide(
+                      width: 1,
+                      color: grey300,
+                    ),
+                  ),
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        Asset.icon('camera.png'),
+                        scale: 4,
+                      ),
+                      const SizedBox(width: 20),
+                      const SampleText(
+                        text: 'Chụp ảnh',
+                        fontWeight: FontWeight.w500,
+                        size: 16,
+                        color: grey600,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

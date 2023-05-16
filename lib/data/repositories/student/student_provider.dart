@@ -226,9 +226,9 @@ class StudentProvider {
   }
 
   //get all blog
-  Future<List<Blog>> getAllBlog() async {
+  Future<List<Blog>> getAllBlog(String studentId) async {
     try {
-      final response = await _dio.get(blogGetAll);
+      final response = await _dio.get('$blogGetAll/$studentId');
       if (response.statusCode == 200) {
         List data = response.data;
         List<Blog> blogs =
@@ -237,6 +237,40 @@ class StudentProvider {
       } else {
         throw Exception('Fail to load Point data');
       }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  //insert like
+  Future<bool> insertLike(int blogId, String studentId) async {
+    try {
+      final response = await _dio.post('$blogInsertLike/$blogId', data: {
+        'studentId': studentId,
+      });
+      if (response.statusCode == 200) {
+        if (response.data == true) {
+          return true;
+        }
+      }
+      return false;
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+  
+  //delete like
+  Future<bool> deleteLike(int blogId, String studentId) async {
+    try {
+      final response = await _dio.post('$blogDeleteLike/$blogId', data: {
+        'studentId': studentId,
+      });
+      if (response.statusCode == 200) {
+        if (response.data == true) {
+          return true;
+        }
+      }
+      return false;
     } catch (e) {
       throw Exception(e.toString());
     }
