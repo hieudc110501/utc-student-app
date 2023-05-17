@@ -60,3 +60,6 @@ const blogInsert = '$httpBlog/insert';
 const blogGetAll = '$httpBlog/getAll';
 const blogInsertLike = '$httpBlog/insertLike';
 const blogDeleteLike = '$httpBlog/deleteLike';
+const blogInsertComment = '$httpBlog/insertComment';
+const blogGetComment = '$httpBlog/getComment';
+const blogDeleteComment = '$httpBlog/deleteComment';

@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:utc_student_app/data/repositories/comment/comment_repository.dart';
 
 import 'package:utc_student_app/data/repositories/student/student_repostitory.dart';
+import 'package:utc_student_app/presentation/screen/blog/blog_comment_screen.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 import 'package:utc_student_app/utils/asset.dart';
 import 'package:utc_student_app/utils/color.dart';
@@ -9,7 +11,8 @@ import 'package:utc_student_app/utils/size.dart';
 
 class BlogItemScreen extends StatefulWidget {
   final int blogId;
-  final String studentId;
+  final String studentCurrentId;
+  final String studentCurrentName;
   final String studentName;
   final String date;
   final String? body;
@@ -21,7 +24,8 @@ class BlogItemScreen extends StatefulWidget {
   const BlogItemScreen({
     Key? key,
     required this.blogId,
-    required this.studentId,
+    required this.studentCurrentId,
+    required this.studentCurrentName,
     required this.studentName,
     required this.date,
     required this.body,
@@ -37,15 +41,25 @@ class BlogItemScreen extends StatefulWidget {
 
 class _BlogItemScreenState extends State<BlogItemScreen> {
   late bool isLike;
+  bool isEntering = false;
   late StudentRepository _studentRepository;
-
   late int _likes;
+  TextEditingController cmtController = TextEditingController();
+  final CommentRepository _commentRepository = CommentRepository();
+
   @override
   void initState() {
     isLike = widget.isLiked == 1 ? true : false;
     _studentRepository = StudentRepository();
     _likes = widget.likeCount;
+    cmtController.text = widget.commentCount.toString();
+    _commentRepository.getComment(blogId: widget.blogId);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -145,11 +159,19 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                     ],
                   ),
                 ),
-                SampleText(
-                  text: '${widget.commentCount} bình luận',
-                  fontWeight: FontWeight.w600,
-                  size: 14,
-                  color: greyText,
+                StreamBuilder(
+                  stream: _commentRepository.commentCount(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return SampleText(
+                        text: '${snapshot.data} bình luận',
+                        fontWeight: FontWeight.w600,
+                        size: 14,
+                        color: greyText,
+                      );
+                    }
+                    return const SizedBox();
+                  },
                 ),
               ],
             ),
@@ -178,12 +200,12 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                     if (isLike) {
                       await _studentRepository.insertLike(
                         blogId: widget.blogId,
-                        studentId: widget.studentId,
+                        studentId: widget.studentCurrentId,
                       );
                     } else {
                       await _studentRepository.deleteLike(
                         blogId: widget.blogId,
-                        studentId: widget.studentId,
+                        studentId: widget.studentCurrentId,
                       );
                     }
                   },
@@ -211,7 +233,30 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                   ),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    showModalBottomSheet(
+                      backgroundColor: Colors.white.withOpacity(0),
+                      //barrierColor: Colors.transparent,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(26),
+                        ),
+                      ),
+                      context: context,
+                      builder: (context) {
+                        return BlogCommentScreen(
+                          likes: _likes,
+                          studentCurrentId: widget.studentCurrentId,
+                          studentCurrentName: widget.studentCurrentName,
+                          blogId: widget.blogId,
+                          cmtController: cmtController,
+                        );
+                      },
+                      isScrollControlled: true,
+                    ).then((value) => setState((){
+                      _commentRepository.getComment(blogId: widget.blogId);
+                    }));
+                  },
                   child: SizedBox(
                     width: screenSize.width / 2 - 20,
                     height: 30,

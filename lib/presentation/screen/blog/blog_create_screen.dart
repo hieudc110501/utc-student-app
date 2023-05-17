@@ -3,13 +3,9 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'package:utc_student_app/data/models/student.dart';
 import 'package:utc_student_app/data/repositories/student/student_repostitory.dart';
-import 'package:utc_student_app/logic/bloc/student/student_bloc.dart';
-import 'package:utc_student_app/logic/bloc/student/student_event.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 import 'package:utc_student_app/utils/asset.dart';
 import 'package:utc_student_app/utils/color.dart';

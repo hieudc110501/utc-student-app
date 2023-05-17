@@ -113,7 +113,8 @@ class _BlogScreenState extends State<BlogScreen> {
                             children: [
                               BlogItemScreen(
                                 blogId: state.blogs[index].blogId,
-                                studentId: student.studentId,
+                                studentCurrentId: student.studentId,
+                                studentCurrentName: student.studentName,
                                 studentName: state.blogs[index].studentName,
                                 date: state.blogs[index].createdAt,
                                 body: state.blogs[index].body,
