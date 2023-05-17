@@ -35,7 +35,7 @@ Future<void> scheduleDialog(BuildContext context) {
                 border: Border.all(color: Colors.transparent),
                 boxShadow: const [
                   BoxShadow(
-                    color: Color(0xff10182814),
+                    color:  Color(0xff10182814),
                     spreadRadius: 4,
                     blurRadius: 10,
                     offset: Offset(0, 1),

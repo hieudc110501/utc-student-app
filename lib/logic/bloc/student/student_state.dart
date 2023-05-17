@@ -97,11 +97,9 @@ class StudentStateProfileSuccess extends StudentState {
 }
 
 class StudentStateBlogSuccess extends StudentState {
-  final Student student;
   final List<Blog> blogs;
 
   StudentStateBlogSuccess(
-    this.student,
     this.blogs,
   ) : super(isLoading: false);
 }

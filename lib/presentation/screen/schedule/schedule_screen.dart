@@ -96,11 +96,11 @@ class ScheduleScreen extends StatelessWidget {
                           ),
                           leftChevronIcon: const Icon(
                             Icons.keyboard_arrow_left,
-                            color: rose400,
+                            color: indigo900,
                           ),
                           rightChevronIcon: const Icon(
                             Icons.keyboard_arrow_right,
-                            color: rose400,
+                            color: indigo900,
                           ),
                           rightChevronPadding: const EdgeInsets.only(right: 50),
                           leftChevronPadding: const EdgeInsets.only(left: 50),

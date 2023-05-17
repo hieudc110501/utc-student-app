@@ -176,13 +176,11 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                       }
                     });
                     if (isLike) {
-                      print('insert');
                       await _studentRepository.insertLike(
                         blogId: widget.blogId,
                         studentId: widget.studentId,
                       );
                     } else {
-                      print('delete');
                       await _studentRepository.deleteLike(
                         blogId: widget.blogId,
                         studentId: widget.studentId,

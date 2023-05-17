@@ -54,6 +54,9 @@ dependencies:
   cloud_firestore: ^4.7.1
   firebase_core: ^2.13.0
   measure_size: ^4.0.0
+  flutter_offline: ^2.1.0
+  connectivity_plus: ^2.3.9
+  fluttertoast: ^8.2.1
 
 dev_dependencies:
   flutter_test:

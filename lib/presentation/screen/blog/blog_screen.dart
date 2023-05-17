@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 import 'package:utc_student_app/data/local/repository/local_repository.dart';
 import 'package:utc_student_app/data/local/shared_preferences/shared_preferences_service.dart';
 import 'package:utc_student_app/data/models/student.dart';
@@ -9,6 +10,8 @@ import 'package:utc_student_app/logic/bloc/student/student_state.dart';
 import 'package:utc_student_app/presentation/screen/blog/blog_create_screen.dart';
 import 'package:utc_student_app/presentation/screen/blog/blog_item_screen.dart';
 import 'package:utc_student_app/presentation/screen/loading/loading_circle_screen.dart';
+import 'package:utc_student_app/presentation/widgets/sample_text.dart';
+import 'package:utc_student_app/presentation/widgets/toast.dart';
 import 'package:utc_student_app/utils/asset.dart';
 import 'package:utc_student_app/utils/color.dart';
 
@@ -21,6 +24,7 @@ class BlogScreen extends StatefulWidget {
 
 class _BlogScreenState extends State<BlogScreen> {
   late Student student;
+  late bool _connectionStatus;
 
   @override
   void initState() {
@@ -67,11 +71,13 @@ class _BlogScreenState extends State<BlogScreen> {
               scale: 3,
               color: whiteText,
             ),
-            onPressed: () => Navigator.pushNamed(
-              context,
-              BlogCreateScreen.routeName,
-              arguments: student,
-            ),
+            onPressed: () => _connectionStatus
+                ? Navigator.pushNamed(
+                    context,
+                    BlogCreateScreen.routeName,
+                    arguments: student,
+                  )
+                : showToast(context, 'Bạn đang offline'),
           ),
           IconButton(
             onPressed: () {},
@@ -84,36 +90,73 @@ class _BlogScreenState extends State<BlogScreen> {
         ],
       ),
       body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: () => refresh(context, student.studentId),
-          child: BlocBuilder<StudentBloc, StudentState>(
-            builder: (context, state) {
-              if (state is StudentStateBlogSuccess) {
-                return ListView.builder(
-                  itemCount: state.blogs.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        BlogItemScreen(
-                          blogId: state.blogs[index].blogId,
-                          studentId: state.blogs[index].studentId,
-                          studentName: state.blogs[index].studentName,
-                          date: state.blogs[index].createdAt,
-                          body: state.blogs[index].body,
-                          image: state.blogs[index].image,
-                          likeCount: state.blogs[index].likeCount,
-                          commentCount: state.blogs[index].commentCount,
-                          isLiked: state.blogs[index].isLiked,
-                        ),
-                        const SizedBox(height: 10),
-                      ],
-                    );
+        child: OfflineBuilder(
+          connectivityBuilder: (
+            BuildContext context,
+            ConnectivityResult connectivity,
+            Widget child,
+          ) {
+            _connectionStatus = connectivity != ConnectivityResult.none;
+            if (_connectionStatus) {
+              context
+                  .read<StudentBloc>()
+                  .add(StudentEventLoadBlog(student.studentId));
+              return RefreshIndicator(
+                onRefresh: () => refresh(context, student.studentId),
+                child: BlocBuilder<StudentBloc, StudentState>(
+                  builder: (context, state) {
+                    if (state is StudentStateBlogSuccess) {
+                      return ListView.builder(
+                        itemCount: state.blogs.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              BlogItemScreen(
+                                blogId: state.blogs[index].blogId,
+                                studentId: student.studentId,
+                                studentName: state.blogs[index].studentName,
+                                date: state.blogs[index].createdAt,
+                                body: state.blogs[index].body,
+                                image: state.blogs[index].image,
+                                likeCount: state.blogs[index].likeCount,
+                                commentCount: state.blogs[index].commentCount,
+                                isLiked: state.blogs[index].isLiked,
+                              ),
+                              const SizedBox(height: 10),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                    return const LoadingCircleScreen();
                   },
-                );
-              }
-              return const LoadingCircleScreen();
-            },
-          ),
+                ),
+              );
+            } else {
+              return Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SampleText(
+                      text: 'Lỗi kết nối, vui lòng kiểm tra lại mạng',
+                      fontWeight: FontWeight.w500,
+                      size: 16,
+                      color: grey500,
+                    ),
+                    const SizedBox(height: 10),
+                    Image.asset(
+                      Asset.icon(
+                        'disconnect.png',
+                      ),
+                      scale: 3,
+                    ),
+                  ],
+                ),
+              );
+            }
+          },
+          child: const SizedBox(),
         ),
       ),
     );

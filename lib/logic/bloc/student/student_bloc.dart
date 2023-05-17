@@ -152,9 +152,8 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     //lấy tất cả blogs
     on<StudentEventLoadBlog>((event, emit) async {
       try {
-        final student = await localRepository.getStudent(event.username);
         final blogs = await studentRepository.getAllBlog(studentId: event.username);
-        emit(StudentStateBlogSuccess(student, blogs));
+        emit(StudentStateBlogSuccess(blogs));
       } catch (e) {
         emit(StudentStateError(e.toString()));
       }
@@ -164,9 +163,8 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     on<StudentEventRefreshBlog>((event, emit) async {
       try {
         emit(StudentStateLoading(isLoading: false));
-        final student = await localRepository.getStudent(event.username);
         final blogs = await studentRepository.getAllBlog(studentId: event.username);
-        emit(StudentStateBlogSuccess(student, blogs));
+        emit(StudentStateBlogSuccess(blogs));
       } catch (e) {
         emit(StudentStateError(e.toString()));
       }
