@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'package:utc_student_app/data/local/repository/local_repository.dart';
 import 'package:utc_student_app/data/local/shared_preferences/shared_preferences_service.dart';
+import 'package:utc_student_app/data/models/blog.dart';
 import 'package:utc_student_app/data/models/student.dart';
+import 'package:utc_student_app/data/repositories/blog/blog_repository.dart';
 import 'package:utc_student_app/logic/bloc/student/student_bloc.dart';
 import 'package:utc_student_app/logic/bloc/student/student_event.dart';
 import 'package:utc_student_app/logic/bloc/student/student_state.dart';
@@ -23,17 +25,19 @@ class BlogScreen extends StatefulWidget {
 }
 
 class _BlogScreenState extends State<BlogScreen> {
-  late Student student;
+  late Student currentStudent;
   late bool _connectionStatus;
+  late BlogRepository _blogRepository;
 
   @override
   void initState() {
+    _blogRepository = BlogRepository();
     getStudent();
     super.initState();
   }
 
   void getStudent() async {
-    student = await LocalRepository().getStudent(
+    currentStudent = await LocalRepository().getStudent(
         SharedPreferencesService.preferences.getString('username')!);
   }
 
@@ -75,7 +79,7 @@ class _BlogScreenState extends State<BlogScreen> {
                 ? Navigator.pushNamed(
                     context,
                     BlogCreateScreen.routeName,
-                    arguments: student,
+                    arguments: currentStudent,
                   )
                 : showToast(context, 'Bạn đang offline'),
           ),
@@ -98,33 +102,43 @@ class _BlogScreenState extends State<BlogScreen> {
           ) {
             _connectionStatus = connectivity != ConnectivityResult.none;
             if (_connectionStatus) {
-              context
-                  .read<StudentBloc>()
-                  .add(StudentEventLoadBlog(student.studentId));
+              _blogRepository.getAllBlog(studentId: currentStudent.studentId);
               return RefreshIndicator(
-                onRefresh: () => refresh(context, student.studentId),
+                onRefresh: () => refresh(context, currentStudent.studentId),
                 child: BlocBuilder<StudentBloc, StudentState>(
                   builder: (context, state) {
                     if (state is StudentStateBlogSuccess) {
-                      return ListView.builder(
-                        itemCount: state.blogs.length,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            children: [
-                              BlogItemScreen(
-                                blogId: state.blogs[index].blogId,
-                                studentCurrentId: student.studentId,
-                                studentCurrentName: student.studentName,
-                                studentName: state.blogs[index].studentName,
-                                date: state.blogs[index].createdAt,
-                                body: state.blogs[index].body,
-                                image: state.blogs[index].image,
-                                likeCount: state.blogs[index].likeCount,
-                                commentCount: state.blogs[index].commentCount,
-                                isLiked: state.blogs[index].isLiked,
-                              ),
-                              const SizedBox(height: 10),
-                            ],
+                      _blogRepository.getAllBlog(studentId: state.studentId);
+                      return StreamBuilder(
+                        stream: _blogRepository.all(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const LoadingCircleScreen();
+                          }
+                          if (snapshot.hasData) {
+                            List<Blog> blogs = snapshot.data!;
+                            return ListView.builder(
+                              itemCount: blogs.length,
+                              itemBuilder: (context, index) {
+                                return Column(
+                                  children: [
+                                    BlogItemScreen(
+                                      blog: blogs[index],
+                                      currentStudent: currentStudent,
+                                    ),
+                                    const SizedBox(height: 10),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                          return const Center(
+                            child: SampleText(
+                              text: 'Chưa có bài viết nào',
+                              fontWeight: FontWeight.w600,
+                              size: 20,
+                              color: greyText,
+                            ),
                           );
                         },
                       );

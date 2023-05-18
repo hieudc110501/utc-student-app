@@ -57,6 +57,8 @@ const controllerInsertAll = '$httpController/insertAll';
 
 //blog
 const blogInsert = '$httpBlog/insert';
+const blogUpdate = '$httpBlog/update';
+const blogDelete = '$httpBlog/delete';
 const blogGetAll = '$httpBlog/getAll';
 const blogInsertLike = '$httpBlog/insertLike';
 const blogDeleteLike = '$httpBlog/deleteLike';

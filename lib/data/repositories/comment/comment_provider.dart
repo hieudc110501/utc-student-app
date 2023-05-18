@@ -7,11 +7,6 @@ import 'package:utc_student_app/utils/url.dart';
 
 class CommentProvider {
   final Dio _dio = Dio();
-  // static final CommentProvider _instance = CommentProvider._internal();
-  // factory CommentProvider() {
-  //   return _instance;
-  // }
-  // CommentProvider._internal();
 
   final StreamController<List<Comment>> _streamController =
       StreamController.broadcast();
@@ -21,6 +16,22 @@ class CommentProvider {
   Future<bool> insertComment(Comment comment) async {
     try {
       final response = await _dio.post('$blogInsertComment/${comment.blogId}',
+          data: comment.toJson());
+      if (response.statusCode == 200) {
+        if (response.data == true) {
+          await getComment(comment.blogId);
+          return true;
+        }
+      }
+      return false;
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<bool> deleteComment(Comment comment) async {
+    try {
+      final response = await _dio.post('$blogDeleteComment/${comment.commentsId}',
           data: comment.toJson());
       if (response.statusCode == 200) {
         if (response.data == true) {

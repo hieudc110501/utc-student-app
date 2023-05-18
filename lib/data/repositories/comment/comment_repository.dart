@@ -16,6 +16,12 @@ class CommentRepository {
     return _provider.getComment(blogId);
   }
 
+  Future<bool> deleteComment({
+    required Comment comment,
+  }) {
+    return _provider.deleteComment(comment);
+  }
+
   Stream<List<Comment>> all() => _provider.all();
   Stream<int> commentCount() => _provider.commentCount();
 }

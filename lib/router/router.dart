@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:utc_student_app/data/models/blog.dart';
 import 'package:utc_student_app/data/models/mark.dart';
 import 'package:utc_student_app/data/models/news.dart';
 import 'package:utc_student_app/data/models/point.dart';
 import 'package:utc_student_app/data/models/student.dart';
 import 'package:utc_student_app/data/models/tuition.dart';
+import 'package:utc_student_app/presentation/screen/blog/blog_comment_image.dart';
 import 'package:utc_student_app/presentation/screen/blog/blog_create_screen.dart';
+import 'package:utc_student_app/presentation/screen/blog/blog_update_screen.dart';
 import 'package:utc_student_app/presentation/screen/home/home_news_screen.dart';
 import 'package:utc_student_app/presentation/screen/home/home_point_screen.dart';
 import 'package:utc_student_app/presentation/screen/login/login_screen.dart';
@@ -68,6 +71,20 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         builder: (context) => BlogCreateScreen(
           student: student,
+        ),
+      );
+    case BlogCommentImage.routeName:
+      final imageUrl = settings.arguments as String;
+      return MaterialPageRoute(
+        builder: (context) => BlogCommentImage(
+          imageUrl: imageUrl,
+        ),
+      );
+    case BlogUpdateScreen.routeName:
+      final blog = settings.arguments as Blog;
+      return MaterialPageRoute(
+        builder: (context) => BlogUpdateScreen(
+          blog: blog,
         ),
       );
     default:

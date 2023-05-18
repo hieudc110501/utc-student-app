@@ -1,28 +1,30 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'package:utc_student_app/data/models/blog.dart';
 import 'package:utc_student_app/data/models/comment.dart';
+import 'package:utc_student_app/data/models/student.dart';
 import 'package:utc_student_app/data/repositories/comment/comment_repository.dart';
+import 'package:utc_student_app/presentation/screen/blog/blog_comment_image.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 import 'package:utc_student_app/utils/asset.dart';
 import 'package:utc_student_app/utils/color.dart';
 import 'package:utc_student_app/utils/size.dart';
 
 class BlogCommentScreen extends StatefulWidget {
-  final String studentCurrentId;
-  final String studentCurrentName;
-  final int blogId;
+  final Blog blog;
+  final Student currentStudent;
   final int likes;
   TextEditingController cmtController;
   BlogCommentScreen({
     Key? key,
-    required this.studentCurrentId,
-    required this.studentCurrentName,
-    required this.blogId,
+    required this.blog,
+    required this.currentStudent,
     required this.likes,
     required this.cmtController,
   }) : super(key: key);
@@ -51,7 +53,7 @@ class _BlogCommentScreenState extends State<BlogCommentScreen> {
         }
       });
     });
-    _commentRepository.getComment(blogId: widget.blogId);
+    _commentRepository.getComment(blogId: widget.blog.blogId);
     super.initState();
   }
 
@@ -74,19 +76,29 @@ class _BlogCommentScreenState extends State<BlogCommentScreen> {
     }
   }
 
-  void deleteImage() {
+  void _deleteImage() {
     setState(() {
       _image = null;
     });
   }
 
-  Future<String?> uploadImageToFirebase() async {
-    if (_image != null) {
+  //delete image from firebase
+  void deleteImageFromFirebase(String imageUrl) async {
+    Reference storageReference = FirebaseStorage.instance.refFromURL(imageUrl);
+    try {
+      await storageReference.delete();
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<String?> _uploadImageCommentToFirebase(File? image) async {
+    if (image != null) {
       try {
-        String fileName = widget.studentCurrentId +
+        String fileName = widget.currentStudent.studentId +
             DateTime.now().millisecondsSinceEpoch.toString();
         UploadTask uploadTask =
-            FirebaseStorage.instance.ref('comments/$fileName').putFile(_image!);
+            FirebaseStorage.instance.ref('comments/$fileName').putFile(image);
         TaskSnapshot snapshot = await uploadTask.whenComplete(() {});
         String imageUrl = await snapshot.ref.getDownloadURL();
         return imageUrl;
@@ -156,7 +168,7 @@ class _BlogCommentScreenState extends State<BlogCommentScreen> {
                       widget.cmtController.text = comments.length.toString();
                       return RefreshIndicator(
                         onRefresh: () => _commentRepository.getComment(
-                            blogId: widget.blogId),
+                            blogId: widget.blog.blogId),
                         child: ListView.builder(
                           itemCount: comments.length,
                           itemBuilder: (context, index) {
@@ -183,7 +195,9 @@ class _BlogCommentScreenState extends State<BlogCommentScreen> {
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(12),
-                                          color: grey100,
+                                          color: comment.content == null
+                                              ? whiteText
+                                              : grey100,
                                         ),
                                         child: Padding(
                                           padding: const EdgeInsets.all(10),
@@ -197,16 +211,115 @@ class _BlogCommentScreenState extends State<BlogCommentScreen> {
                                                 size: 14,
                                                 color: greyText,
                                               ),
-                                              SampleText(
-                                                text: comment.content!,
-                                                fontWeight: FontWeight.w500,
-                                                size: 14,
-                                                color: greyText,
-                                              ),
+                                              if (comment.content != null) ...[
+                                                SampleText(
+                                                  text: comment.content!,
+                                                  fontWeight: FontWeight.w500,
+                                                  size: 14,
+                                                  color: greyText,
+                                                ),
+                                              ],
                                             ],
                                           ),
                                         ),
                                       ),
+                                      if (comment.image != null) ...[
+                                        GestureDetector(
+                                          onTap: () => Navigator.pushNamed(
+                                            context,
+                                            BlogCommentImage.routeName,
+                                            arguments: comment.image,
+                                          ),
+                                          onLongPress: () {
+                                            //kiểm tra nếu comment hiện tại là của người dùng đó
+                                            //hoặc là chủ nhân của blog
+                                            if (comment.studentId ==
+                                                    widget.currentStudent.studentId ||
+                                                widget.currentStudent.studentId ==
+                                                    widget.blog.studentId) {
+                                              showModalBottomSheet(
+                                                backgroundColor:
+                                                    Colors.white.withOpacity(0),
+                                                //barrierColor: Colors.transparent,
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.vertical(
+                                                    top: Radius.circular(26),
+                                                  ),
+                                                ),
+                                                context: context,
+                                                builder: (context) {
+                                                  return InkWell(
+                                                    onTap: () async {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      if (comment.image !=
+                                                          null) {
+                                                        deleteImageFromFirebase(
+                                                          comment.image!,
+                                                        );
+                                                      }
+                                                      await _commentRepository
+                                                          .deleteComment(
+                                                              comment: comment);
+                                                    },
+                                                    child: Container(
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        color: whiteText,
+                                                        border:
+                                                            Border.symmetric(
+                                                          horizontal:
+                                                              BorderSide(
+                                                            width: 1,
+                                                            color: grey300,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal: 16,
+                                                                vertical: 8),
+                                                        child: Row(
+                                                          children: [
+                                                            Image.asset(
+                                                              Asset.icon(
+                                                                  'delete.png'),
+                                                              scale: 4,
+                                                              color: rose500,
+                                                            ),
+                                                            const SizedBox(
+                                                                width: 20),
+                                                            const SampleText(
+                                                              text:
+                                                                  'Xóa bình luận',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              size: 16,
+                                                              color: rose500,
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                isScrollControlled: true,
+                                              );
+                                            }
+                                          },
+                                          child: Image(
+                                            image: CachedNetworkImageProvider(
+                                              comment.image!,
+                                              scale: 10,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(left: 10),
@@ -261,27 +374,31 @@ class _BlogCommentScreenState extends State<BlogCommentScreen> {
                     TextFormField(
                       minLines: 1,
                       maxLines: null,
+                      onChanged: (value) {
+                        setState(() {});
+                      },
                       controller: controller,
                       focusNode: _focus,
                       decoration: const InputDecoration(
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: whiteText,
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(28)),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            width: 1,
+                            color: whiteText,
                           ),
-                          hintText: 'Nhập bình luận...',
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 20,
+                          borderRadius: BorderRadius.all(Radius.circular(28)),
+                        ),
+                        hintText: 'Nhập bình luận...',
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            width: 1,
+                            color: grey300,
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: grey300,
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(28)),
-                          )),
+                          borderRadius: BorderRadius.all(Radius.circular(28)),
+                        ),
+                      ),
                     ),
                     if (isEntering) ...[
                       if (_image != null) ...[
@@ -299,7 +416,7 @@ class _BlogCommentScreenState extends State<BlogCommentScreen> {
                                   ),
                                 ),
                                 GestureDetector(
-                                  onTap: () => deleteImage(),
+                                  onTap: () => _deleteImage(),
                                   child: Image.asset(
                                     Asset.icon('cross.png'),
                                     scale: 6,
@@ -323,21 +440,33 @@ class _BlogCommentScreenState extends State<BlogCommentScreen> {
                             ),
                             IconButton(
                               onPressed: () async {
-                                if (controller.text.isNotEmpty) {
+                                if (controller.text.isNotEmpty ||
+                                    _image != null) {
+                                  final File? imageUrl = _image;
+                                  final String text = controller.text;
+                                  controller.text = '';
+                                  _deleteImage();
+                                  String? url =
+                                      await _uploadImageCommentToFirebase(
+                                          imageUrl);
                                   await _commentRepository.insertComment(
                                     comment: Comment(
                                       commentsId: 0,
-                                      blogId: widget.blogId,
-                                      content: controller.text,
-                                      studentId: widget.studentCurrentId,
-                                      studentName: widget.studentCurrentName,
+                                      blogId: widget.blog.blogId,
+                                      content: text,
+                                      studentId: widget.currentStudent.studentId,
+                                      studentName: widget.currentStudent.studentName,
+                                      image: url,
                                       createdAt: DateTime.now().toString(),
                                     ),
                                   );
-                                  controller.text = '';
                                 }
                               },
-                              icon: const Icon(Icons.send),
+                              icon: Icon(
+                                (controller.text.isNotEmpty || _image != null)
+                                    ? Icons.send
+                                    : Icons.send_outlined,
+                              ),
                             ),
                           ],
                         ),

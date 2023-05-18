@@ -97,16 +97,19 @@ class StudentStateProfileSuccess extends StudentState {
 }
 
 class StudentStateBlogSuccess extends StudentState {
-  final List<Blog> blogs;
+  final List<Blog>? blogs;
+  final String studentId;
 
-  StudentStateBlogSuccess(
+  StudentStateBlogSuccess({
     this.blogs,
-  ) : super(isLoading: false);
+    required this.studentId,
+  }) : super(isLoading: false);
 }
 
 class StudentStateDeleteSuccess extends StudentState {
   StudentStateDeleteSuccess() : super(isLoading: false);
 }
+
 class StudentStateCreateBlogSucces extends StudentState {
   StudentStateCreateBlogSucces() : super(isLoading: false);
 }

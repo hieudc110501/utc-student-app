@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:utc_student_app/data/models/student.dart';
+import 'package:utc_student_app/data/repositories/blog/blog_repository.dart';
 import 'package:utc_student_app/data/repositories/student/student_repostitory.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 import 'package:utc_student_app/utils/asset.dart';
@@ -25,6 +26,7 @@ class BlogCreateScreen extends StatefulWidget {
 class _BlogCreateScreenState extends State<BlogCreateScreen> {
   TextEditingController controller = TextEditingController();
   late StudentRepository _studentRepository;
+  late BlogRepository _blogRepository;
   bool isData = false;
   final picker = ImagePicker();
   File? _image;
@@ -32,6 +34,7 @@ class _BlogCreateScreenState extends State<BlogCreateScreen> {
   @override
   void initState() {
     _studentRepository = StudentRepository();
+    _blogRepository = BlogRepository();
     super.initState();
   }
 
@@ -110,15 +113,13 @@ class _BlogCreateScreenState extends State<BlogCreateScreen> {
           if (isData || _image != null) ...[
             TextButton(
               onPressed: () async {
+                Navigator.of(context).pop();
                 String? image = await uploadImageToFirebase();
-                bool check = await _studentRepository
-                    .insertBlog(username: widget.student.studentId, data: {
+                await _blogRepository
+                    .insertBlog(studentId: widget.student.studentId, data: {
                   'body': controller.text,
                   'image': image,
                 });
-                if (check) {
-                  Navigator.of(context).pop();
-                }
               },
               child: Container(
                 height: 30,
@@ -259,8 +260,8 @@ class _BlogCreateScreenState extends State<BlogCreateScreen> {
               },
               child: Container(
                 decoration: const BoxDecoration(
-                  border: Border.symmetric(
-                    horizontal: BorderSide(
+                  border: BorderDirectional(
+                    bottom: BorderSide(
                       width: 1,
                       color: grey300,
                     ),

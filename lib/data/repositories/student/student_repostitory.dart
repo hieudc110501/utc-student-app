@@ -59,33 +59,4 @@ class StudentRepository {
   Future<bool> deleteAll(String username) {
     return _provider.deleteAll(username);
   }
-
-  Future<bool> insertBlog({
-    required String username,
-    required Map<String, dynamic> data,
-  }) {
-    return _provider.insertBlog(username, data);
-  }
-
-  Future<List<Blog>> getAllBlog({
-    required String studentId,
-  }) {
-    return _provider.getAllBlog(studentId);
-  }
-
-  Future<bool> insertLike({
-    required int blogId,
-    required String studentId,
-  }) {
-    return _provider.insertLike(blogId, studentId);
-  }
-
-  Future<bool> deleteLike({
-    required int blogId,
-    required String studentId,
-  }) {
-    return _provider.deleteLike(blogId, studentId);
-  }
-
-  
 }
