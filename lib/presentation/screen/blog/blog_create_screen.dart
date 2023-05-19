@@ -4,8 +4,10 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:utc_student_app/data/enum/blog_image.dart';
 import 'package:utc_student_app/data/models/student.dart';
 import 'package:utc_student_app/data/repositories/blog/blog_repository.dart';
+import 'package:utc_student_app/data/repositories/storage/storage_repository.dart';
 import 'package:utc_student_app/data/repositories/student/student_repostitory.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 import 'package:utc_student_app/utils/asset.dart';
@@ -25,16 +27,17 @@ class BlogCreateScreen extends StatefulWidget {
 
 class _BlogCreateScreenState extends State<BlogCreateScreen> {
   TextEditingController controller = TextEditingController();
-  late StudentRepository _studentRepository;
   late BlogRepository _blogRepository;
+  late StorageRepository _storageRepository;
+
   bool isData = false;
   final picker = ImagePicker();
   File? _image;
 
   @override
   void initState() {
-    _studentRepository = StudentRepository();
     _blogRepository = BlogRepository();
+    _storageRepository = StorageRepository();
     super.initState();
   }
 
@@ -70,23 +73,6 @@ class _BlogCreateScreenState extends State<BlogCreateScreen> {
     });
   }
 
-  Future<String?> uploadImageToFirebase() async {
-    if (_image != null) {
-      try {
-        String fileName = widget.student.studentId +
-            DateTime.now().millisecondsSinceEpoch.toString();
-        UploadTask uploadTask =
-            FirebaseStorage.instance.ref('images/$fileName').putFile(_image!);
-        TaskSnapshot snapshot = await uploadTask.whenComplete(() {});
-        String imageUrl = await snapshot.ref.getDownloadURL();
-        return imageUrl;
-      } catch (e) {
-        throw Exception(e.toString());
-      }
-    }
-    return null;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,7 +100,11 @@ class _BlogCreateScreenState extends State<BlogCreateScreen> {
             TextButton(
               onPressed: () async {
                 Navigator.of(context).pop();
-                String? image = await uploadImageToFirebase();
+                String? image = await _storageRepository.uploadImageToFirebase(
+                  image: _image,
+                  studentId: widget.student.studentId,
+                  imageType: BlogImageType.blogs,
+                );
                 await _blogRepository
                     .insertBlog(studentId: widget.student.studentId, data: {
                   'body': controller.text,

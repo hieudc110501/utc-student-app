@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:utc_student_app/data/models/blog.dart';
-import 'package:utc_student_app/data/models/comment.dart';
 import 'package:utc_student_app/data/models/schedule.dart';
 import 'package:utc_student_app/data/models/exam.dart';
 import 'package:utc_student_app/data/models/gpa.dart';

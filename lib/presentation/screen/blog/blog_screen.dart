@@ -6,6 +6,7 @@ import 'package:utc_student_app/data/local/shared_preferences/shared_preferences
 import 'package:utc_student_app/data/models/blog.dart';
 import 'package:utc_student_app/data/models/student.dart';
 import 'package:utc_student_app/data/repositories/blog/blog_repository.dart';
+import 'package:utc_student_app/data/repositories/comment/comment_repository.dart';
 import 'package:utc_student_app/logic/bloc/student/student_bloc.dart';
 import 'package:utc_student_app/logic/bloc/student/student_event.dart';
 import 'package:utc_student_app/logic/bloc/student/student_state.dart';
@@ -28,6 +29,7 @@ class _BlogScreenState extends State<BlogScreen> {
   late Student currentStudent;
   late bool _connectionStatus;
   late BlogRepository _blogRepository;
+  final CommentRepository _commentRepository = CommentRepository();
 
   @override
   void initState() {
@@ -102,7 +104,7 @@ class _BlogScreenState extends State<BlogScreen> {
           ) {
             _connectionStatus = connectivity != ConnectivityResult.none;
             if (_connectionStatus) {
-              _blogRepository.getAllBlog(studentId: currentStudent.studentId);
+              //_blogRepository.getAllBlog(studentId: currentStudent.studentId);
               return RefreshIndicator(
                 onRefresh: () => refresh(context, currentStudent.studentId),
                 child: BlocBuilder<StudentBloc, StudentState>(
@@ -112,11 +114,13 @@ class _BlogScreenState extends State<BlogScreen> {
                       return StreamBuilder(
                         stream: _blogRepository.all(),
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
                             return const LoadingCircleScreen();
                           }
                           if (snapshot.hasData) {
                             List<Blog> blogs = snapshot.data!;
+
                             return ListView.builder(
                               itemCount: blogs.length,
                               itemBuilder: (context, index) {

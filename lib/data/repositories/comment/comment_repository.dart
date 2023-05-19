@@ -22,6 +22,12 @@ class CommentRepository {
     return _provider.deleteComment(comment);
   }
 
+  Future<List<String>> getAllImageComment({
+    required int blogId,
+  }) {
+    return _provider.getAllImageComment(blogId);
+  }
+
   Stream<List<Comment>> all() => _provider.all();
   Stream<int> commentCount() => _provider.commentCount();
 }

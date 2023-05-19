@@ -7,19 +7,36 @@ import 'package:utc_student_app/utils/url.dart';
 
 class BlogProvider {
   final Dio _dio = Dio();
-
+  static final BlogProvider _instance = BlogProvider._internal();
+  factory BlogProvider() {
+    return _instance;
+  }
+  BlogProvider._internal();
   final StreamController<List<Blog>> _streamController =
       StreamController.broadcast();
+  List<Blog> _blogs = [];
+
+  //get blog
+  Future<Blog?> getBlog(int blogId, Map<String, dynamic> data) async {
+    try {
+      final response = await _dio.get('$blogGet/$blogId', data: data);
+      if (response.statusCode == 200) {
+        return Blog.fromJson(jsonEncode(response.data));
+      }
+      return null;
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 
   //insert blog
   Future<bool> insertBlog(String studentId, Map<String, dynamic> data) async {
     try {
       final response = await _dio.post('$blogInsert/$studentId', data: data);
+
       if (response.statusCode == 200) {
-        if (response.data == true) {
-          getAllBlog(studentId);
-          return true;
-        }
+        await getAllBlog(studentId);
+        return true;
       }
       return false;
     } catch (e) {
@@ -36,7 +53,6 @@ class BlogProvider {
       );
       if (response.statusCode == 200) {
         if (response.data == true) {
-          getAllBlog(blog.studentId);
           return true;
         }
       }
@@ -52,7 +68,7 @@ class BlogProvider {
       final response = await _dio.post('$blogDelete/${blog.blogId}');
       if (response.statusCode == 200) {
         if (response.data == true) {
-          getAllBlog(blog.studentId);
+          await getAllBlog(blog.studentId);
           return true;
         }
       }
@@ -65,12 +81,14 @@ class BlogProvider {
   //get all blog
   Future<List<Blog>> getAllBlog(String studentId) async {
     try {
+      _blogs.clear();
       final response = await _dio.get('$blogGetAll/$studentId');
       if (response.statusCode == 200) {
         List data = response.data;
         List<Blog> blogs =
             data.map((e) => Blog.fromJson(jsonEncode(e))).toList();
-        _streamController.sink.add(blogs);
+        _blogs.addAll(blogs);
+        _streamController.sink.add(_blogs);
         return blogs;
       } else {
         throw Exception('Fail to load Point data');

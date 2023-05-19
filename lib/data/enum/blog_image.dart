@@ -1,0 +1,4 @@
+enum BlogImageType {
+  blogs,
+  comments,
+} 

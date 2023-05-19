@@ -64,9 +64,6 @@ class _BlogUpdateScreenState extends State<BlogUpdateScreen> {
             TextButton(
               onPressed: () async {
                 Navigator.of(context).pop();
-                context
-                    .read<StudentBloc>()
-                    .add(StudentEventRefreshBlog(widget.blog.studentId));
                 await _blogRepository.updateBlog(
                   blog: Blog(
                     blogId: widget.blog.blogId,

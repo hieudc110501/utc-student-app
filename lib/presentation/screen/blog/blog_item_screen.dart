@@ -1,12 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
 import 'package:utc_student_app/data/models/blog.dart';
 import 'package:utc_student_app/data/models/student.dart';
 import 'package:utc_student_app/data/repositories/blog/blog_repository.dart';
 import 'package:utc_student_app/data/repositories/comment/comment_repository.dart';
-import 'package:utc_student_app/data/repositories/student/student_repostitory.dart';
+import 'package:utc_student_app/data/repositories/storage/storage_repository.dart';
 import 'package:utc_student_app/presentation/screen/blog/blog_comment_image.dart';
 import 'package:utc_student_app/presentation/screen/blog/blog_comment_screen.dart';
 import 'package:utc_student_app/presentation/screen/blog/blog_update_screen.dart';
@@ -34,6 +33,7 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
   late bool isLike;
   bool isEntering = false;
   late BlogRepository _blogRepository;
+  late StorageRepository _storageRepository;
   late int _likes;
   TextEditingController cmtController = TextEditingController();
   final CommentRepository _commentRepository = CommentRepository();
@@ -42,6 +42,7 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
   void initState() {
     isLike = widget.blog.isLiked == 1 ? true : false;
     _blogRepository = BlogRepository();
+    _storageRepository = StorageRepository();
     _likes = widget.blog.likeCount;
     cmtController.text = widget.blog.commentCount.toString();
     _commentRepository.getComment(blogId: widget.blog.blogId);
@@ -98,22 +99,57 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    if (widget.currentStudent.studentId ==
-                        widget.blog.studentId) {
-                      showModalBottomSheet(
-                        backgroundColor: Colors.white.withOpacity(0),
-                        //barrierColor: Colors.transparent,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(26),
-                          ),
+                    showModalBottomSheet(
+                      backgroundColor: Colors.white.withOpacity(0),
+                      //barrierColor: Colors.transparent,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(26),
                         ),
-                        context: context,
-                        builder: (context) {
-                          return SizedBox(
-                            height: 100,
-                            child: Column(
-                              children: [
+                      ),
+                      context: context,
+                      builder: (context) {
+                        return SizedBox(
+                          height: widget.currentStudent.studentId ==
+                                  widget.blog.studentId
+                              ? 150
+                              : 50,
+                          child: Column(
+                            children: [
+                              InkWell(
+                                onTap: () => Navigator.pushReplacementNamed(
+                                  context,
+                                  BlogUpdateScreen.routeName,
+                                  arguments: widget.blog,
+                                ),
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                    color: whiteText,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 8),
+                                    child: Row(
+                                      children: [
+                                        Image.asset(
+                                          Asset.icon('share.png'),
+                                          scale: 4,
+                                          color: greyText,
+                                        ),
+                                        const SizedBox(width: 20),
+                                        const SampleText(
+                                          text: 'Chia sẻ bài viết',
+                                          fontWeight: FontWeight.w500,
+                                          size: 16,
+                                          color: greyText,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              if (widget.currentStudent.studentId ==
+                                  widget.blog.studentId) ...[
                                 InkWell(
                                   onTap: () => Navigator.pushReplacementNamed(
                                     context,
@@ -148,9 +184,23 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                                 ),
                                 InkWell(
                                   onTap: () async {
-                                    await showDeleteBlogDialog(context);
+                                    final bool check =
+                                        await showDeleteBlogDialog(context);
                                     // ignore: use_build_context_synchronously
                                     Navigator.of(context).pop();
+                                    if (check) {
+                                      List<String> images =
+                                          await _commentRepository
+                                              .getAllImageComment(
+                                                  blogId: widget.blog.blogId);
+                                      await _storageRepository
+                                          .deleteAllBlogImage(images: images);
+                                      await _storageRepository
+                                          .deleteImageFromFirebase(
+                                              imageUrl: widget.blog.image);
+                                      await _blogRepository.deleteBlog(
+                                          blog: widget.blog);
+                                    }
                                   },
                                   child: Container(
                                     decoration: const BoxDecoration(
@@ -185,12 +235,12 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                                   ),
                                 ),
                               ],
-                            ),
-                          );
-                        },
-                        isScrollControlled: true,
-                      );
-                    }
+                            ],
+                          ),
+                        );
+                      },
+                      isScrollControlled: true,
+                    );
                   },
                   child: Image.asset(
                     Asset.icon('menu_dots.png'),

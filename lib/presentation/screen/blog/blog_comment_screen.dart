@@ -5,11 +5,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:utc_student_app/data/enum/blog_image.dart';
 
 import 'package:utc_student_app/data/models/blog.dart';
 import 'package:utc_student_app/data/models/comment.dart';
 import 'package:utc_student_app/data/models/student.dart';
 import 'package:utc_student_app/data/repositories/comment/comment_repository.dart';
+import 'package:utc_student_app/data/repositories/storage/storage_repository.dart';
 import 'package:utc_student_app/presentation/screen/blog/blog_comment_image.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 import 'package:utc_student_app/utils/asset.dart';
@@ -36,6 +38,7 @@ class BlogCommentScreen extends StatefulWidget {
 class _BlogCommentScreenState extends State<BlogCommentScreen> {
   TextEditingController controller = TextEditingController();
   final CommentRepository _commentRepository = CommentRepository();
+  late StorageRepository _storageRepository;
   late FocusNode _focus;
   bool isEntering = false;
   final picker = ImagePicker();
@@ -53,6 +56,7 @@ class _BlogCommentScreenState extends State<BlogCommentScreen> {
         }
       });
     });
+    _storageRepository = StorageRepository();
     _commentRepository.getComment(blogId: widget.blog.blogId);
     super.initState();
   }
@@ -90,23 +94,6 @@ class _BlogCommentScreenState extends State<BlogCommentScreen> {
     } catch (e) {
       throw Exception(e);
     }
-  }
-
-  Future<String?> _uploadImageCommentToFirebase(File? image) async {
-    if (image != null) {
-      try {
-        String fileName = widget.currentStudent.studentId +
-            DateTime.now().millisecondsSinceEpoch.toString();
-        UploadTask uploadTask =
-            FirebaseStorage.instance.ref('comments/$fileName').putFile(image);
-        TaskSnapshot snapshot = await uploadTask.whenComplete(() {});
-        String imageUrl = await snapshot.ref.getDownloadURL();
-        return imageUrl;
-      } catch (e) {
-        throw Exception(e.toString());
-      }
-    }
-    return null;
   }
 
   @override
@@ -188,9 +175,12 @@ class _BlogCommentScreenState extends State<BlogCommentScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        constraints: BoxConstraints.loose(Size(
+                                        constraints: BoxConstraints.loose(
+                                          Size(
                                             screenSize.width * 0.75,
-                                            Size.infinite.height)),
+                                            Size.infinite.height,
+                                          ),
+                                        ),
                                         //width: screenSize.width * 0.75,
                                         decoration: BoxDecoration(
                                           borderRadius:
@@ -234,8 +224,10 @@ class _BlogCommentScreenState extends State<BlogCommentScreen> {
                                             //kiểm tra nếu comment hiện tại là của người dùng đó
                                             //hoặc là chủ nhân của blog
                                             if (comment.studentId ==
-                                                    widget.currentStudent.studentId ||
-                                                widget.currentStudent.studentId ==
+                                                    widget.currentStudent
+                                                        .studentId ||
+                                                widget.currentStudent
+                                                        .studentId ==
                                                     widget.blog.studentId) {
                                               showModalBottomSheet(
                                                 backgroundColor:
@@ -254,12 +246,10 @@ class _BlogCommentScreenState extends State<BlogCommentScreen> {
                                                     onTap: () async {
                                                       Navigator.of(context)
                                                           .pop();
-                                                      if (comment.image !=
-                                                          null) {
-                                                        deleteImageFromFirebase(
-                                                          comment.image!,
-                                                        );
-                                                      }
+                                                      await _storageRepository
+                                                          .deleteImageFromFirebase(
+                                                              imageUrl: comment
+                                                                  .image);
                                                       await _commentRepository
                                                           .deleteComment(
                                                               comment: comment);
@@ -446,16 +436,21 @@ class _BlogCommentScreenState extends State<BlogCommentScreen> {
                                   final String text = controller.text;
                                   controller.text = '';
                                   _deleteImage();
-                                  String? url =
-                                      await _uploadImageCommentToFirebase(
-                                          imageUrl);
+                                  String? url = await _storageRepository
+                                      .uploadImageToFirebase(
+                                    image: imageUrl,
+                                    studentId: widget.currentStudent.studentId,
+                                    imageType: BlogImageType.comments,
+                                  );
                                   await _commentRepository.insertComment(
                                     comment: Comment(
                                       commentsId: 0,
                                       blogId: widget.blog.blogId,
                                       content: text,
-                                      studentId: widget.currentStudent.studentId,
-                                      studentName: widget.currentStudent.studentName,
+                                      studentId:
+                                          widget.currentStudent.studentId,
+                                      studentName:
+                                          widget.currentStudent.studentName,
                                       image: url,
                                       createdAt: DateTime.now().toString(),
                                     ),

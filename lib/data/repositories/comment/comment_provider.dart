@@ -63,6 +63,29 @@ class CommentProvider {
     }
   }
 
+  //get all image comment
+  Future<List<String>> getAllImageComment(int blogId) async {
+    try {
+      final response = await _dio.get('$blogGetComment/$blogId');
+      if (response.statusCode == 200) {
+        List data = response.data;
+        List<Comment> comments =
+            data.map((e) => Comment.fromJson(jsonEncode(e))).toList();
+
+        List<String> listImage = [];
+        comments.forEach((element) {
+          if (element.image != null) {
+            listImage.add(element.image!);
+          }
+        });
+        return listImage;
+      }
+      return [];
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   Stream<List<Comment>> all() => _streamController.stream;
   Stream<int> commentCount() => _countStreamController.stream;
 }
