@@ -1,6 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
+
+import 'package:utc_student_app/data/enum/blog_page.dart';
 import 'package:utc_student_app/data/models/blog.dart';
 import 'package:utc_student_app/data/models/student.dart';
 import 'package:utc_student_app/data/repositories/blog/blog_repository.dart';
@@ -9,6 +12,7 @@ import 'package:utc_student_app/data/repositories/storage/storage_repository.dar
 import 'package:utc_student_app/presentation/screen/blog/blog_comment_image.dart';
 import 'package:utc_student_app/presentation/screen/blog/blog_comment_screen.dart';
 import 'package:utc_student_app/presentation/screen/blog/blog_update_screen.dart';
+import 'package:utc_student_app/presentation/screen/loading/loading_screen.dart';
 import 'package:utc_student_app/presentation/widgets/dialog/delete_blog_dialog.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 import 'package:utc_student_app/utils/asset.dart';
@@ -18,11 +22,13 @@ import 'package:utc_student_app/utils/size.dart';
 class BlogItemScreen extends StatefulWidget {
   final Blog blog;
   final Student currentStudent;
+  final BlogPage blogPage;
 
   const BlogItemScreen({
     Key? key,
     required this.blog,
     required this.currentStudent,
+    required this.blogPage,
   }) : super(key: key);
 
   @override
@@ -45,7 +51,6 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
     _storageRepository = StorageRepository();
     _likes = widget.blog.likeCount;
     cmtController.text = widget.blog.commentCount.toString();
-    _commentRepository.getComment(blogId: widget.blog.blogId);
     super.initState();
   }
 
@@ -56,6 +61,12 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // print(widget.blog.blogId.toString() +
+    //     ' ' +
+    //     widget.blog.likeCount.toString() +
+    //     ' ' +
+    //     widget.blog.commentCount.toString());
+    final box = context.findRenderObject() as RenderBox?;
     return Container(
       decoration: const BoxDecoration(
         color: whiteText,
@@ -117,11 +128,16 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                           child: Column(
                             children: [
                               InkWell(
-                                onTap: () => Navigator.pushReplacementNamed(
-                                  context,
-                                  BlogUpdateScreen.routeName,
-                                  arguments: widget.blog,
-                                ),
+                                onTap: () {
+                                  Navigator.of(context).pop();
+                                  Share.share(
+                                    widget.blog.image!,
+                                    subject: widget.blog.body,
+                                    sharePositionOrigin:
+                                        box!.localToGlobal(Offset.zero) &
+                                            box.size,
+                                  );
+                                },
                                 child: Container(
                                   decoration: const BoxDecoration(
                                     color: whiteText,
@@ -189,6 +205,10 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                                     // ignore: use_build_context_synchronously
                                     Navigator.of(context).pop();
                                     if (check) {
+                                      // ignore: use_build_context_synchronously
+                                      LoadingScreen().show(
+                                          context: context,
+                                          text: 'Đang xóa bài viết');
                                       List<String> images =
                                           await _commentRepository
                                               .getAllImageComment(
@@ -200,17 +220,12 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                                               imageUrl: widget.blog.image);
                                       await _blogRepository.deleteBlog(
                                           blog: widget.blog);
+                                      LoadingScreen().hide();
                                     }
                                   },
                                   child: Container(
                                     decoration: const BoxDecoration(
                                       color: whiteText,
-                                      border: Border.symmetric(
-                                        horizontal: BorderSide(
-                                          width: 1,
-                                          color: grey300,
-                                        ),
-                                      ),
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -323,7 +338,7 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                         ),
                       ),
                       TextSpan(
-                        text: ' $_likes',
+                        text: ' ${widget.blog.likeCount}',
                         style: const TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 14,
@@ -334,19 +349,11 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                     ],
                   ),
                 ),
-                StreamBuilder(
-                  stream: _commentRepository.commentCount(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return SampleText(
-                        text: '${snapshot.data} bình luận',
-                        fontWeight: FontWeight.w600,
-                        size: 14,
-                        color: greyText,
-                      );
-                    }
-                    return const SizedBox();
-                  },
+                SampleText(
+                  text: '${widget.blog.commentCount} bình luận',
+                  fontWeight: FontWeight.w600,
+                  size: 14,
+                  color: greyText,
                 ),
               ],
             ),
@@ -366,11 +373,6 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                   onTap: () async {
                     setState(() {
                       isLike = !isLike;
-                      if (isLike) {
-                        _likes++;
-                      } else {
-                        _likes--;
-                      }
                     });
                     if (isLike) {
                       await _blogRepository.insertLike(
@@ -382,6 +384,18 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                         blogId: widget.blog.blogId,
                         studentId: widget.currentStudent.studentId,
                       );
+                    }
+
+                    switch (widget.blogPage) {
+                      case BlogPage.public:
+                        _blogRepository.getAllBlog(
+                            studentId: widget.currentStudent.studentId);
+                        break;
+                      case BlogPage.private:
+                        _blogRepository.getAllPersonBlog(
+                            studentId: widget.currentStudent.studentId);
+                        break;
+                      default:
                     }
                   },
                   child: SizedBox(
@@ -422,15 +436,26 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                         return BlogCommentScreen(
                           blog: widget.blog,
                           currentStudent: widget.currentStudent,
-                          likes: _likes,
+                          likes: widget.blog.likeCount,
                           cmtController: cmtController,
                         );
                       },
                       isScrollControlled: true,
-                    ).then((value) => setState(() {
-                          _commentRepository.getComment(
-                              blogId: widget.blog.blogId);
-                        }));
+                    ).then(
+                      (value) => setState(() {
+                        switch (widget.blogPage) {
+                          case BlogPage.public:
+                            _blogRepository.getAllBlog(
+                                studentId: widget.currentStudent.studentId);
+                            break;
+                          case BlogPage.private:
+                            _blogRepository.getAllPersonBlog(
+                                studentId: widget.currentStudent.studentId);
+                            break;
+                          default:
+                        }
+                      }),
+                    );
                   },
                   child: SizedBox(
                     width: screenSize.width / 2 - 20,

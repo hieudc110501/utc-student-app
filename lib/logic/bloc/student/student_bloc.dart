@@ -152,7 +152,6 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     //lấy tất cả blogs
     on<StudentEventLoadBlog>((event, emit) async {
       try {
-        //final blogs = await blogRepository.getAllBlog(studentId: event.username);
         emit(StudentStateBlogSuccess(studentId: event.username));
       } catch (e) {
         emit(StudentStateError(e.toString()));

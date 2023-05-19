@@ -1,0 +1,4 @@
+enum BlogPage {
+  public,
+  private,
+}

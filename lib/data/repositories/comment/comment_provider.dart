@@ -11,7 +11,8 @@ class CommentProvider {
   final StreamController<List<Comment>> _streamController =
       StreamController.broadcast();
 
-  final StreamController<int> _countStreamController = StreamController.broadcast();
+  final StreamController<int> _countStreamController =
+      StreamController.broadcast();
   //insert comment
   Future<bool> insertComment(Comment comment) async {
     try {
@@ -31,7 +32,8 @@ class CommentProvider {
 
   Future<bool> deleteComment(Comment comment) async {
     try {
-      final response = await _dio.post('$blogDeleteComment/${comment.commentsId}',
+      final response = await _dio.post(
+          '$blogDeleteComment/${comment.commentsId}',
           data: comment.toJson());
       if (response.statusCode == 200) {
         if (response.data == true) {

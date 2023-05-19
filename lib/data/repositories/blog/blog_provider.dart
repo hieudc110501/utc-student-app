@@ -14,16 +14,19 @@ class BlogProvider {
   BlogProvider._internal();
   final StreamController<List<Blog>> _streamController =
       StreamController.broadcast();
-  List<Blog> _blogs = [];
 
-  //get blog
-  Future<Blog?> getBlog(int blogId, Map<String, dynamic> data) async {
+  //get all blog of person
+  Future<List<Blog>> getAllPersonBlog(String studentId) async {
     try {
-      final response = await _dio.get('$blogGet/$blogId', data: data);
+      final response = await _dio.get('$blogGetAllPerson/$studentId');
       if (response.statusCode == 200) {
-        return Blog.fromJson(jsonEncode(response.data));
-      }
-      return null;
+        List data = response.data;
+        List<Blog> blogs =
+            data.map((e) => Blog.fromJson(jsonEncode(e))).toList();
+        _streamController.sink.add(blogs);
+        return blogs;
+      } 
+      return [];
     } catch (e) {
       throw Exception(e.toString());
     }
@@ -81,14 +84,12 @@ class BlogProvider {
   //get all blog
   Future<List<Blog>> getAllBlog(String studentId) async {
     try {
-      _blogs.clear();
       final response = await _dio.get('$blogGetAll/$studentId');
       if (response.statusCode == 200) {
         List data = response.data;
         List<Blog> blogs =
             data.map((e) => Blog.fromJson(jsonEncode(e))).toList();
-        _blogs.addAll(blogs);
-        _streamController.sink.add(_blogs);
+        _streamController.sink.add(blogs);
         return blogs;
       } else {
         throw Exception('Fail to load Point data');

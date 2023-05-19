@@ -1,4 +1,4 @@
-const http = 'http://192.168.1.109';
+const http = 'http://192.168.1.163';
 
 const httpLogin = '$http/login';
 const httpStudent = '$http/student';
@@ -56,7 +56,7 @@ const controllerDeleteAll = '$httpController/deleteAll';
 const controllerInsertAll = '$httpController/insertAll';
 
 //blog
-const blogGet = '$httpBlog/get';
+const blogGetAllPerson = '$httpBlog/getAllPerson';
 const blogInsert = '$httpBlog/insert';
 const blogUpdate = '$httpBlog/update';
 const blogDelete = '$httpBlog/delete';
