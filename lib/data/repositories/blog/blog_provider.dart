@@ -46,6 +46,22 @@ class BlogProvider {
     }
   }
 
+  //delete blog
+  Future<bool> deleteBlog(Blog blog) async {
+    try {
+      final response = await _dio.post('$blogDelete/${blog.blogId}');
+      if (response.statusCode == 200) {
+        if (response.data == true) {
+          getAllBlog(blog.studentId);
+          return true;
+        }
+      }
+      return false;
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   //get all blog
   Future<List<Blog>> getAllBlog(String studentId) async {
     try {

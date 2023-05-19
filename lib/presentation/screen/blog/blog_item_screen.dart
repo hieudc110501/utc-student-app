@@ -10,6 +10,7 @@ import 'package:utc_student_app/data/repositories/student/student_repostitory.da
 import 'package:utc_student_app/presentation/screen/blog/blog_comment_image.dart';
 import 'package:utc_student_app/presentation/screen/blog/blog_comment_screen.dart';
 import 'package:utc_student_app/presentation/screen/blog/blog_update_screen.dart';
+import 'package:utc_student_app/presentation/widgets/dialog/delete_blog_dialog.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 import 'package:utc_student_app/utils/asset.dart';
 import 'package:utc_student_app/utils/color.dart';
@@ -32,7 +33,6 @@ class BlogItemScreen extends StatefulWidget {
 class _BlogItemScreenState extends State<BlogItemScreen> {
   late bool isLike;
   bool isEntering = false;
-  late StudentRepository _studentRepository;
   late BlogRepository _blogRepository;
   late int _likes;
   TextEditingController cmtController = TextEditingController();
@@ -41,7 +41,6 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
   @override
   void initState() {
     isLike = widget.blog.isLiked == 1 ? true : false;
-    _studentRepository = StudentRepository();
     _blogRepository = BlogRepository();
     _likes = widget.blog.likeCount;
     cmtController.text = widget.blog.commentCount.toString();
@@ -86,7 +85,9 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                           color: greyText,
                         ),
                         SampleText(
-                          text: widget.blog.createdAt,
+                          text: widget.blog.updatedAt != null
+                              ? 'Đã chỉnh sửa ${widget.blog.updatedAt}'
+                              : widget.blog.createdAt,
                           fontWeight: FontWeight.w400,
                           size: 12,
                           color: greyText,
@@ -146,7 +147,11 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () async {
+                                    await showDeleteBlogDialog(context);
+                                    // ignore: use_build_context_synchronously
+                                    Navigator.of(context).pop();
+                                  },
                                   child: Container(
                                     decoration: const BoxDecoration(
                                       color: whiteText,

@@ -18,6 +18,12 @@ class BlogRepository {
     return _provider.updateBlog(blog);
   }
 
+  Future<bool> deleteBlog({
+    required Blog blog,
+  }) {
+    return _provider.deleteBlog(blog);
+  }
+
   Future<List<Blog>> getAllBlog({
     required String studentId,
   }) {
