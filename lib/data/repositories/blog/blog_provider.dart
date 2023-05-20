@@ -25,7 +25,32 @@ class BlogProvider {
             data.map((e) => Blog.fromJson(jsonEncode(e))).toList();
         _streamController.sink.add(blogs);
         return blogs;
-      } 
+      }
+      return [];
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  //get all blog search
+  Future<List<Blog>> getBlogSearch(
+    String studentId,
+    String content,
+  ) async {
+    try {
+      final response = await _dio.get(
+        '$blogGetSearch/$studentId',
+        data: {
+          'content': content,
+        },
+      );
+      if (response.statusCode == 200) {
+        List data = response.data;
+        List<Blog> blogs =
+            data.map((e) => Blog.fromJson(jsonEncode(e))).toList();
+        _streamController.sink.add(blogs);
+        return blogs;
+      }
       return [];
     } catch (e) {
       throw Exception(e.toString());

@@ -12,6 +12,7 @@ import 'package:utc_student_app/logic/bloc/student/student_event.dart';
 import 'package:utc_student_app/logic/bloc/student/student_state.dart';
 import 'package:utc_student_app/presentation/screen/blog/blog_create_screen.dart';
 import 'package:utc_student_app/presentation/screen/blog/blog_item_screen.dart';
+import 'package:utc_student_app/presentation/screen/blog/blog_search.dart';
 import 'package:utc_student_app/presentation/screen/loading/loading_circle_screen.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 import 'package:utc_student_app/presentation/widgets/toast.dart';
@@ -73,7 +74,12 @@ class _BlogScreenState extends State<BlogScreen> {
           elevation: 3,
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: BlogSearchDelegate(currentStudent: currentStudent),
+                );
+              },
               icon: Image.asset(
                 'assets/icons/search.png',
                 color: whiteText,

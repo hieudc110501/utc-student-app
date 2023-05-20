@@ -36,6 +36,13 @@ class BlogRepository {
     return _provider.getAllBlog(studentId);
   }
 
+  Future<List<Blog>> getBlogSearch({
+    required String studentId,
+    required String content,
+  }) {
+    return _provider.getBlogSearch(studentId, content);
+  }
+
   Future<bool> insertLike({
     required int blogId,
     required String studentId,
