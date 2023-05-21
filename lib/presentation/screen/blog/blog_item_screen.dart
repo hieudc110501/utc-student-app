@@ -120,11 +120,12 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                               InkWell(
                                 onTap: () {
                                   Navigator.of(context).pop();
+                                  final String body = widget.blog.body ?? ' ';
                                   Share.share(
                                     widget.blog.image != null
-                                        ? ' ${widget.blog.body} ${widget.blog.image}'
-                                        : widget.blog.body!,
-                                    subject: widget.blog.body ?? ' ',
+                                        ? ' $body ${widget.blog.image}'
+                                        : body,
+                                    subject: body,
                                   );
                                 },
                                 child: Container(
