@@ -85,6 +85,7 @@ class BlogProvider {
       );
       if (response.statusCode == 200) {
         if (response.data == true) {
+          await getAllBlog(blog.studentId);
           return true;
         }
       }
@@ -120,7 +121,7 @@ class BlogProvider {
             data.map((e) => Blog.fromJson(jsonEncode(e))).toList();
         _streamController.sink.add(blogs);
         return blogs;
-      } 
+      }
       return [];
     } catch (e) {
       throw Exception(e.toString());
