@@ -119,7 +119,6 @@ class BlogProvider {
         List<Blog> blogs =
             data.map((e) => Blog.fromJson(jsonEncode(e))).toList();
         _streamController.sink.add(blogs);
-        print('ok');
         return blogs;
       } 
       return [];

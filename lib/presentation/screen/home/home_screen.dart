@@ -2,11 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+
+import 'package:utc_student_app/data/models/student.dart';
 import 'package:utc_student_app/logic/bloc/student/student_bloc.dart';
 import 'package:utc_student_app/logic/bloc/student/student_state.dart';
 import 'package:utc_student_app/logic/handle/calender_handle.dart';
 import 'package:utc_student_app/presentation/screen/home/home_news_screen.dart';
 import 'package:utc_student_app/presentation/screen/home/home_point_screen.dart';
+import 'package:utc_student_app/presentation/screen/home/home_student_screen.dart';
 import 'package:utc_student_app/presentation/screen/loading/loading_circle_screen.dart';
 import 'package:utc_student_app/presentation/screen/loading/loading_screen.dart';
 import 'package:utc_student_app/presentation/screen/tuition/tuition_screen.dart';
@@ -85,45 +88,8 @@ class HomeScreen extends StatelessWidget {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(10),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Image.asset(
-                                'assets/icons/avatar.png',
-                                scale: 3,
-                              ),
-                            ),
-                            Expanded(
-                              flex: 4,
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 8),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SampleText(
-                                      text: state.student.studentName,
-                                      fontWeight: FontWeight.w700,
-                                      size: 16,
-                                      color: greyText,
-                                    ),
-                                    SampleText(
-                                      text:
-                                          'Mã sinh viên: ${state.student.studentId}',
-                                      fontWeight: FontWeight.w500,
-                                      size: 14,
-                                      color: greyText,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const Expanded(
-                              flex: 1,
-                              child: SizedBox(),
-                            ),
-                          ],
+                        child: HomeStudentScreen(
+                          student: state.student,
                         ),
                       ),
                     ),
