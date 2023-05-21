@@ -44,7 +44,7 @@ class StudentProvider {
       }
       return false;
     } catch (e) {
-      throw Exception(e.toString());
+      return false;
     }
   }
 
@@ -65,12 +65,12 @@ class StudentProvider {
   //kiếm tra xem đã đồng bộ chưa
   Future<bool> checkSync(String username) async {
     try {
-      final response = await _dio.get('$studentGet/$username');
+      final response = await _dio.get('$studentGetSync/$username');
       if (response.statusCode == 200) {
-        if (response.data == false) {
-          return false;
+        if (response.data == true) {
+          return true;
         }
-        return true;
+        return false;
       } else {
         return false;
       }

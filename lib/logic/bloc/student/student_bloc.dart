@@ -19,10 +19,14 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     on<StudentEventSyncData>((event, emit) async {
       emit(StudentStateLoading(isLoading: true));
       try {
-        //kiểm tra xem dữ liệu đã có trên server chưa
+        //kiểm tra xem dữ liệu đã có trên server chưa hoặc là có rồi nhưng chưa đồng bộ hết
         final check = await studentRepository.checkSync(event.username);
         if (!check) {
-          await studentRepository.syncData(event.username, event.password);
+          bool synced = await studentRepository.syncData(event.username, event.password);
+          while (!synced) {
+            await studentRepository.deleteAll(event.username);
+            synced = await studentRepository.syncData(event.username, event.password);
+          }
         }
 
         //kiểm tra xem dữ liệu đã có trên local chưa
@@ -85,10 +89,6 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     //lấy thông tin
     on<StudentEventLoadData>((event, emit) async {
       try {
-        // final student = await studentRepository.fetchStudent(event.username);
-        // final news = await studentRepository.fetchNews(event.username);
-        // final tuitions = await studentRepository.fetchTuition(event.username);
-        // final points = await studentRepository.fetchPoint(event.username);
         final student = await localRepository.getStudent(event.username);
         final news = await localRepository.getNews();
         final tuitions = await localRepository.getTuition(event.username);
@@ -112,8 +112,6 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     //lấy điểm
     on<StudentEventLoadMark>((event, emit) async {
       try {
-        // final mark = await studentRepository.fetchMark(event.username);
-        // final gpa = await studentRepository.fetchGPA(event.username);
         final mark = await localRepository.getMark(event.username);
         final gpa = await localRepository.getGpa(event.username);
 
@@ -126,8 +124,6 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     //lấy lịch
     on<StudentEventLoadSchedule>((event, emit) async {
       try {
-        // final calendar = await studentRepository.fetchSchedule(event.username);
-        // final exam = await studentRepository.fetchExam(event.username);
         final calendar = await localRepository.getSchedule(event.username);
         final exam = await localRepository.getExam(event.username);
         emit(StudentStateScheduleSuccess(calendar, exam));
@@ -139,8 +135,6 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     //lấy thông tin
     on<StudentEventLoadProfile>((event, emit) async {
       try {
-        // final gpa = await studentRepository.fetchGPA(event.username);
-        // final student = await studentRepository.fetchStudent(event.username);
         final student = await localRepository.getStudent(event.username);
         final gpa = await localRepository.getGpa(event.username);
         emit(StudentStateProfileSuccess(student, gpa));

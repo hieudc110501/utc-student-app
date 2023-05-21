@@ -21,6 +21,7 @@ const newsDelete = '$httpNews/delete';
 //student
 const studentInsert = '$httpStudent/insert';
 const studentGet = '$httpStudent/get';
+const studentGetSync = '$httpStudent/getSync';
 const studentCheck = '$httpStudent/check';
 const studentDelete = '$httpStudent/delete';
 
