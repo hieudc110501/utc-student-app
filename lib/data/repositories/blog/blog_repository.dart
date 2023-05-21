@@ -58,4 +58,6 @@ class BlogRepository {
   }
 
   Stream<List<Blog>> all() => _provider.all();
+  Stream<List<Blog>> allPerson() => _provider.allPerson();
+  Stream<List<Blog>> allSearch() => _provider.allSearch();
 }

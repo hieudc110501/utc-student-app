@@ -165,7 +165,7 @@ class _BlogScreenState extends State<BlogScreen> {
                                           BlogItemScreen(
                                             blog: blogs[index],
                                             currentStudent: currentStudent,
-                                            blogPage: BlogPage.private,
+                                            blogPage: BlogPage.public,
                                           ),
                                           const SizedBox(height: 10),
                                         ],
@@ -233,7 +233,7 @@ class _BlogScreenState extends State<BlogScreen> {
                             _blogRepository.getAllPersonBlog(
                                 studentId: currentStudent.studentId);
                             return StreamBuilder(
-                              stream: _blogRepository.all(),
+                              stream: _blogRepository.allPerson(),
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {

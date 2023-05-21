@@ -19,7 +19,14 @@ class BlogSearchDelegate extends SearchDelegate {
 
   @override
   List<Widget>? buildActions(BuildContext context) {
-    return null;
+    return [
+      IconButton(
+        onPressed: () {
+          query = '';
+        },
+        icon: const Icon(Icons.close),
+      ),
+    ];
   }
 
   @override
@@ -33,7 +40,7 @@ class BlogSearchDelegate extends SearchDelegate {
         studentId: currentStudent.studentId, content: query);
 
     return StreamBuilder(
-      stream: _blogRepository.all(),
+      stream: _blogRepository.allSearch(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const LoadingCircleScreen();
@@ -73,7 +80,7 @@ class BlogSearchDelegate extends SearchDelegate {
     _blogRepository.getBlogSearch(
         studentId: currentStudent.studentId, content: query);
     return StreamBuilder(
-      stream: _blogRepository.all(),
+      stream: _blogRepository.allSearch(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const LoadingCircleScreen();

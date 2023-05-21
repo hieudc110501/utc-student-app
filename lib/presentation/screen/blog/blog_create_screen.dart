@@ -1,15 +1,13 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, use_build_context_synchronously
 import 'dart:io';
-
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:utc_student_app/data/enum/blog_image.dart';
 import 'package:utc_student_app/data/models/student.dart';
 import 'package:utc_student_app/data/repositories/blog/blog_repository.dart';
 import 'package:utc_student_app/data/repositories/storage/storage_repository.dart';
-import 'package:utc_student_app/data/repositories/student/student_repostitory.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
+import 'package:utc_student_app/presentation/widgets/snackbar/snack_bar.dart';
 import 'package:utc_student_app/utils/asset.dart';
 import 'package:utc_student_app/utils/color.dart';
 

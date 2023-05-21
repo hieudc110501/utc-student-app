@@ -1,18 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:utc_student_app/data/models/blog.dart';
 import 'package:utc_student_app/data/repositories/blog/blog_repository.dart';
-import 'package:utc_student_app/logic/bloc/student/student_event.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 import 'package:utc_student_app/utils/asset.dart';
 import 'package:utc_student_app/utils/color.dart';
 import 'package:utc_student_app/utils/size.dart';
-
-import '../../../logic/bloc/student/student_bloc.dart';
-
 class BlogUpdateScreen extends StatefulWidget {
   static const routeName = 'blog-update';
   final Blog blog;

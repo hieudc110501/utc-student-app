@@ -11,7 +11,7 @@ class Blog {
   final String? updatedAt;
   final int likeCount;
   final int commentCount;
-  final int isLiked;
+  late final int isLiked;
 
   Blog({
     required this.blogId,

@@ -14,6 +14,10 @@ class BlogProvider {
   BlogProvider._internal();
   final StreamController<List<Blog>> _streamController =
       StreamController.broadcast();
+  final StreamController<List<Blog>> _streamPersonController =
+      StreamController.broadcast();
+  final StreamController<List<Blog>> _streamSearchController =
+      StreamController.broadcast();
 
   //get all blog of person
   Future<List<Blog>> getAllPersonBlog(String studentId) async {
@@ -23,7 +27,7 @@ class BlogProvider {
         List data = response.data;
         List<Blog> blogs =
             data.map((e) => Blog.fromJson(jsonEncode(e))).toList();
-        _streamController.sink.add(blogs);
+        _streamPersonController.sink.add(blogs);
         return blogs;
       }
       return [];
@@ -48,7 +52,7 @@ class BlogProvider {
         List data = response.data;
         List<Blog> blogs =
             data.map((e) => Blog.fromJson(jsonEncode(e))).toList();
-        _streamController.sink.add(blogs);
+        _streamSearchController.sink.add(blogs);
         return blogs;
       }
       return [];
@@ -115,10 +119,10 @@ class BlogProvider {
         List<Blog> blogs =
             data.map((e) => Blog.fromJson(jsonEncode(e))).toList();
         _streamController.sink.add(blogs);
+        print('ok');
         return blogs;
-      } else {
-        throw Exception('Fail to load Point data');
-      }
+      } 
+      return [];
     } catch (e) {
       throw Exception(e.toString());
     }
@@ -160,4 +164,6 @@ class BlogProvider {
 
   //stearm blog
   Stream<List<Blog>> all() => _streamController.stream;
+  Stream<List<Blog>> allPerson() => _streamPersonController.stream;
+  Stream<List<Blog>> allSearch() => _streamSearchController.stream;
 }

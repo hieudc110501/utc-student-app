@@ -36,20 +36,16 @@ class BlogItemScreen extends StatefulWidget {
 }
 
 class _BlogItemScreenState extends State<BlogItemScreen> {
-  late bool isLike;
   bool isEntering = false;
   late BlogRepository _blogRepository;
   late StorageRepository _storageRepository;
-  late int _likes;
   TextEditingController cmtController = TextEditingController();
   final CommentRepository _commentRepository = CommentRepository();
 
   @override
   void initState() {
-    isLike = widget.blog.isLiked == 1 ? true : false;
     _blogRepository = BlogRepository();
     _storageRepository = StorageRepository();
-    _likes = widget.blog.likeCount;
     cmtController.text = widget.blog.commentCount.toString();
     super.initState();
   }
@@ -61,12 +57,6 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // print(widget.blog.blogId.toString() +
-    //     ' ' +
-    //     widget.blog.likeCount.toString() +
-    //     ' ' +
-    //     widget.blog.commentCount.toString());
-    final box = context.findRenderObject() as RenderBox?;
     return Container(
       decoration: const BoxDecoration(
         color: whiteText,
@@ -131,11 +121,10 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                                 onTap: () {
                                   Navigator.of(context).pop();
                                   Share.share(
-                                    widget.blog.image!,
-                                    subject: widget.blog.body,
-                                    sharePositionOrigin:
-                                        box!.localToGlobal(Offset.zero) &
-                                            box.size,
+                                    widget.blog.image != null
+                                        ? ' ${widget.blog.body} ${widget.blog.image}'
+                                        : widget.blog.body!,
+                                    subject: widget.blog.body ?? ' ',
                                   );
                                 },
                                 child: Container(
@@ -267,20 +256,22 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              widget.blog.body ?? '',
-              style: const TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: greyText,
+          if (widget.blog.body != null) ...[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                widget.blog.body ?? '',
+                style: const TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: greyText,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
             ),
-          ),
+          ],
           const SizedBox(height: 20),
           const Divider(
             height: 0,
@@ -371,10 +362,7 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                 InkWell(
                   splashColor: Colors.amber,
                   onTap: () async {
-                    setState(() {
-                      isLike = !isLike;
-                    });
-                    if (isLike) {
+                    if (widget.blog.isLiked == 0) {
                       await _blogRepository.insertLike(
                         blogId: widget.blog.blogId,
                         studentId: widget.currentStudent.studentId,
@@ -406,9 +394,12 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
-                          Asset.icon(isLike ? 'like.png' : 'unlike.png'),
+                          Asset.icon(widget.blog.isLiked == 1
+                              ? 'like.png'
+                              : 'unlike.png'),
                           scale: 5.4,
-                          color: isLike ? Colors.red : grey500,
+                          color:
+                              widget.blog.isLiked == 1 ? Colors.red : grey500,
                         ),
                         const SizedBox(width: 10),
                         const SampleText(
