@@ -100,14 +100,6 @@ class _BlogScreenState extends State<BlogScreen> {
                     )
                   : showToast(context, 'Bạn đang offline'),
             ),
-            IconButton(
-              onPressed: () {},
-              icon: Image.asset(
-                'assets/icons/menu_icon.png',
-                color: whiteText,
-                scale: 3,
-              ),
-            ),
           ],
           bottom: const TabBar(
             tabs: [

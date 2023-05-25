@@ -48,14 +48,6 @@ class ScheduleScreen extends StatelessWidget {
             ),
             onPressed: () => scheduleDialog(context),
           ),
-          IconButton(
-            onPressed: () {},
-            icon: Image.asset(
-              'assets/icons/menu_icon.png',
-              color: whiteText,
-              scale: 3,
-            ),
-          ),
         ],
       ),
       body: BlocConsumer<StudentBloc, StudentState>(
@@ -259,8 +251,10 @@ class ScheduleScreen extends StatelessWidget {
                                     end: state.listCalendar[index].endDay,
                                     lesson: lessonHandle(
                                         state.listCalendar[index].lesson ?? -1),
-                                    weekday: (state.listCalendar[index].weekDay ?? 'Trống')
-                                        .toString(),
+                                    weekday:
+                                        (state.listCalendar[index].weekDay ??
+                                                'Trống')
+                                            .toString(),
                                   ),
                                 );
                               },

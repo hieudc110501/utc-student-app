@@ -6,7 +6,7 @@ class Point {
   final String studentId;
   final String? period;
   final String? term;
-  final int? point;
+  final num? point;
   final String? ability;
   Point({
     required this.pointId,
@@ -34,7 +34,7 @@ class Point {
       studentId: map['studentId'] as String,
       period: map['period'] != null ? map['period'] as String : null,
       term: map['term'] != null ? map['term'] as String : null,
-      point: map['point'] != null ? map['point'] as int : null,
+      point: map['point'] != null ? map['point'] as num : null,
       ability: map['ability'] != null ? map['ability'] as String : null,
     );
   }

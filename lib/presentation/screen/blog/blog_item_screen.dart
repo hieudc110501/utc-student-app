@@ -1,8 +1,12 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:share_plus/share_plus.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first, use_build_context_synchronously
+import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:gallery_saver/gallery_saver.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:utc_student_app/data/enum/blog_page.dart';
 import 'package:utc_student_app/data/models/blog.dart';
 import 'package:utc_student_app/data/models/student.dart';
@@ -15,6 +19,7 @@ import 'package:utc_student_app/presentation/screen/blog/blog_update_screen.dart
 import 'package:utc_student_app/presentation/screen/loading/loading_screen.dart';
 import 'package:utc_student_app/presentation/widgets/dialog/delete_blog_dialog.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
+import 'package:utc_student_app/presentation/widgets/toast.dart';
 import 'package:utc_student_app/utils/asset.dart';
 import 'package:utc_student_app/utils/color.dart';
 import 'package:utc_student_app/utils/size.dart';
@@ -53,6 +58,36 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  Future downloadFile(String imageUrl) async {
+    Navigator.of(context).pop();
+    try {
+      // Khởi tạo một đối tượng Dio
+      final dio = Dio();
+
+      // Tải xuống ảnh từ URL
+      final response = await dio.get(imageUrl,
+          options: Options(responseType: ResponseType.bytes));
+
+      // Lấy thư mục lưu trữ ảnh trong gallery
+      final directory = await getTemporaryDirectory();
+      final filePath = '${directory.path}/my_image.jpg';
+
+      // Lưu ảnh vào file trên thiết bị
+      await File(filePath).writeAsBytes(response.data);
+
+      // Lưu ảnh vào gallery
+      final result = await GallerySaver.saveImage(filePath, toDcim: true);
+
+      if (result != null) {
+        showToast(context, 'Tải ảnh xuống thành công');
+      } else {
+        showToast(context, 'Lỗi tải ảnh xuống');
+      }
+    } catch (e) {
+      showToast(context, 'Lỗi tải ảnh xuống');
+    }
   }
 
   @override
@@ -192,10 +227,8 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                                   onTap: () async {
                                     final bool check =
                                         await showDeleteBlogDialog(context);
-                                    // ignore: use_build_context_synchronously
                                     Navigator.of(context).pop();
                                     if (check) {
-                                      // ignore: use_build_context_synchronously
                                       LoadingScreen().show(
                                           context: context,
                                           text: 'Đang xóa bài viết');
@@ -285,6 +318,58 @@ class _BlogItemScreenState extends State<BlogItemScreen> {
                 BlogCommentImage.routeName,
                 arguments: widget.blog.image!,
               ),
+              onLongPress: () {
+                showModalBottomSheet(
+                  backgroundColor: Colors.white.withOpacity(0),
+                  //barrierColor: Colors.transparent,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(26),
+                    ),
+                  ),
+                  context: context,
+                  builder: (context) {
+                    return SizedBox(
+                      height: 50,
+                      child: Column(
+                        children: [
+                          InkWell(
+                            onTap: () async {
+                              await downloadFile(widget.blog.image!);
+                            },
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                color: whiteText,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 8),
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      Asset.icon('down-arrow.png'),
+                                      scale: 4,
+                                      color: greyText,
+                                    ),
+                                    const SizedBox(width: 20),
+                                    const SampleText(
+                                      text: 'Lưu hình ảnh',
+                                      fontWeight: FontWeight.w500,
+                                      size: 16,
+                                      color: greyText,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  isScrollControlled: true,
+                );
+              },
               child: CachedNetworkImage(
                 imageUrl: widget.blog.image!,
                 fit: BoxFit.fitHeight,

@@ -44,16 +44,6 @@ class _MarkScreenState extends State<MarkScreen> {
         shadowColor: whiteText,
         bottomOpacity: 0.1,
         elevation: 3,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Image.asset(
-              'assets/icons/menu_icon.png',
-              color: whiteText,
-              scale: 3,
-            ),
-          ),
-        ],
       ),
       body: BlocBuilder<StudentBloc, StudentState>(
         builder: (context, state) {

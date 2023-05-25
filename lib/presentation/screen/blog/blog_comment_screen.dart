@@ -1,10 +1,13 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, use_build_context_synchronously
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:utc_student_app/data/enum/blog_image.dart';
 
 import 'package:utc_student_app/data/models/blog.dart';
@@ -14,6 +17,7 @@ import 'package:utc_student_app/data/repositories/comment/comment_repository.dar
 import 'package:utc_student_app/data/repositories/storage/storage_repository.dart';
 import 'package:utc_student_app/presentation/screen/blog/blog_comment_image.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
+import 'package:utc_student_app/presentation/widgets/toast.dart';
 import 'package:utc_student_app/utils/asset.dart';
 import 'package:utc_student_app/utils/color.dart';
 import 'package:utc_student_app/utils/size.dart';
@@ -93,6 +97,36 @@ class _BlogCommentScreenState extends State<BlogCommentScreen> {
       await storageReference.delete();
     } catch (e) {
       throw Exception(e);
+    }
+  }
+
+  Future downloadFile(String imageUrl) async {
+    Navigator.of(context).pop();
+    try {
+      // Khởi tạo một đối tượng Dio
+      final dio = Dio();
+
+      // Tải xuống ảnh từ URL
+      final response = await dio.get(imageUrl,
+          options: Options(responseType: ResponseType.bytes));
+
+      // Lấy thư mục lưu trữ ảnh trong gallery
+      final directory = await getTemporaryDirectory();
+      final filePath = '${directory.path}/my_image.jpg';
+
+      // Lưu ảnh vào file trên thiết bị
+      await File(filePath).writeAsBytes(response.data);
+
+      // Lưu ảnh vào gallery
+      final result = await GallerySaver.saveImage(filePath, toDcim: true);
+
+      if (result != null) {
+        showToast(context, 'Tải ảnh xuống thành công');
+      } else {
+        showToast(context, 'Lỗi tải ảnh xuống');
+      }
+    } catch (e) {
+      showToast(context, 'Lỗi tải ảnh xuống');
     }
   }
 
@@ -223,84 +257,154 @@ class _BlogCommentScreenState extends State<BlogCommentScreen> {
                                           onLongPress: () {
                                             //kiểm tra nếu comment hiện tại là của người dùng đó
                                             //hoặc là chủ nhân của blog
-                                            if (comment.studentId ==
-                                                    widget.currentStudent
-                                                        .studentId ||
-                                                widget.currentStudent
-                                                        .studentId ==
-                                                    widget.blog.studentId) {
-                                              showModalBottomSheet(
-                                                backgroundColor:
-                                                    Colors.white.withOpacity(0),
-                                                //barrierColor: Colors.transparent,
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.vertical(
-                                                    top: Radius.circular(26),
-                                                  ),
+                                            showModalBottomSheet(
+                                              backgroundColor:
+                                                  Colors.white.withOpacity(0),
+                                              //barrierColor: Colors.transparent,
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                  top: Radius.circular(26),
                                                 ),
-                                                context: context,
-                                                builder: (context) {
-                                                  return InkWell(
-                                                    onTap: () async {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      await _storageRepository
-                                                          .deleteImageFromFirebase(
-                                                              imageUrl: comment
-                                                                  .image);
-                                                      await _commentRepository
-                                                          .deleteComment(
-                                                              comment: comment);
-                                                    },
-                                                    child: Container(
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        color: whiteText,
-                                                        border:
-                                                            Border.symmetric(
-                                                          horizontal:
-                                                              BorderSide(
-                                                            width: 1,
-                                                            color: grey300,
+                                              ),
+                                              context: context,
+                                              builder: (context) {
+                                                return SizedBox(
+                                                  height: (comment.studentId ==
+                                                              widget
+                                                                  .currentStudent
+                                                                  .studentId ||
+                                                          widget.currentStudent
+                                                                  .studentId ==
+                                                              widget.blog
+                                                                  .studentId)
+                                                      ? 100
+                                                      : 50,
+                                                  child: Column(
+                                                    children: [
+                                                      InkWell(
+                                                        onTap: () async {
+                                                          await downloadFile(
+                                                              widget
+                                                                  .blog.image!);
+                                                        },
+                                                        child: Container(
+                                                          decoration:
+                                                              const BoxDecoration(
+                                                            color: whiteText,
+                                                          ),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        16,
+                                                                    vertical:
+                                                                        8),
+                                                            child: Row(
+                                                              children: [
+                                                                Image.asset(
+                                                                  Asset.icon(
+                                                                      'down-arrow.png'),
+                                                                  scale: 4,
+                                                                  color:
+                                                                      greyText,
+                                                                ),
+                                                                const SizedBox(
+                                                                    width: 20),
+                                                                const SampleText(
+                                                                  text:
+                                                                      'Lưu hình ảnh',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  size: 16,
+                                                                  color:
+                                                                      greyText,
+                                                                )
+                                                              ],
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                horizontal: 16,
-                                                                vertical: 8),
-                                                        child: Row(
-                                                          children: [
-                                                            Image.asset(
-                                                              Asset.icon(
-                                                                  'delete.png'),
-                                                              scale: 4,
-                                                              color: rose500,
+                                                      if (comment.studentId ==
+                                                              widget
+                                                                  .currentStudent
+                                                                  .studentId ||
+                                                          widget.currentStudent
+                                                                  .studentId ==
+                                                              widget.blog
+                                                                  .studentId) ...[
+                                                        InkWell(
+                                                          onTap: () async {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                            await _storageRepository
+                                                                .deleteImageFromFirebase(
+                                                                    imageUrl:
+                                                                        comment
+                                                                            .image);
+                                                            await _commentRepository
+                                                                .deleteComment(
+                                                                    comment:
+                                                                        comment);
+                                                          },
+                                                          child: Container(
+                                                            decoration:
+                                                                const BoxDecoration(
+                                                              color: whiteText,
+                                                              border: Border
+                                                                  .symmetric(
+                                                                horizontal:
+                                                                    BorderSide(
+                                                                  width: 1,
+                                                                  color:
+                                                                      grey300,
+                                                                ),
+                                                              ),
                                                             ),
-                                                            const SizedBox(
-                                                                width: 20),
-                                                            const SampleText(
-                                                              text:
-                                                                  'Xóa bình luận',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              size: 16,
-                                                              color: rose500,
-                                                            )
-                                                          ],
+                                                            child: Padding(
+                                                              padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      16,
+                                                                  vertical: 8),
+                                                              child: Row(
+                                                                children: [
+                                                                  Image.asset(
+                                                                    Asset.icon(
+                                                                        'delete.png'),
+                                                                    scale: 4,
+                                                                    color:
+                                                                        rose500,
+                                                                  ),
+                                                                  const SizedBox(
+                                                                      width:
+                                                                          20),
+                                                                  const SampleText(
+                                                                    text:
+                                                                        'Xóa bình luận',
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    size: 16,
+                                                                    color:
+                                                                        rose500,
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                                isScrollControlled: true,
-                                              );
-                                            }
+                                                      ],
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                              isScrollControlled: true,
+                                            );
                                           },
                                           child: Image(
                                             image: CachedNetworkImageProvider(

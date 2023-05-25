@@ -7,7 +7,6 @@ import 'package:utc_student_app/data/models/student.dart';
 import 'package:utc_student_app/data/repositories/blog/blog_repository.dart';
 import 'package:utc_student_app/data/repositories/storage/storage_repository.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
-import 'package:utc_student_app/presentation/widgets/snackbar/snack_bar.dart';
 import 'package:utc_student_app/utils/asset.dart';
 import 'package:utc_student_app/utils/color.dart';
 

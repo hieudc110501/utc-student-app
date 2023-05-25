@@ -35,11 +35,10 @@ class ProfileBox extends StatelessWidget {
         elevation: 3,
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: Image.asset(
-              'assets/icons/menu_icon.png',
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(
+              Icons.close,
               color: whiteText,
-              scale: 3,
             ),
           ),
         ],
@@ -105,6 +104,13 @@ class ProfileBox extends StatelessWidget {
             ProfileItem(
               title: 'Số Tài Khoản',
               content: student.bankAccount ?? '',
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            ProfileItem(
+              title: 'Email',
+              content: student.email ?? '',
             ),
             const SizedBox(
               height: 20,

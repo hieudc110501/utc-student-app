@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:utc_student_app/data/local/repository/local_repository.dart';
 import 'package:utc_student_app/data/local/shared_preferences/shared_preferences_service.dart';
 import 'package:utc_student_app/data/repositories/student/student_repostitory.dart';
@@ -11,9 +12,9 @@ import 'package:utc_student_app/logic/bloc/login/login_event.dart';
 import 'package:utc_student_app/logic/bloc/student/student_bloc.dart';
 import 'package:utc_student_app/logic/bloc/student/student_state.dart';
 import 'package:utc_student_app/presentation/screen/loading/loading_circle_screen.dart';
+import 'package:utc_student_app/presentation/screen/profile/profile_introduce.dart';
 import 'package:utc_student_app/presentation/widgets/profile/profile_box.dart';
 import 'package:utc_student_app/presentation/widgets/profile/profile_container.dart';
-import 'package:utc_student_app/utils/asset.dart';
 import 'package:utc_student_app/utils/color.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 import 'package:utc_student_app/utils/size.dart';
@@ -70,16 +71,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         shadowColor: whiteText,
         bottomOpacity: 0.1,
         elevation: 3,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Image.asset(
-              'assets/icons/menu_icon.png',
-              color: whiteText,
-              scale: 3,
-            ),
-          ),
-        ],
       ),
       body: BlocBuilder<StudentBloc, StudentState>(
         builder: (context, state) {
@@ -283,8 +274,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: InkWell(
                         onTap: () => Navigator.pushNamed(
                           context,
-                          ProfileBox.routeName,
-                          arguments: state.student,
+                          ProfileIntroduceScreen.routeName,
                         ),
                         child: const SizedBox(
                           height: 50,
@@ -302,7 +292,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () => launchUrl(
+                          Uri.parse(
+                              'https://maps.inmapz.com/truong-dai-hoc-giao-thong-van-tai-so-3-cau-giay-university-school-1747848433'),
+                          mode: LaunchMode.externalApplication,
+                        ),
                         child: const SizedBox(
                           height: 50,
                           child: ProfileContainer(

@@ -13,6 +13,7 @@ import 'package:utc_student_app/presentation/screen/home/home_point_screen.dart'
 import 'package:utc_student_app/presentation/screen/login/login_screen.dart';
 import 'package:utc_student_app/presentation/screen/main_screen.dart';
 import 'package:utc_student_app/presentation/screen/mark/mark_detail_screen.dart';
+import 'package:utc_student_app/presentation/screen/profile/profile_introduce.dart';
 import 'package:utc_student_app/presentation/screen/tuition/tuition_screen.dart';
 import 'package:utc_student_app/presentation/widgets/home/home_news_detail.dart';
 import 'package:utc_student_app/presentation/widgets/profile/profile_box.dart';
@@ -86,6 +87,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         builder: (context) => BlogUpdateScreen(
           blog: blog,
         ),
+      );
+    case ProfileIntroduceScreen.routeName:
+      return MaterialPageRoute(
+        builder: (context) => const ProfileIntroduceScreen(),
       );
     default:
       return MaterialPageRoute(

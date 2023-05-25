@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-
-import 'package:utc_student_app/data/models/student.dart';
 import 'package:utc_student_app/logic/bloc/student/student_bloc.dart';
 import 'package:utc_student_app/logic/bloc/student/student_state.dart';
 import 'package:utc_student_app/logic/handle/calender_handle.dart';
@@ -43,16 +41,6 @@ class HomeScreen extends StatelessWidget {
         shadowColor: whiteText,
         bottomOpacity: 0.1,
         elevation: 3,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Image.asset(
-              'assets/icons/menu_icon.png',
-              color: whiteText,
-              scale: 3,
-            ),
-          ),
-        ],
       ),
       body: BlocConsumer<StudentBloc, StudentState>(
         listener: (context, state) {
