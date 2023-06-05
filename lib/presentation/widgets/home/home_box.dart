@@ -41,7 +41,7 @@ class HomeBox extends StatelessWidget {
               child: SampleText(
                 text: text,
                 fontWeight: FontWeight.w600,
-                size: 16,
+                size: 14,
                 color: greyText,
               ),
             ),

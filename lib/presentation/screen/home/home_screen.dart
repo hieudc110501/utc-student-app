@@ -13,6 +13,7 @@ import 'package:utc_student_app/presentation/screen/loading/loading_screen.dart'
 import 'package:utc_student_app/presentation/screen/tuition/tuition_screen.dart';
 import 'package:utc_student_app/presentation/widgets/home/home_box.dart';
 import 'package:utc_student_app/presentation/widgets/home/home_news_item.dart';
+import 'package:utc_student_app/presentation/widgets/profile/profile_box.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 import 'package:utc_student_app/presentation/widgets/schedule/schedule_exam_item.dart';
 import 'package:utc_student_app/presentation/widgets/schedule/schedule_item.dart';
@@ -109,10 +110,14 @@ class HomeScreen extends StatelessWidget {
                         ),
                         Expanded(
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () => Navigator.pushNamed(
+                              context,
+                              ProfileBox.routeName,
+                              arguments: state.student,
+                            ),
                             child: const HomeBox(
-                              image: 'assets/icons/home_calendar.png',
-                              text: 'Tra cứu lịch thi',
+                              image: 'assets/icons/profile_info.png',
+                              text: 'Thông tin cá nhân',
                             ),
                           ),
                         ),

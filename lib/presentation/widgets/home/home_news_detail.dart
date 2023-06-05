@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:utc_student_app/data/models/news.dart';
+import 'package:utc_student_app/logic/handle/string_handle.dart';
 import 'package:utc_student_app/presentation/widgets/sample_text.dart';
 import 'package:utc_student_app/utils/color.dart';
 import 'package:utc_student_app/utils/size.dart';

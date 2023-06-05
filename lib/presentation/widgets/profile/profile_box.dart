@@ -105,15 +105,17 @@ class ProfileBox extends StatelessWidget {
               title: 'Số Tài Khoản',
               content: student.bankAccount ?? '',
             ),
-            const SizedBox(
-              height: 20,
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24),
+              child: Divider(),
             ),
             ProfileItem(
               title: 'Email',
               content: student.email ?? '',
             ),
-            const SizedBox(
-              height: 20,
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24),
+              child: Divider(),
             ),
           ],
         ),

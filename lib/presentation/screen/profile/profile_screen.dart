@@ -13,6 +13,7 @@ import 'package:utc_student_app/logic/bloc/student/student_bloc.dart';
 import 'package:utc_student_app/logic/bloc/student/student_state.dart';
 import 'package:utc_student_app/presentation/screen/loading/loading_circle_screen.dart';
 import 'package:utc_student_app/presentation/screen/profile/profile_introduce.dart';
+import 'package:utc_student_app/presentation/screen/profile/profile_mail.dart';
 import 'package:utc_student_app/presentation/widgets/profile/profile_box.dart';
 import 'package:utc_student_app/presentation/widgets/profile/profile_container.dart';
 import 'package:utc_student_app/utils/color.dart';
@@ -251,16 +252,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: InkWell(
-                        onTap: () => Navigator.pushNamed(
-                          context,
-                          ProfileBox.routeName,
-                          arguments: state.student,
+                        onTap: () => launchUrl(
+                          Uri.parse('https://www.utc.edu.vn/'),
+                          mode: LaunchMode.externalApplication,
                         ),
                         child: const SizedBox(
                           height: 50,
                           child: ProfileContainer(
-                            leftIcon: 'assets/icons/profile_info.png',
-                            title: 'Thông tin cá nhân',
+                            leftIcon: 'assets/icons/education.png',
+                            title: 'Cổng thông tin ĐHGTVT',
                             textColor: grey700,
                           ),
                         ),
@@ -313,7 +313,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () => Navigator.pushNamed(
+                          context,
+                          ProfileMailScreen.routeName,
+                        ),
                         child: const SizedBox(
                           height: 50,
                           child: ProfileContainer(
